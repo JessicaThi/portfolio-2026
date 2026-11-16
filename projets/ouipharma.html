@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ouipharma — Jessica Thielemans</title>
+<link rel="icon" type="image/svg+xml" href="../logo-jt.svg">
+<link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<!-- la même page dans les autres langues (pour Google) -->
+<link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/ouipharma.html">
+<link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/ouipharma.en.html">
+<link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/ouipharma.ko.html">
+<link rel="stylesheet" href="commun.css">
+<script src="apparition.js"></script>
+<style>
+  :root {
+    --bg: #ffffff; --surface: #ffffff; --text: #1d1a2b; --muted: #6f6a86;
+    --line: #ece8f4; --accent: #8b5cf6; --accent-soft: #f3eeff; --pink: #f08cb8;
+    --font: "Inter", "Inter fallback", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1126; --surface: #171a35; --text: #ecebf7; --muted: #9a98b8;
+    --line: #2a2d50; --accent: #a78bfa; --accent-soft: #2a2552;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.65; }
+  a { color: inherit; }
+  img { max-width: 100%; height: auto; display: block; }
+  .label { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+  header {
+    position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 32px; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  /* petite touche de mauve : un liseré en haut de page */
+  body::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 20; background: linear-gradient(90deg, var(--accent), var(--pink)); }
+  .logo { display: inline-flex; align-items: center; height: 34px; text-decoration: none; }
+  .logo img { height: 100%; width: auto; display: block; }
+  .back { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--muted); }
+  .back:hover { color: var(--text); }
+
+  main { max-width: 1120px; margin: 0 auto; padding: 0 16px 96px; }
+
+  /* En-tête du projet (inspiré d'eemonroy) */
+  .intro { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; padding: 72px 0 56px; border-bottom: 1px solid var(--line); }
+  .intro h1 { font-size: clamp(44px, 7vw, 84px); line-height: 1; margin: 16px 0 0; letter-spacing: -.02em; font-weight: 600; }
+  .summary { font-size: 20px; line-height: 1.5; margin: 0 0 32px; }
+  .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; margin: 0; }
+  .meta dt { margin-bottom: 4px; }
+  .meta dd { margin: 0; font-size: 15px; }
+
+  section { padding: 64px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: 0; }
+  .two { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
+  h2 { font-size: 26px; font-weight: 600; margin: 10px 0 0; line-height: 1.25; }
+  p { margin: 0 0 14px; }
+  .muted { color: var(--muted); }
+
+  .done { list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; }
+  .done li { display: grid; grid-template-columns: 70px 1fr; gap: 16px; }
+  .done .year { font-family: var(--mono); font-size: 13px; color: var(--accent); padding-top: 2px; }
+  .done strong { font-weight: 600; }
+  .group { display: block; margin: 36px 0 16px; }
+  .group:first-child { margin-top: 0; }
+
+  /* Avant / après côte à côte */
+  .cmp { margin-top: 56px; scroll-margin-top: 90px; }
+  .cmp:first-of-type { margin-top: 36px; }
+  .cmp h3 { font-size: 20px; font-weight: 600; margin: 0 0 6px; }
+  .cmp > p { margin: 0 0 20px; max-width: 680px; color: var(--muted); }
+  .pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; }
+  .pair + .pair { margin-top: 24px; }
+  .pair.phones {
+    margin-top: 24px; padding: 40px 24px; border-radius: 20px; background: #e8f0fb;
+    grid-template-columns: minmax(0, 240px) auto minmax(0, 240px); justify-content: center; column-gap: 40px;
+  }
+  .pair.phones .side .tag { background: #fff; }
+  .pair.phones .zoom { aspect-ratio: 390 / 844; border: 9px solid #1d2433; border-radius: 34px; box-shadow: 0 24px 50px rgba(15, 20, 40, .22); }
+  .arrow { color: var(--accent); font-size: 20px; }
+  .side { margin: 0; }
+  .side .tag {
+    display: inline-block; margin-bottom: 8px; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--muted);
+  }
+  .side.after .tag { color: var(--text); border-color: var(--accent); }
+  .zoom {
+    display: block; width: 100%; padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    background: var(--surface); cursor: zoom-in; aspect-ratio: 3 / 2;
+  }
+  .phones .zoom { aspect-ratio: 9 / 16; }
+  .zoom img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .3s; }
+  .zoom:hover img { transform: scale(1.02); }
+  .zoom:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .to-cmp { text-decoration: none; border-bottom: 1px dashed var(--muted); }
+  .to-cmp:hover { border-bottom-color: var(--accent); }
+
+  /* Image agrandie */
+  #zoom { border: 0; padding: 0; max-width: min(1200px, 94vw); width: 100%; background: transparent; }
+  #zoom::backdrop { background: rgba(15, 17, 38, .8); }
+  #zoom .box { max-height: 88vh; overflow: auto; border-radius: 12px; background: var(--surface); }
+  #zoom .box img { width: 100%; height: auto; }
+  #zoom .close {
+    position: sticky; float: right; top: 0; margin: 10px; font: inherit; font-size: 14px; border: 0; border-radius: 999px;
+    padding: 6px 14px; background: var(--text); color: var(--bg); cursor: pointer;
+  }
+  figcaption { margin-top: 10px; font-size: 13px; color: var(--muted); }
+
+  .shots { display: grid; grid-template-columns: 2.4fr 1fr; gap: 24px; margin-top: 32px; align-items: start; }
+  .shot { border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); }
+
+  .placeholder {
+    margin-top: 28px; border: 1px dashed var(--line); border-radius: 14px; padding: 28px; text-align: center; color: var(--muted);
+    font-family: var(--mono); font-size: 13px;
+  }
+  .todo { background: var(--accent-soft); border-radius: 10px; padding: 14px 18px; font-size: 14px; }
+
+
+  .note { font-size: 13px; color: var(--muted); padding-top: 40px; }
+  .next { display: flex; justify-content: space-between; padding-top: 32px; font-family: var(--mono); font-size: 13px; }
+  .next a { text-decoration: none; }
+
+  @media (max-width: 820px) {
+    header { padding: 14px 16px; }
+    .intro, .two, .shots { grid-template-columns: 1fr; gap: 28px; }
+    .pair { grid-template-columns: 1fr; gap: 12px; }
+    .pair.phones { grid-template-columns: 1fr 1fr; padding: 24px 16px; column-gap: 16px; }
+    .arrow { display: none; }
+    .intro { padding-top: 40px; }
+    .done li { grid-template-columns: 56px 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="../index.html" aria-label="Jessica Thielemans, accueil"><img src="../logo-jt.svg" alt=""></a>
+  <a class="back" href="../index.html#projets">← Tous les projets</a>
+</header>
+
+<main>
+  <div class="intro">
+    <div>
+      <span class="label">Freelance · Marketplace pharmacie</span>
+      <h1>Ouipharma</h1>
+    </div>
+    <div>
+      <p class="summary">Refonte progressive du front-end d'une marketplace de pharmacies : annonces de vente, offres d'emploi et contenus pour les pharmaciens.</p>
+      <dl class="meta">
+        <div><dt class="label">Rôle</dt><dd>Développeuse front-end freelance</dd></div>
+        <div><dt class="label">Période</dt><dd>2021 – 2023</dd></div>
+        <div><dt class="label">Équipe</dt><dd>Avec un autre développeur, puis seule sur le front-end</dd></div>
+        <div><dt class="label">Environnement</dt><dd>Ruby on Rails</dd></div>
+        <div><dt class="label">Stack</dt><dd>Tailwind.css, Stimulus.js, Sass, HTML</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <figure class="stage" style="--ratio: 16 / 10; --band: #e8f0fb; --frame: #1d2433; --ink: #3b4a6b;">
+    <div class="scene">
+      <div class="browser"><img src="ouipharma/accueil-apres-desktop.webp" alt="Ouipharma : l'accueil refait, et la page d'une annonce sur mobile"></div>
+      <div class="phone"><img src="ouipharma/annonce-apres-mobile.webp" alt=""></div>
+    </div>
+    <figcaption>L'accueil sur ordinateur et une annonce sur mobile</figcaption>
+  </figure>
+
+  <section class="two">
+    <div>
+      <span class="label">Le contexte</span>
+      <h2>Acheter, vendre, s'associer, recruter</h2>
+    </div>
+    <div>
+      <p>Ouipharma est une plateforme d'annonces pour les pharmaciens : on peut y vendre ou acheter une officine, trouver un associé et publier ou consulter des offres d'emploi.</p>
+      <p>J'ai rejoint Ouipharma en mars 2021, sur un site en ligne depuis plusieurs années. Au début, je travaillais avec un autre développeur. Ensuite, j'ai géré seule le front-end, avec une aide sur le back-end quand c'était nécessaire.</p>
+      <p>Mon rôle : refaire les interfaces page par page, les adapter au mobile et intégrer celles de l'espace utilisateur. Je faisais aussi des propositions de design, et je travaillais avec le CEO sur le SEO.</p>
+      <p>En parallèle, nous avons remplacé les anciennes bibliothèques CSS (Semantic UI, puis Bootstrap) par Tailwind.css.</p>
+    </div>
+  </section>
+
+  <section class="two">
+    <div>
+      <span class="label">Ce que j'ai fait</span>
+      <h2>Un coup de neuf sur un site existant</h2>
+    </div>
+    <div>
+      <p class="label group">Annonces</p>
+      <ul class="done">
+        <li><span class="year">2021</span><span><a class="to-cmp" href="#cmp-liste"><strong>Listes d'annonces</strong></a> : refonte des pages par région, département et ville.</span></li>
+        <li><span class="year">2021<br>2023</span><span><a class="to-cmp" href="#cmp-annonce"><strong>Page d'une annonce</strong></a> : nouvelles versions et adaptation au mobile en 2021, puis refonte de la mise en page en 2023.</span></li>
+        <li><span class="year">2021</span><span><strong>Déposer une annonce</strong> : nouvelle page de présentation.</span></li>
+      </ul>
+
+      <p class="label group">Accueil et navigation</p>
+      <ul class="done">
+        <li><span class="year">2022</span><span><a class="to-cmp" href="#cmp-accueil"><strong>Accueil</strong></a> : refonte de la version mobile, travail sur la performance mobile et nouvelle barre de recherche.</span></li>
+        <li><span class="year">2023</span><span><strong>Menu</strong> : navigation adaptée à la tablette et au mobile.</span></li>
+      </ul>
+
+      <p class="label group">Contenu</p>
+      <ul class="done">
+        <li><span class="year">2021</span><span><a class="to-cmp" href="#cmp-blog"><strong>Blog</strong></a> : refonte de la liste des articles et de la page d'un article, avec un carrousel d'articles et des boutons de partage.</span></li>
+        <li><span class="year">2021</span><span><a class="to-cmp" href="#cmp-tarifs"><strong>Tarifs</strong></a> : refonte de la page des formules d'abonnement.</span></li>
+        <li><span class="year">2023</span><span><strong>Pages de contenu</strong> : refonte de plus d'une vingtaine de pages (guides d'achat et de vente, salaire du pharmacien, pages légales), avec des composants réutilisables.</span></li>
+      </ul>
+
+      <p class="label group">Espace utilisateur</p>
+      <ul class="done">
+        <li><span class="year">2021<br>2022</span><span><strong>Mes annonces et back-office</strong> : adaptation au mobile des pages de gestion.</span></li>
+        <li><span class="year">2022</span><span><strong>Messagerie</strong> : proposition de design et intégration de la nouvelle page, sur ordinateur et mobile.</span></li>
+      </ul>
+
+      <p class="label group">Code CSS</p>
+      <ul class="done">
+        <li><span class="year">2022</span><span><strong>Nettoyage du CSS</strong> : retrait de Semantic UI, puis de Bootstrap avec l'équipe, au profit de Tailwind.css.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="avant-apres">
+    <span class="label">Avant / après</span>
+    <h2>Les pages que j'ai refaites</h2>
+    <p class="muted" style="max-width:640px;margin-top:12px">Cliquez sur une capture pour l'agrandir.</p>
+
+    <article class="cmp" id="cmp-liste">
+      <h3>Liste des annonces</h3>
+      <p>Ma première refonte sur le projet : la longue colonne de liens vers les villes passe en bas de page, et les annonces prennent toute la place. Ici, le département de Loire-Atlantique.</p>
+      <div class="pair">
+        <figure class="side before">
+          <span class="tag">Avant · 2021</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Annonces d'un département en 2021 : longue colonne sombre de liens vers les villes à gauche, une carte d'annonce au centre"><img src="ouipharma/liste-avant-desktop.webp" alt="Annonces d'un département en 2021 : longue colonne sombre de liens vers les villes à gauche, une carte d'annonce au centre" loading="lazy"></button>
+        </figure>
+        <span class="arrow" aria-hidden="true">→</span>
+        <figure class="side after">
+          <span class="tag">Après · 2022</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Annonces d'un département en 2022 : titre centré, chiffres clés du département, cartes d'annonces, puis les liens vers les villes en bas de page"><img src="ouipharma/liste-apres-desktop.webp" alt="Annonces d'un département en 2022 : titre centré, chiffres clés du département, cartes d'annonces, puis les liens vers les villes en bas de page" loading="lazy"></button>
+        </figure>
+      </div>
+    </article>
+
+    <article class="cmp" id="cmp-annonce">
+      <h3>Page d'une annonce</h3>
+      <p>Nouvelle mise en page : les informations clés en haut, le formulaire d'inscription à droite, et une version mobile repensée.</p>
+      <div class="pair">
+        <figure class="side before">
+          <span class="tag">Avant · 2021</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Page d'une annonce en 2021 : mise en page dense en trois colonnes"><img src="ouipharma/annonce-avant-desktop.webp" alt="Page d'une annonce en 2021 : mise en page dense en trois colonnes" loading="lazy"></button>
+        </figure>
+        <span class="arrow" aria-hidden="true">→</span>
+        <figure class="side after">
+          <span class="tag">Après · 2023</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Page d'une annonce en 2023 : mise en page aérée, informations clés en haut, formulaire d'inscription à droite"><img src="ouipharma/annonce-apres-desktop.webp" alt="Page d'une annonce en 2023 : mise en page aérée, informations clés en haut, formulaire d'inscription à droite" loading="lazy"></button>
+        </figure>
+      </div>
+      <div class="pair phones">
+        <figure class="side before">
+          <span class="tag">Avant · 2021</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Page d'une annonce sur mobile en 2021"><img src="ouipharma/annonce-avant-mobile.webp" alt="Page d'une annonce sur mobile en 2021" loading="lazy"></button>
+        </figure>
+        <span class="arrow" aria-hidden="true">→</span>
+        <figure class="side after">
+          <span class="tag">Après · 2023</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Page d'une annonce sur mobile en 2023"><img src="ouipharma/annonce-apres-mobile.webp" alt="Page d'une annonce sur mobile en 2023" loading="lazy"></button>
+        </figure>
+      </div>
+    </article>
+
+    <article class="cmp" id="cmp-blog">
+      <h3>Blog</h3>
+      <p>Les articles passent en grille, avec l'auteur, la date et le temps de lecture. Sur la page d'un article : une mise en page plus aérée, des boutons de partage et un carrousel « Tous les autres articles », réalisé avec Glide.js.</p>
+      <div class="pair">
+        <figure class="side before">
+          <span class="tag">Avant · 2021</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Liste des articles en 2021 : une colonne d'articles avec la date en grand"><img src="ouipharma/blog-avant-desktop.webp" alt="Liste des articles en 2021 : une colonne d'articles avec la date en grand" loading="lazy"></button>
+        </figure>
+        <span class="arrow" aria-hidden="true">→</span>
+        <figure class="side after">
+          <span class="tag">Après · 2022</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Liste des articles en 2022 : catégories, articles à la une et tags à gauche, articles en grille avec auteur, date et temps de lecture"><img src="ouipharma/blog-apres-desktop.webp" alt="Liste des articles en 2022 : catégories, articles à la une et tags à gauche, articles en grille avec auteur, date et temps de lecture" loading="lazy"></button>
+        </figure>
+      </div>
+      <div class="pair">
+        <figure class="side before">
+          <span class="tag">Avant · 2021</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Page d'un article en 2021 : texte, colonne de liens à gauche et module de commentaires"><img src="ouipharma/article-avant-desktop.webp" alt="Page d'un article en 2021 : texte, colonne de liens à gauche et module de commentaires" loading="lazy"></button>
+        </figure>
+        <span class="arrow" aria-hidden="true">→</span>
+        <figure class="side after">
+          <span class="tag">Après · 2022</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Page d'un article en 2022 : texte aéré, catégories et tags à gauche, carrousel « Tous les autres articles » et inscription à la newsletter"><img src="ouipharma/article-apres-desktop.webp" alt="Page d'un article en 2022 : texte aéré, catégories et tags à gauche, carrousel « Tous les autres articles » et inscription à la newsletter" loading="lazy"></button>
+        </figure>
+      </div>
+    </article>
+
+    <article class="cmp" id="cmp-tarifs">
+      <h3>Tarifs</h3>
+      <p>Nouvelle page des formules d'abonnement, organisée selon le besoin : vendre son officine, trouver du personnel, s'associer ou investir.</p>
+      <div class="pair">
+        <figure class="side before">
+          <span class="tag">Avant · 2021</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Page des tarifs en 2021 : trois abonnements Silver, Gold et Platinum"><img src="ouipharma/tarifs-avant-desktop.webp" alt="Page des tarifs en 2021 : trois abonnements Silver, Gold et Platinum" loading="lazy"></button>
+        </figure>
+        <span class="arrow" aria-hidden="true">→</span>
+        <figure class="side after">
+          <span class="tag">Après · 2022</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Page des tarifs en 2022 : trois formules selon le besoin (vendre son officine, trouver du personnel, association et investisseur)"><img src="ouipharma/tarifs-apres-desktop.webp" alt="Page des tarifs en 2022 : trois formules selon le besoin (vendre son officine, trouver du personnel, association et investisseur)" loading="lazy"></button>
+        </figure>
+      </div>
+    </article>
+
+    <article class="cmp" id="cmp-accueil">
+      <h3>Accueil</h3>
+      <p>L'accueil a changé en deux temps : l'équipe d'avant a ajouté les onglets de recherche en 2020, puis j'ai refait le filtre de recherche, les cartes d'annonces, les boutons et la version mobile en 2022.</p>
+      <div class="pair">
+        <figure class="side before">
+          <span class="tag">Avant · 2019</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Accueil en 2019 : grande photo de pharmacie avec un bouton Découvrez nos services, recherche par département et chiffre d'affaires, puis les dernières annonces"><img src="ouipharma/accueil-avant-desktop.webp" alt="Accueil en 2019 : grande photo de pharmacie avec un bouton Découvrez nos services, recherche par département et chiffre d'affaires, puis les dernières annonces" loading="lazy"></button>
+        </figure>
+        <span class="arrow" aria-hidden="true">→</span>
+        <figure class="side after">
+          <span class="tag">Après · 2022</span>
+          <button type="button" class="zoom" aria-label="Agrandir : Accueil en 2022 : onglets de recherche Pharmacie à vendre, Rechercher un emploi et Déposer une annonce, puis les dernières annonces"><img src="ouipharma/accueil-apres-desktop.webp" alt="Accueil en 2022 : onglets de recherche Pharmacie à vendre, Rechercher un emploi et Déposer une annonce, puis les dernières annonces" loading="lazy"></button>
+        </figure>
+      </div>
+    </article>
+  </section>
+
+  <section>
+    <span class="label">Refonte d'interface</span>
+    <h2>Design et intégration</h2>
+    <p class="muted" style="max-width:680px;margin-top:12px">Exemple : la page de messagerie, de la proposition de design à l'intégration, sur ordinateur et mobile.</p>
+    <div class="shots">
+      <figure style="margin:0"><div class="shot"><img src="ouipharma/messagerie-desktop.webp" alt="Messagerie sur ordinateur : liste des conversations à gauche, fil de discussion au centre, fiche du contact à droite" width="1800" height="992"></div><figcaption>Version ordinateur · juin 2022</figcaption></figure>
+      <figure style="margin:0"><div class="shot"><img src="ouipharma/messagerie-mobile.webp" alt="Messagerie sur mobile : recherche et liste des conversations" width="684" height="1450"></div><figcaption>Version mobile · juillet 2022</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="two">
+    <div>
+      <span class="label">Ce que j'ai appris</span>
+      <h2>Refaire un site, page par page</h2>
+    </div>
+    <div>
+      <p>Au début, j'ai fait des changements légers, pour que les pages refaites restent cohérentes avec celles qui ne l'étaient pas encore.</p>
+      <p>Finalement, en deux ans, presque toutes les pages ont été refaites. Elles sont restées cohérentes, mais sans référence commune, c'était difficile à vérifier : ne rien oublier, et éviter les petites différences d'une page à l'autre.</p>
+      <p>Avec le recul, je partirais de maquettes ou d'un design system pour tout le site. Ça aurait simplifié ces vérifications, et m'aurait permis des choix graphiques plus marqués.</p>
+    </div>
+  </section>
+
+  <p class="note">Captures réalisées sur des copies locales du site, avec des annonces et des contacts fictifs. Les années indiquent l'état du site à cette date : certains éléments visibles ont été ajoutés par d'autres membres de l'équipe.</p>
+  <div class="next">
+    <a href="../index.html#projets">← Tous les projets</a>
+    <a href="nomiks.html">Projet suivant : Nomiks →</a>
+  </div>
+  <dialog id="zoom" aria-label="Image agrandie">
+    <div class="box"><button type="button" class="close">Fermer</button><img src="" alt=""></div>
+  </dialog>
+</main>
+
+<script>
+  // thème clair / sombre choisi sur l'accueil
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  // agrandir une image avant / après
+  const zoom = document.getElementById("zoom");
+  const zoomImg = zoom.querySelector("img");
+  document.querySelectorAll(".zoom").forEach(btn => btn.addEventListener("click", () => {
+    const img = btn.querySelector("img");
+    zoomImg.src = img.src; zoomImg.alt = img.alt;
+    zoom.showModal();
+    zoom.querySelector(".box").scrollTop = 0;
+  }));
+  zoom.querySelector(".close").addEventListener("click", () => zoom.close());
+  zoom.addEventListener("click", e => { if (e.target === zoom) zoom.close(); });
+</script>
+</body>
+</html>

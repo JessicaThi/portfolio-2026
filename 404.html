@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vol introuvable — Jessica Thielemans</title>
+<link rel="icon" type="image/svg+xml" href="logo-jt.svg">
+<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  :root { --bg: #f4f1fb; --text: #1d1a2b; --muted: #6f6a86; --line: #ece8f4; --accent: #8b5cf6; --pink: #f08cb8; --card: #ffffff; }
+  :root[data-theme="dark"] { --bg: #0f1126; --text: #ecebf7; --muted: #9a98b8; --line: #2a2d50; --accent: #a78bfa; --card: #1c1f40; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; background: var(--bg); color: var(--text); font-family: "Inter", "Inter fallback", system-ui, sans-serif; }
+  main { width: min(560px, 100%); text-align: center; display: grid; justify-items: center; gap: 16px; }
+  .mj { position: relative; width: 140px; height: 140px; animation: float 4s ease-in-out infinite; }
+  .mj img { width: 140px; height: 140px; filter: drop-shadow(0 12px 14px rgba(60, 30, 120, .25)); }
+  .shadow { width: 90px; height: 12px; margin-top: -10px; border-radius: 50%; background: rgba(60, 30, 120, .22); filter: blur(4px); animation: shadow 4s ease-in-out infinite; }
+  @keyframes float { 50% { transform: translateY(-8px); } }
+  @keyframes shadow { 50% { transform: scale(.8); opacity: .6; } }
+  .k { font-family: "JetBrains Mono", monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  h1 { margin: 0; font-size: clamp(30px, 6vw, 44px); line-height: 1.1; letter-spacing: -.02em; }
+  p { margin: 0; color: var(--muted); }
+  .board { width: 100%; margin-top: 8px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); padding: 16px 20px; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; font-family: "JetBrains Mono", monospace; font-size: 13px; text-align: left; }
+  .board .st { color: #e0567a; font-weight: 500; }
+  a.btn { margin-top: 8px; display: inline-block; padding: 13px 22px; border-radius: 999px; text-decoration: none; font-weight: 600; color: #fff; background: linear-gradient(135deg, #8b5cf6, #f08cb8); box-shadow: 0 10px 24px rgba(139, 92, 246, .3); }
+  a.btn:focus-visible { outline: 2px solid var(--pink); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .mj, .shadow { animation: none; } }
+  body { word-break: keep-all; overflow-wrap: break-word; }   /* coréen : pas de mot coupé */
+</style>
+</head>
+<body>
+<main>
+  <div class="mj"><img src="memoji/ordinateur.webp" alt=""></div>
+  <div class="shadow" aria-hidden="true"></div>
+  <span class="k" data-t="code">Erreur 404</span>
+  <h1 data-t="title">Ce vol n'existe pas…</h1>
+  <p data-t="text">Je l'ai cherché partout sur mon écran : cette page a dû changer de porte, ou elle n'a jamais décollé.</p>
+  <div class="board" aria-hidden="true"><span>JT 404</span><span data-t="dest">PAGE INTROUVABLE</span><span class="st" data-t="status">ANNULÉ</span></div>
+  <a class="btn" href="index.html" data-t="back">Retour à la porte d'embarquement</a>
+</main>
+<script>
+  const T = {
+    fr: { code: "Erreur 404", title: "Ce vol n'existe pas…", text: "Je l'ai cherché partout sur mon écran : cette page a dû changer de porte, ou elle n'a jamais décollé.", dest: "PAGE INTROUVABLE", status: "ANNULÉ", back: "Retour à la porte d'embarquement" },
+    en: { code: "Error 404", title: "This flight doesn't exist…", text: "I looked everywhere on my screen: this page must have changed gates, or it never took off.", dest: "PAGE NOT FOUND", status: "CANCELLED", back: "Back to the gate" },
+    ko: { code: "오류 404", title: "존재하지 않는 항공편이에요…", text: "화면 구석구석 찾아봤지만, 이 페이지는 게이트가 바뀌었거나 이륙하지 않았나 봐요.", dest: "페이지 없음", status: "결항", back: "탑승구로 돌아가기" }
+  };
+  try {
+    const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t;
+    // langue vue sur l'accueil, sinon celle du navigateur (coréen, français), sinon l'anglais
+    const nav = (navigator.languages || [navigator.language || ""]).map(l => l.slice(0, 2).toLowerCase()).find(l => T[l]);
+    const lang = [localStorage.getItem("lang"), nav, "en"].find(l => l && T[l]);
+    if (lang !== "fr") {
+      document.documentElement.lang = lang;
+      document.querySelectorAll("[data-t]").forEach(el => { el.textContent = T[lang][el.dataset.t]; });
+      document.title = T[lang].title + " — Jessica Thielemans";
+    }
+  } catch (e) {}
+</script>
+</body>
+</html>

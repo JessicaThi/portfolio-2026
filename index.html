@@ -1,214 +1,1694 @@
-<!DOCTYPE html>
-<html lang="en" class="sr">
-
+<!doctype html>
+<html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio - Jessica Thielemans</title>
-  <link rel="icon" type="image/png" href="images/favicon.png" />
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet" />
-</head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jessica Thielemans — Frontend Developer</title>
+<meta name="description" content="Frontend developer with more than five years of experience in web development.">
+<!-- aperçu quand le lien est partagé (LinkedIn, KakaoTalk, iMessage…) : adresses complètes, valables une fois le site en ligne -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jessica-thielemans.com/">
+<meta property="og:title" content="Jessica Thielemans — Frontend Developer">
+<meta property="og:description" content="Frontend developer with more than five years of experience in web development.">
+<meta property="og:image" content="https://jessica-thielemans.com/apercu.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Jessica Thielemans, 제시카 틸레만스, frontend developer in Seoul">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="logo-jt.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts/fonts.css">
+<!-- polices coréennes : restent chez Google Fonts (découpées en petits morceaux, chargés seulement pour le coréen affiché) -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Couleurs (inspirées d'emotion-agency) ---------- */
+  :root {
+    --bg: #f4f1fb;
+    --surface: #ffffff;
+    --text: #1d1a2b;
+    --muted: #7a7590;
+    --line: #dcd6ec;
+    --accent: #8b5cf6;
+    --accent-soft: #e6dcfd;
+    --pink: #f08cb8; /* clin d'œil au logo JT rose */
 
+    /* Koïs de jour : traits mauves */
+    --koi-line: #7c5cc4;
+    --koi-wash: #a58be6;
+    --koi-spot: #d58ac4;
+    --koi-alpha: 0.4;
+    --stars: 0;
+
+    --font: "Inter", "Inter fallback", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1126;
+    --surface: #171a35;
+    --text: #ecebf7;
+    --muted: #9a98b8;
+    --line: #2a2d50;
+    --accent: #a78bfa;
+    --accent-soft: #2a2552;
+
+    /* Koïs de nuit : mauve lumineux sur bleu nuit */
+    --koi-line: #c9b6ff;
+    --koi-wash: #8f78e0;
+    --koi-spot: #f0a3d6;
+    --koi-alpha: 0.35;
+    --stars: 1;
+  }
+  :root[lang="ko"] {
+    --font: "Noto Sans KR", "Inter", "Inter fallback", sans-serif;
+    /* police monospace coréenne pour les caractères hangeul */
+    --mono: "JetBrains Mono", "Nanum Gothic Coding", monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    transition: background .4s, color .4s;
+  }
+  a { color: inherit; }
+
+
+  .label {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Barre du haut ---------- */
+  header {
+    position: fixed; inset: 0 0 auto 0; z-index: 10;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 16px 32px;
+    pointer-events: none;
+  }
+  /* pastilles en verre dépoli derrière le logo et les boutons (la barre elle-même reste transparente) */
+  header .logo, header .controls { position: relative; isolation: isolate; }
+  /* voile flou aux bords diffus : il s'estompe vers l'extérieur au lieu d'avoir un contour net */
+  header .logo::before, header .controls::before {
+    content: ""; position: absolute; inset: -14px -30px; z-index: -1; pointer-events: none;
+    background: color-mix(in srgb, var(--bg) var(--veil, 35%), transparent);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    --fade: radial-gradient(farthest-side, #000 62%, transparent);
+    -webkit-mask-image: var(--fade);
+    mask-image: var(--fade);
+  }
+  header .logo { height: 44px; padding: 5px 14px; box-sizing: border-box; }
+  header .controls { padding: 4px; }
+  header > * { pointer-events: auto; }
+  .logo { display: inline-flex; align-items: center; height: 34px; text-decoration: none; }
+  .logo picture { display: block; height: 100%; }
+  .logo img, .logo svg { height: 100%; width: auto; display: block; overflow: visible; }
+  /* signature : animation calculée image par image (logo-jt-anim.webp), logo fixe si les animations sont réduites */
+  .logo img { transition: transform .4s ease; }
+  .logo:hover img { transform: rotate(-4deg) scale(1.05); }
+  .controls { display: flex; gap: 8px; }
+  .controls button {
+    font-family: var(--mono); font-size: 12px;
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 6px 12px; cursor: pointer;
+  }
+  .controls button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* ---------- Accueil : fond de nuages ---------- */
+  .hero {
+    position: relative; overflow: hidden;
+    min-height: 100vh;
+    display: flex; align-items: flex-end;
+    padding: 120px 16px 14vh;
+  }
+  /* Bassin de koïs, dessiné dans un canvas */
+  /* le cadre du bassin reste fixe : les koïs et nuages s'effacent en douceur au bord,
+     même quand le bassin glisse pendant le défilement */
+  .pond-wrap {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 94%);
+    mask-image: linear-gradient(to bottom, #000 62%, transparent 94%);
+  }
+  #pond { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  /* ---------- Quitter l'accueil : effet lié au défilement (--p va de 0 à 1) ---------- */
+  :root { --p: 0; }
+  .hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; }
+  #pond {
+    transform: translateY(calc(var(--p) * 30vh));   /* le bassin s'éloigne plus lentement que la page */
+    filter: blur(calc(var(--p) * 5px));               /* et devient flou */
+  }
+  .intro {
+    transform: translateY(calc(var(--p) * -8vh));
+    opacity: calc(1 - var(--p) * 0.8);
+  }
+  /* Plongée : l'eau devient mauve foncé au milieu, puis revient en douceur à la couleur
+     de la page tout en bas de l'accueil (aucun raccord avec la section suivante) */
+  .hero::after {
+    opacity: var(--p);
+    background: linear-gradient(to bottom,
+      rgb(70 50 140 / 0.12) 0%, rgb(60 40 120 / 0.42) 45%, rgb(60 40 120 / 0.5) 60%,
+      rgb(60 40 120 / 0.36) 75%, rgb(60 40 120 / 0.18) 86%, rgb(60 40 120 / 0.06) 94%, rgb(60 40 120 / 0) 100%);
+  }
+  :root[data-theme="dark"] .hero::after {
+    background: linear-gradient(to bottom,
+      rgb(4 4 18 / 0.3) 0%, rgb(0 0 10 / 0.65) 45%, rgb(0 0 10 / 0.75) 60%,
+      rgb(0 0 10 / 0.55) 75%, rgb(0 0 10 / 0.27) 86%, rgb(0 0 10 / 0.09) 94%, rgb(0 0 10 / 0) 100%);
+  }
+  /* Curseur cierge magique : la boule remplace la flèche (sauf sur les liens et boutons) */
+  #sparkle { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; }
+  .sparkler, .sparkler body { cursor: none; }
+  .sparkler a, .sparkler button { cursor: pointer; }
+
+  /* ---------- Texte d'accueil (inspiré de daoho.dev) ---------- */
+  .intro {
+    position: relative; z-index: 1;
+    margin-left: clamp(0px, 16vw, 280px);
+    max-width: 680px;
+    font-family: var(--mono); font-size: 17px; line-height: 1.9;
+  }
+  .intro p { margin: 0; }
+  /* coréen : on ne coupe jamais un mot (안녕하세요) en fin de ligne, seulement entre les mots */
+  body { word-break: keep-all; overflow-wrap: break-word; }
+  .tagline { color: var(--muted); min-height: 3.8em; margin-bottom: 48px !important; }
+  /* le carré qui clignote, comme un vieux terminal */
+  .cursor {
+    display: inline-block; width: .6em; height: 1.15em;
+    background: var(--text); vertical-align: -.2em; margin-left: 2px;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .links { margin-top: 28px; color: var(--muted); }
+  .links a { color: var(--text); text-underline-offset: 6px; }
+
+  section { padding: 96px 16px; }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  .section-title { text-align: center; margin-bottom: 56px; }
+  .section-title h2 { font-size: clamp(26px, 4vw, 40px); font-weight: 500; margin: 12px 0 0; line-height: 1.2; }
+  .section-title h2 span { color: var(--muted); }
+
+  /* ---------- Plan de vol (inspiré de mikes.cv) ---------- */
+  .flight { position: relative; max-width: 640px; margin: 0 auto; padding: 110px 0 0 110px; }
+  /* le tracé (pointillés + ligne pleine) est un SVG dessiné par le JS */
+  .route { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+  .route .track { fill: none; stroke: var(--line); stroke-width: 2; stroke-dasharray: 3 5; stroke-linecap: round; }
+  .route .fill { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; }
+  .route .tip { fill: var(--accent); }
+  /* l'avion reste en haut : c'est le point de départ */
+  .plane {
+    position: absolute; left: 118px; top: 0;
+    width: 24px; height: 24px; color: var(--accent);
+    transform: rotate(180deg);
+  }
+  .stop { position: relative; padding-bottom: 56px; }
+  .stop:last-child { padding-bottom: 0; }
+  .stop .when {
+    position: absolute; left: -110px; width: 64px; text-align: right; top: 2px;
+  }
+  .stop .when .label { display: block; line-height: 1.5; }
+  .stop .when .year { display: block; font-family: var(--mono); font-size: 13px; color: var(--text); letter-spacing: .03em; }
+  .stop .when .end { display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); white-space: nowrap; }
+  .stop .dot {
+    position: absolute; left: -38px; top: 8px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--bg); border: 2px solid var(--line);
+    transition: border-color .3s, background .3s, box-shadow .4s;
+  }
+  /* étape atteinte : anneau coloré avec un point au centre */
+  .stop.on .dot {
+    border-color: var(--accent);
+    background: radial-gradient(circle, var(--accent) 0 2px, var(--bg) 2.5px);
+  }
+  /* plus d'espace avant la dernière étape, pour le looping de l'avion */
+  .stop:nth-last-child(2) { padding-bottom: 130px; }
+  /* petite onde quand la ligne arrive sur l'étape */
+  .stop .dot::after {
+    content: ""; position: absolute; inset: -2px; border-radius: 50%;
+    border: 2px solid var(--accent); opacity: 0; pointer-events: none;
+  }
+  .stop.on .dot::after { animation: ping .9s ease-out; }
+  @keyframes ping { from { opacity: .6; transform: scale(1); } to { opacity: 0; transform: scale(2.6); } }
+  /* flou et transparence en bas de l'écran, réglés par le JS */
+  .stop { filter: blur(var(--blur, 0px)); opacity: var(--fade, 1); }
+  .stop h3 { margin: 0; font-size: 18px; font-weight: 600; }
+  .stop h3 .now { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: .14em; margin-left: 8px; }
+  .stop .role { margin: 2px 0 6px; font-weight: 500; }
+  .stop p { margin: 0; color: var(--muted); }
+  .stop .stop-link { margin-top: 8px; font-family: var(--mono); font-size: 13px; }
+  .stop-link a { color: var(--accent); text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .stop-link a span { display: inline-block; transition: transform .2s; }
+  .stop-link a:hover span { transform: translate(2px, -2px); }
+
+  /* ---------- Projets (inspiré de thedaydream / eemonroy) ---------- */
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px 24px; }
+  /* apparition douce au défilement (section Projets seulement) : la classe .rv est posée par le script */
+  .rv { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform 1s cubic-bezier(.2, .7, .2, 1); transition-delay: var(--d, 0s); }
+  .rv.in { opacity: 1; transform: none; }
+  /* clic sur un projet : la carte avance, les autres s'effacent, puis la page se fond dans le fond de la page projet */
+  html.leaving #projets .card { transition: opacity .3s, scale .45s cubic-bezier(.2, .7, .2, 1); }
+  html.leaving #projets .card:not(.chosen), html.leaving #projets .section-title, html.leaving #projets .others { opacity: .3; }
+  html.leaving #projets .card.chosen { scale: 1.03; position: relative; z-index: 2; }
+  html.leaving body::after { content: ""; position: fixed; inset: 0; z-index: 9999; background: var(--leave-bg, #fff); animation: leave-fade .3s ease .2s both; }
+  :root[data-theme="dark"] { --leave-bg: #0f1126; }
+  @keyframes leave-fade { from { opacity: 0; } to { opacity: 1; } }
+  .card a { text-decoration: none; display: block; }
+  .thumb {
+    aspect-ratio: 4 / 3; border-radius: 20px;
+    display: grid; place-items: center;
+    font-family: var(--mono); font-size: 13px; color: rgba(255,255,255,.9);
+    transition: transform .3s;
+  }
+  .card a:hover .thumb { transform: translateY(-4px); }
+  /* ---------- Vignettes des projets : fond dégradé + grain, une mise en scène par projet ---------- */
+  .vg {
+    position: relative; overflow: hidden; display: block; place-items: initial; container-type: inline-size;
+    color: #fff; font-family: var(--font);
+    background: radial-gradient(90% 80% at 85% 10%, color-mix(in srgb, var(--glow) 45%, transparent) 0%, transparent 60%), var(--base);
+  }
+  .vg::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 9; opacity: .18; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .card a:hover .vg { transform: none; }
+  .vg img, .vg video { display: block; }
+  .vg-t { position: absolute; left: 6%; top: 7%; z-index: 8; display: grid; gap: 1cqw; }
+  .vg-n { font-size: 6.4cqw; font-weight: 600; letter-spacing: -.02em; line-height: 1.05; }
+  .vg-g { font-size: 2.6cqw; opacity: .88; }
+  .vg-tag { position: absolute; left: 6%; top: 6%; z-index: 8; font-size: 2.6cqw; opacity: .9; }
+  .vg-giant { position: absolute; left: 5%; bottom: -.14em; z-index: 1; font-weight: 800; letter-spacing: -.05em; line-height: 1; white-space: nowrap; color: var(--glow); font-size: 22cqw; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+  .vg-win { position: relative; z-index: 2; border-radius: 1.8cqw; overflow: hidden; background: #fff; box-shadow: 0 5cqw 10cqw rgba(0,0,0,.32); transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+  .vg-win::before {
+    content: ""; display: block; height: 2.8cqw;
+    background:
+      radial-gradient(circle, #ff5f57 .55cqw, transparent .65cqw) 1.6cqw 50% / 1.6cqw 1.6cqw no-repeat,
+      radial-gradient(circle, #febc2e .55cqw, transparent .65cqw) 3.8cqw 50% / 1.6cqw 1.6cqw no-repeat,
+      radial-gradient(circle, #28c840 .55cqw, transparent .65cqw) 6cqw 50% / 1.6cqw 1.6cqw no-repeat,
+      #f1f1f4;
+  }
+  .vg-vp { aspect-ratio: 16 / 10; overflow: hidden; }
+  .vg-vp img, .vg-vp video { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .vg-ph { position: absolute; z-index: 3; padding: 1.2%; border-radius: 3cqw; background: #0f121a; box-shadow: 0 4cqw 8cqw rgba(0,0,0,.38); transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+  .vg-ph img { width: 100%; aspect-ratio: 390 / 844; object-fit: cover; object-position: top; border-radius: 2.4cqw; }
+  /* Le Plein, Ouipharma : grand nom + écran */
+  .vg.static .vg-win { position: absolute; left: 15%; right: 15%; top: 15%; transform: rotate(-2deg); }
+  .card a:hover .vg.static .vg-win { transform: rotate(0) translateY(-6px); }
+  .card a:hover .vg-giant { transform: translateY(-6px); }
+  /* Skade : la page défile au survol */
+  .vg.scroll .vg-win { position: absolute; left: 14%; right: 14%; top: 33%; }
+  .vg.scroll .vg-vp img { height: auto; transition: transform 7s cubic-bezier(.45,0,.55,1); }
+  .card a:hover .vg.scroll .vg-vp img { transform: translateY(var(--dist, 0px)); }
+  /* Skade : grande fenêtre inclinée, qui déborde du cadre */
+  .vg.big { perspective: 1200px; }
+  .vg-big { position: absolute; left: 14%; top: 34%; width: 100%; transform: rotateX(14deg) rotateY(-16deg) rotateZ(3deg); transform-origin: left top; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+  .vg-big .vg-win { transition: none; }
+  .card a:hover .vg-big { transform: rotateX(8deg) rotateY(-10deg) rotateZ(2deg) translateY(-8px); }
+  /* Pando2 : cascade de fenêtres */
+  .vg-cw { position: absolute; width: 66%; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+  .vg-cw .vg-win { transition: none; }
+  .vg-cw.w1 { left: 46%; top: 14%; } .vg-cw.w2 { left: 34%; top: 32%; } .vg-cw.w3 { left: 20%; top: 50%; }
+  .card a:hover .vg-cw.w1 { transform: translate(10px, -10px); }
+  .card a:hover .vg-cw.w2 { transform: translate(4px, -4px); }
+  .card a:hover .vg-cw.w3 { transform: translate(-6px, 6px); }
+  /* Ouipharma : avant / après, le rideau glisse au survol */
+  .vg-baw { position: absolute; left: 12%; right: 12%; top: 30%; }
+  .vg-bafr { position: absolute; inset: 0; }
+  .vg-bafr img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .vg-bafr .after { clip-path: inset(0 0 0 58%); transition: clip-path 1.6s cubic-bezier(.45,0,.55,1); }
+  .vg-bline { position: absolute; top: 0; bottom: 0; left: 58%; width: .5cqw; background: #fff; box-shadow: 0 0 2cqw rgba(0,0,0,.4); transition: left 1.6s cubic-bezier(.45,0,.55,1); }
+  .card a:hover .vg-bafr .after { clip-path: inset(0 0 0 8%); }
+  .card a:hover .vg-bline { left: 8%; }
+  .vg-lab.ya { left: 14%; top: 24%; color: #134a85; } .vg-lab.yb { right: 14%; top: 24%; color: #134a85; }
+  /* Otoctone, Nomiks : fenêtre inclinée, vidéo au survol */
+  .vg.tilt { perspective: 1100px; }
+  .vg-tilt { position: absolute; left: 8%; top: 30%; width: 66%; transform: rotateY(18deg) rotateX(6deg) rotateZ(-2deg); transform-origin: left center; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+  .vg-tilt .vg-win { transition: none; }
+  .vg.tilt .vg-ph.side { left: 74%; top: 26%; width: 18%; transform: rotate(4deg); }
+  .card a:hover .vg-tilt { transform: rotateY(8deg) rotateX(3deg) rotateZ(-1deg) translateY(-6px); }
+  .card a:hover .vg.tilt .vg-ph.side { transform: rotate(2deg) translateY(-12px); }
+  /* Clor AI : mur de maquettes incliné */
+  .vg-bento { position: absolute; left: -14%; width: 128%; top: -22%; display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: 11cqw; grid-auto-flow: dense; gap: 1.1cqw; transform: rotate(-10deg); transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+  .vg-b { overflow: hidden; border-radius: 1.1cqw; background: #111; box-shadow: 0 1.5cqw 3.5cqw rgba(0,0,0,.35); }
+  .vg-b img { width: 100%; height: 100%; object-fit: cover; }
+  .vg-b.d { grid-column: span 2; grid-row: span 2; }
+  .vg-b.p { grid-column: span 1; grid-row: span 3; }
+  .card a:hover .vg-bento { transform: rotate(-10deg) translate(-10px, -14px); }
+  .vg-shade { position: absolute; inset: 0; z-index: 7; pointer-events: none; background: linear-gradient(160deg, color-mix(in srgb, var(--base) 92%, transparent) 0%, color-mix(in srgb, var(--base) 55%, transparent) 26%, transparent 46%); }
+  /* Dotworld : collage superposé */
+  .vg-ck { position: absolute; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+  .vg-ck img { width: 100%; object-fit: cover; object-position: top; box-shadow: 0 4cqw 8cqw rgba(0,0,0,.35); }
+  .vg-ck.rz { left: 44%; top: 12%; width: 62%; transform: rotate(5deg); } .vg-ck.rz img, .vg-ck.tw img { aspect-ratio: 16 / 10; border-radius: 1.5cqw; }
+  .vg-ck.tw { left: 26%; top: 44%; width: 56%; transform: rotate(-3deg); }
+  .vg-ck.cv { left: 6%; top: 34%; width: 24%; transform: rotate(-9deg); } .vg-ck.cv img { aspect-ratio: 210 / 297; border-radius: .6cqw; }
+  .vg-ck.ph { left: 76%; top: 46%; width: 17%; transform: rotate(6deg); } .vg-ck.ph img { aspect-ratio: 390 / 844; border-radius: 2.2cqw; border: .6cqw solid #0f121a; }
+  .vg-lab { position: absolute; z-index: 8; font-size: 1.9cqw; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; background: #fff; color: #0f2a8f; border-radius: 999px; padding: .6cqw 1.7cqw; box-shadow: 0 .8cqw 2.4cqw rgba(0,0,0,.2); }
+  .vg-lab.l1 { left: 78%; top: 9%; } .vg-lab.l2 { left: 30%; top: 88%; } .vg-lab.l3 { left: 6%; top: 30%; }
+  .card a:hover .vg-ck.rz { transform: rotate(6deg) translate(8px, -6px); }
+  .card a:hover .vg-ck.tw { transform: rotate(-2deg) translateY(-8px); }
+  .card a:hover .vg-ck.cv { transform: rotate(-12deg) translate(-6px, -6px); }
+  .card a:hover .vg-ck.ph { transform: rotate(8deg) translate(6px, -10px); }
+  .card a:focus-visible .vg { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .vg * { transition: none !important; } }
+  .others { margin-top: 72px; }
+  .others h3 { font-size: 18px; font-weight: 500; margin: 0 0 12px; }
+  .others ul { list-style: none; margin: 0; padding: 0; }
+  .others li { display: grid; grid-template-columns: 56px 130px 1fr auto; gap: 16px; align-items: baseline; padding: 14px 0; border-top: 1px solid var(--line); }
+  .others li:last-child { border-bottom: 1px solid var(--line); }
+  .o-year { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .others strong { font-weight: 500; }
+  .o-desc { color: var(--muted); font-size: 15px; }
+  @media (max-width: 720px) {
+    .others li { grid-template-columns: 48px 1fr; gap: 4px 12px; }
+    .others .o-desc, .others .label { grid-column: 2; }
+  }
+  .meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 14px; }
+  .meta strong { font-weight: 500; }
+
+  /* ---------- Contact ---------- */
+  /* Fin de page : billet de jour (A) en mode clair, billet sur ciel de nuit (C) en mode sombre */
+  .contact { padding: 0 16px; }
+  .end-night { display: none; }
+  :root[data-theme="dark"] .end-day { display: none; }
+  :root[data-theme="dark"] .end-night { display: grid; }
+  .end-k { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  .end-btn {
+    justify-self: start; display: inline-block; white-space: nowrap; padding: 13px 22px; border-radius: 999px; text-decoration: none; font-weight: 600; color: #fff;
+    background: linear-gradient(135deg, #8b5cf6, #f08cb8); box-shadow: 0 10px 24px rgba(139, 92, 246, .3); transition: transform .3s;
+  }
+  .end-btn:hover { transform: translateY(-2px); }
+  .contact a:focus-visible { outline: 2px solid var(--pink); outline-offset: 3px; }
+  /* Memoji qui salue, avec une bulle */
+  .end-hello { display: flex; align-items: center; gap: 14px; }
+  /* Petites apparitions du Memoji dans la page */
+  .mini-mj-wrap { display: inline-flex; align-items: center; gap: 8px; }
+  .mini-mj { width: 36px; height: 36px; vertical-align: middle; filter: drop-shadow(0 4px 6px rgba(60, 30, 120, .2)); }
+  h3 .mini-mj { width: 34px; height: 34px; margin-left: 6px; transform: rotate(6deg) scale(0); transition: transform .5s cubic-bezier(.3, 1.6, .5, 1) .2s; }
+  .stop.seen h3 .mini-mj, .stop:hover h3 .mini-mj { transform: rotate(6deg) scale(1); }
+  @media (prefers-reduced-motion: reduce) { h3 .mini-mj { transform: rotate(6deg); transition: none; } }
+  /* Memoji : derrière l'ordinateur, puis son sourire animé, avec un rebond */
+  .mj { position: relative; display: inline-block; width: 140px; height: 140px; flex: none; }
+  .mj-float { position: absolute; inset: 0; animation: mj-float 4s ease-in-out infinite; }
+  .mj-pose { position: absolute; inset: 0; width: 140px; height: 140px; opacity: 0; transform: scale(.85) translateY(6px); transition: opacity .25s, transform .45s cubic-bezier(.3, 1.6, .5, 1); filter: drop-shadow(0 8px 10px rgba(60, 30, 120, .25)); }
+  .mj-pose.on { opacity: 1; transform: none; }
+  /* au repos : courte vidéo de son Memoji qui sourit et cligne des yeux (memoji/sourire-anime.webp, en boucle) */
+  picture.mj-pose { display: block; }
+  picture.mj-pose img { width: 100%; height: 100%; display: block; }
+  .mj-shadow { position: absolute; left: 50%; bottom: -8px; width: 86px; height: 10px; transform: translateX(-50%); border-radius: 50%; background: rgba(60, 30, 120, .25); filter: blur(4px); animation: mj-shadow 4s ease-in-out infinite; }
+  .end-head .mj-shadow { background: rgba(0, 0, 0, .45); }
+  .end-bubble { opacity: 0; transform: scale(.8) translateX(-8px); transform-origin: left center; transition: opacity .3s, transform .4s cubic-bezier(.3, 1.6, .5, 1); }
+  /* arrivée : elle surgit du bas, salue en se balançant, puis la bulle s'écrit au clavier */
+  .mj { opacity: 0; transform: translateY(36px); transition: opacity .4s, transform .8s cubic-bezier(.3, 1.45, .5, 1); }
+  .end-hello.up .mj { opacity: 1; transform: none; }
+  .end-bubble { font-family: var(--mono); font-size: 13px; min-height: 1.6em; }
+  .end-bubble .cur { display: inline-block; width: 7px; height: 14px; margin-left: 2px; vertical-align: -2px; background: var(--accent); animation: mj-blink 1s steps(1) infinite; }
+  .end-head .end-bubble .cur { background: #f08cb8; }
+  @keyframes mj-blink { 50% { opacity: 0; } }
+  .end-hello.awake .end-bubble { opacity: 1; transform: none; }
+  /* passage de l'ordi au sourire : pop d'étincelles */
+  .mj.pop .mj-pose { transition: opacity .25s ease-in, transform .25s ease-in; }
+  .mj.pop .mj-pose:not(.on) { transform: scale(.6); filter: blur(4px); }
+  .mj.pop .mj-pose.on { transition: opacity .2s .2s, transform .45s cubic-bezier(.3, 1.6, .5, 1) .2s; }
+  .mj-spark { position: absolute; left: 50%; top: 50%; z-index: 2; width: 10px; height: 10px; margin: -5px; border-radius: 50%; background: #f08cb8; opacity: 0; pointer-events: none; animation: mj-spark .6s ease-out .12s forwards; }
+  .mj-spark:nth-child(odd) { background: #7c5cf0; width: 7px; height: 7px; margin: -3.5px; }
+  .end-head .mj-spark:nth-child(odd) { background: #b9a6ff; }
+  @keyframes mj-spark { 0% { opacity: 1; transform: rotate(var(--a)) translateX(10px) scale(1); } 100% { opacity: 0; transform: rotate(var(--a)) translateX(80px) scale(.3); } }
+  /* la bulle garde dès le début la largeur du texte complet : le memoji ne bouge pas pendant que ça s'écrit */
+  .end-bubble { display: grid; text-align: left; }
+  .end-bubble > .bub-ghost, .end-bubble > .bub-line { grid-area: 1 / 1; }
+  .bub-ghost { visibility: hidden; }
+  .bub-line .cur { position: absolute; }   /* le curseur ne prend pas de place, il déborde dans la marge de la bulle */
+  @keyframes mj-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @keyframes mj-shadow { 0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; } 50% { transform: translateX(-50%) scale(.82); opacity: .6; } }
+  @media (prefers-reduced-motion: reduce) { .mj-float, .mj-shadow, .end-bubble .cur { animation: none; } .mj-pose, .end-bubble, .mj { transition: none; } .mj { opacity: 1; transform: none; } }
+  .end-bubble { background: #fff; color: #1d1a2b; border-radius: 18px 18px 18px 4px; padding: 10px 14px; font-size: 14px; box-shadow: 0 6px 18px rgba(80, 40, 160, .12); }
+  .end-head .end-hello { justify-content: center; }
+  .end-head .end-bubble { background: rgba(255, 255, 255, .12); color: #ecebf7; border: 1px solid rgba(255, 255, 255, .2); }
+  /* A */
+  .end-day {
+    max-width: 1100px; margin: 0 auto; border-radius: 28px; padding: 64px 40px; display: grid; grid-template-columns: 1fr auto; gap: 56px; align-items: center;
+    background: linear-gradient(135deg, #ede6ff, #ffe3f0);
+  }
+  .end-txt { max-width: 460px; justify-self: end; display: grid; gap: 14px; }
+  .end-txt h2 { margin: 0; font-size: clamp(30px, 4vw, 42px); line-height: 1.1; letter-spacing: -.02em; font-weight: 600; color: #1d1a2b; }
+  .end-txt p { margin: 0; color: #6f6a86; }
+  .end-links { display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: var(--mono); font-size: 13px; margin-top: 6px !important; }
+  .end-links a { color: #4b3f8a; text-underline-offset: 4px; }
+  .vpass { width: 290px; border-radius: 24px; background: #fff; color: #1d1a2b; box-shadow: 0 30px 60px rgba(80, 40, 160, .22); transform: rotate(4deg); overflow: hidden; transition: transform .5s; }
+  .end-day:hover .vpass { transform: rotate(0) translateY(-6px); }
+  .vp-top { padding: 20px 22px; background: linear-gradient(135deg, #7c5cf0, #f08cb8); color: #fff; display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+  .vp-top img { filter: brightness(0) invert(1); }
+  .vp-route { display: flex; justify-content: space-between; align-items: center; padding: 22px 22px 6px; }
+  .vp-route b { font-size: 38px; letter-spacing: -.03em; } 
+  /* ligne pointillée entre les deux villes, l'avion au milieu */
+  .vp-route span { flex: 1; position: relative; margin: 0 12px; border-top: 2px dashed #d9d5e3; }
+  .vp-route span i { position: absolute; left: 50%; top: 0; transform: translate(-50%, -54%); padding: 0 6px; background: #fff; color: #8b5cf6; font-style: normal; font-size: 18px; line-height: 1; }
+  .vp-f { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px 22px 20px; font-size: 14px; }
+  .vp-f div { display: grid; gap: 2px; } .vp-f span { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #6f6a86; }
+  .vp-cut { border-top: 2px dashed #e6e0f5; position: relative; }
+  .vp-cut::before, .vp-cut::after { content: ""; position: absolute; top: -12px; width: 22px; height: 22px; border-radius: 50%; background: #f5e5f6; }
+  .vp-cut::before { left: -11px; } .vp-cut::after { right: -11px; }
+  .vp-bar { margin: 20px 22px 24px; height: 52px; opacity: .85; background: repeating-linear-gradient(90deg, #1d1a2b 0 2px, transparent 2px 4px, #1d1a2b 4px 5px, transparent 5px 9px, #1d1a2b 9px 12px, transparent 12px 14px); }
+  /* Billet scanné (clic sur « Retour à la porte d'embarquement ») : le laser passe sur le code-barres, puis le billet s'en va */
+  .vp-bar { position: relative; }
+  .vp-bar::after { content: ""; position: absolute; left: -8px; right: -8px; top: 0; height: 2px; border-radius: 2px; background: #ff3b6b; box-shadow: 0 0 10px 2px rgba(255, 59, 107, .7); opacity: 0; }
+  .vpass.scanned .vp-bar::after { animation: vp-laser .45s ease-in-out 2 alternate; }
+  .vpass.scanned, .glass.scanned { animation: vp-gone .6s cubic-bezier(.5, 0, .75, 0) .95s forwards; }
+  /* en mode sombre : le laser balaie toute la carte en verre */
+  .glass::after { content: ""; position: absolute; left: -8px; right: -8px; top: 0; height: 2px; border-radius: 2px; background: #f08cb8; box-shadow: 0 0 14px 3px rgba(240, 140, 184, .8); opacity: 0; pointer-events: none; }
+  .glass.scanned::after { animation: vp-laser .45s ease-in-out 2 alternate; }
+  @keyframes vp-laser { from { top: 0; opacity: 1; } to { top: calc(100% - 2px); opacity: 1; } }
+  @keyframes vp-gone { 0% { transform: rotate(0) translateY(0); opacity: 1; } 100% { transform: rotate(-2deg) translateY(-60px) scale(.92); opacity: 0; visibility: hidden; } }
+  /* C */
+  .end-night {
+    position: relative; overflow: hidden; isolation: isolate; max-width: 1100px; margin: 0 auto; border-radius: 28px; padding: 72px 24px;
+    place-items: center; color: #ecebf7;
+    background: radial-gradient(80% 60% at 50% 110%, #3a2f7a 0%, transparent 70%), linear-gradient(180deg, #070a1f 0%, #0f1438 55%, #1c1f52 100%);
+  }
+  .end-head { position: relative; z-index: 2; text-align: center; margin-bottom: 26px; }
+  .end-head img { filter: drop-shadow(0 0 16px rgba(240, 140, 184, .6)); }
+  .end-head h2 { margin: 12px 0 0; font-size: clamp(30px, 4.4vw, 42px); font-weight: 500; letter-spacing: -.02em; }
+  .glass { position: relative; z-index: 2; width: min(680px, 100%); display: grid; grid-template-columns: 1fr 210px; border-radius: 18px; background: rgba(255, 255, 255, .08); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, .16); }
+  .g-main { padding: 26px 28px; display: grid; gap: 6px; }
+  .g-k { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #b9b6d8; }
+  .g-route { display: flex; align-items: center; gap: 14px; margin: 8px 0 14px; }
+  .g-route b { font-size: 42px; letter-spacing: -.03em; }
+  .g-route span { flex: 1; border-top: 2px dashed rgba(240, 140, 184, .6); position: relative; }
+  .g-route span::after { content: "✈"; position: absolute; left: 50%; top: -14px; transform: translateX(-50%); color: #f08cb8; }
+  .g-mail { color: #fff; font-size: 17px; text-underline-offset: 4px; }
+  .g-links { display: flex; gap: 18px; margin: 10px 0 0; font-family: var(--mono); font-size: 13px; }
+  .g-links a { color: #b9b6d8; } .g-links a:hover { color: #fff; }
+  .g-stub { padding: 26px 24px; border-left: 2px dashed rgba(255, 255, 255, .2); display: grid; align-content: space-between; gap: 16px; }
+  .g-stub h3 { margin: 0 0 6px; font-size: 21px; font-weight: 600; } .g-stub p { margin: 0; color: #b9b6d8; font-size: 14px; }
+  .night-stars, .night-stars::after {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      radial-gradient(1px 1px at 8% 14%, #fff, transparent), radial-gradient(1px 1px at 19% 32%, #fff, transparent), radial-gradient(1.5px 1.5px at 27% 9%, #fff, transparent),
+      radial-gradient(1px 1px at 36% 24%, #fff, transparent), radial-gradient(1px 1px at 47% 6%, #fff, transparent), radial-gradient(1.5px 1.5px at 58% 18%, #fff, transparent),
+      radial-gradient(1px 1px at 66% 34%, #fff, transparent), radial-gradient(1px 1px at 74% 11%, #fff, transparent), radial-gradient(1.5px 1.5px at 83% 27%, #fff, transparent),
+      radial-gradient(1px 1px at 92% 8%, #fff, transparent), radial-gradient(1px 1px at 12% 62%, #fff, transparent), radial-gradient(1px 1px at 88% 60%, #fff, transparent);
+  }
+  .night-stars::after { content: ""; transform: translate(3%, 4%) scale(1.1); animation: twinkle 4s ease-in-out infinite; }
+  @keyframes twinkle { 0%, 100% { opacity: .2; } 50% { opacity: .8; } }
+  .night-shoot { position: absolute; z-index: 1; top: 16%; left: 70%; width: 140px; height: 2px; border-radius: 2px; opacity: 0; background: linear-gradient(90deg, rgba(255,255,255,0), #fff); animation: shoot 9s ease-in 3s infinite; }
+  @keyframes shoot { 0% { opacity: 0; transform: rotate(-18deg) translateX(0); } 3% { opacity: 1; } 10% { opacity: 0; transform: rotate(-18deg) translateX(-260px); } 100% { opacity: 0; } }
+  @media (max-width: 760px) {
+    .end-day { grid-template-columns: 1fr; padding: 40px 22px; gap: 36px; }
+    .end-txt { justify-self: start; }
+    .end-links a:first-child { flex-basis: 100%; }   /* l'e-mail sur sa ligne, LinkedIn et GitHub en dessous */
+    .vpass { justify-self: center; }
+    .glass { grid-template-columns: 1fr; }
+    .g-stub { border-left: 0; border-top: 2px dashed rgba(255, 255, 255, .2); }
+  }
+  @media (prefers-reduced-motion: reduce) { .night-stars::after, .night-shoot { animation: none; } .vpass { transition: none; } }
+  footer { text-align: center; padding: 40px 16px 56px; }
+
+  /* tablette (iPad) : texte d'accueil aligné sur le logo, sans grande marge */
+  @media (min-width: 681px) and (max-width: 1024px) { .intro { margin-left: 16px; } }
+  /* tablette et téléphone : logo collé à gauche (aligné sur le texte d'accueil), boutons collés à droite */
+  @media (max-width: 1024px) { header .logo { padding-left: 0; padding-right: 0; } header .controls { padding-right: 0; } }   /* boutons de langue collés à droite */
+  @media (max-width: 680px) {
+    header { padding: 16px; }
+    .intro { font-size: 15px; margin-left: 0; }   /* sur téléphone : aligné sur le logo, sans grande marge */
+    .grid { grid-template-columns: 1fr; }
+    .flight { padding-left: 92px; }
+    .plane { left: 96px; }
+    .stop .when { left: -92px; width: 54px; }
+    .stop .when .year { font-size: 11px; letter-spacing: 0; }
+    .stop .when .end { font-size: 10px; }
+    .stop .dot { left: -34px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cursor { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
 <body>
-  <main>
-    <a href="mailto:thielemans.jessica@gmail.com ?subject=Anti spam" class="sticky-contact">
-      <div class="bubble-warped">
-        <svg viewBox="0 0 448 448">
-          <g id="paper-plane" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round"
-            stroke-linejoin="round">
-            <g id="paper-plane-outline" transform="translate(15.000000, 16.000000)" stroke="#F8F8F8" stroke-width="32">
-              <path
-                d="M6.12,151.94 L406.12,0.55 C409.067837,-0.577469604 412.403045,0.133564287 414.63474,2.36525975 C416.866436,4.59695521 417.57747,7.93216324 416.45,10.88 L265.06,410.88 C263.826792,413.99109 260.787414,416.005809 257.441681,415.929972 C254.095947,415.854136 251.150978,413.703771 250.06,410.54 L182.66,244.45 C181.066884,239.677953 177.322047,235.933116 172.55,234.34 L6.46,167 C3.25408457,165.933322 1.06394154,162.967558 0.987681943,159.589707 C0.911422349,156.211856 2.96548985,153.150273 6.12,151.94 Z"
-                id="Path"></path>
-              <path d="M413,4 L180,237" id="Path"></path>
-            </g>
-          </g>
+
+<header>
+  <a class="logo" href="#" aria-label="Jessica Thielemans, accueil" data-ta="ariaHome"><picture><source media="(prefers-reduced-motion: reduce)" srcset="logo-jt.svg"><img src="logo-jt-anim.webp" alt="" width="48" height="34"></picture></a>
+  <div class="controls">
+    <button data-lang="fr">FR</button>
+    <button data-lang="en">EN</button>
+    <button data-lang="ko">한</button>
+    <button id="theme" aria-label="Mode clair ou sombre" data-ta="ariaTheme">☾</button>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="pond-wrap" aria-hidden="true"><canvas id="pond"></canvas></div>
+    <div class="intro">
+      <p class="tagline"><span id="typed"></span><span class="cursor" aria-hidden="true"></span></p>
+      <p data-t="hello"></p>
+      <p data-t="now"></p>
+      <p data-t="before"></p>
+      <p class="links">
+        <a href="https://github.com/JessicaThi">github</a> /
+        <a href="https://www.linkedin.com/in/jessica-thielemans">linkedin</a> /
+        <a href="#contact">email</a>
+      </p>
+    </div>
+  </div>
+
+  <section id="parcours">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="label" data-t="flightLabel"></span>
+        <h2 data-t="flightTitle"></h2>
+      </div>
+
+      <div class="flight" id="flight">
+        <svg class="route" id="route" aria-hidden="true">
+          <path class="track" id="track"/>
+          <path class="fill" id="fill"/>
+          <circle class="tip" id="tip" r="3"/>
         </svg>
-        <div class="circle-1"></div>
-        <div class="circle-2"></div>
+        <svg class="plane" id="plane" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/>
+        </svg>
+
+        <div class="stop">
+          <div class="when"><span class="label">BE&gt;FR</span><span class="year" data-date="2016-10">10.2016</span><span class="end">– <span data-date="2019-08">08.2019</span></span></div>
+          <span class="dot"></span>
+          <h3>HETIC</h3>
+          <p class="role" data-t="s1role"></p>
+          <p data-t="s1text"></p>
+        </div>
+        <div class="stop">
+          <div class="when"><span class="label">FR</span><span class="year" data-date="2017-07">07.2017</span><span class="end">– <span data-date="2017-09">09.2017</span></span></div>
+          <span class="dot"></span>
+          <h3>Opsone</h3>
+          <p class="role" data-t="s2role"></p>
+          <p data-t="s2text"></p>
+        </div>
+        <div class="stop">
+          <div class="when"><span class="label">FR</span><span class="year" data-date="2018-01">01.2018</span><span class="end">– <span data-date="2019-08">08.2019</span></span></div>
+          <span class="dot"></span>
+          <h3>New Generation Agency</h3>
+          <p class="role" data-t="s3role"></p>
+          <p data-t="s3text"></p>
+        </div>
+        <div class="stop">
+          <div class="when"><span class="label">FR</span><span class="year" data-date="2021-03">03.2021</span><span class="end">– <span data-date="2025-12">12.2025</span></span></div>
+          <span class="dot"></span>
+          <h3>Freelance</h3>
+          <p class="role" data-t="s4role"></p>
+          <p data-t="s4text"></p>
+        </div>
+        <div class="stop">
+          <div class="when"><span class="label">FR&gt;KR</span><span class="year" data-date="2026-01">01.2026</span><span class="end">– <span data-t="untilNow"></span></span></div>
+          <span class="dot"></span>
+          <h3>Infinique <span class="now" data-t="nowTag"></span><img class="mini-mj pop" src="memoji/victoire.webp" alt="" width="34" height="34" loading="lazy"></h3>
+          <p class="role" data-t="s5role"></p>
+          <p data-t="s5text"></p>
+          <p class="stop-link"><a href="https://infinique.kr/en/" data-href="https://infinique.kr/en/" data-href-ko="https://infinique.kr/" target="_blank" rel="noopener">infinique.kr <span aria-hidden="true">↗</span></a></p>
+        </div>
       </div>
-    </a>
-    <section class="intro">
-      <div class="intro-info">
-        <h1>
-          Jessica Thielemans<br />
-          <span class="intro-job">développeuse front-end</span>
-        </h1>
-        <p>freelance</p>
-        <img src="images/jt-neon-jap.svg" data-tilt data-tilt-reset="false" />
+    </div>
+  </section>
+
+  <section id="projets">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="label mini-mj-wrap"><img class="mini-mj" src="memoji/ordinateur.webp" alt="" width="36" height="36" loading="lazy"><span data-t="workLabel"></span></span>
+        <h2 data-t="workTitle"></h2>
       </div>
-      <div class="intro-scroll">
-        <a href="#more">Scroll / défile vers le bas</a>
-        <div class="scroll"></div>
-      </div>
-      <div class="clouds">
-        <img src="images/cloud1.png" class="cloud1" style="--i: 1" />
-        <img src="images/cloud2.png" style="--i: 2" />
-        <img src="images/cloud3.png" style="--i: 3" />
-        <img src="images/cloud4.png" style="--i: 4" />
-        <img src="images/cloud5.png" style="--i: 5" />
-      </div>
-      <div id="particles-js"></div>
-    </section>
-    <section class="know-more" id="more">
-      <div class="know-more-container">
-        <div class="know-more-picture">
-          <div class="rectangle-picture-wrapper">
-            <img src="images/jessica.jpg" alt="jessica's picture" />
-            <div class="rectangle-picture"></div>
+      <div class="grid">
+        <article class="card"><a href="projets/clor-ai.html">
+          <div class="thumb vg wall" style="--base: #241645; --glow: #f08cb8;">
+            <div class="vg-bento"><div class="vg-b d"><img src="projets/clor-ai/editeur-pinceau.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-accueil.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/couleurs-roues.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-maquillage.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/maquillage.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/pose.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-pose.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/ciel.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-ciel.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/paysage-saison.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-couleurs.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/bibliotheque.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-teint.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/camera.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-peau.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/selecteur-couleur.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-outils.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/couleurs-teintes.webp" alt="" loading="lazy" style="object-position: top;"></div></div><div class="vg-shade"></div><div class="vg-t"><span class="vg-n">Clor AI</span><span class="vg-g" data-t="vClor"></span></div>
           </div>
-        </div>
-        <div class="know-more-text">
-          <h2 class="know-more-title">More ?</h2>
-          <p>
-            Jessica Thielemans fraichement diplômée du bachelor web de
-            <a href="https://www.hetic.net/">HETIC</a> avec 3 ans
-            d'expériences en agence web. Je prends également des prestations
-            en freelance :)
-          </p>
-          <span class="skill">#HTML5</span><span class="skill">#CSS3</span><span class="skill">#SASS</span><span
-            class="skill">#BEM</span><span class="skill">#JavaScript</span><span class="skill">#Vue.JS</span><span
-            class="skill">#Nuxt.JS</span><span class="skill">#ES6</span>
-          <h2 class="know-more-title">Now ?</h2>
-          <p>
-            De mon temps libre je participe à des challenges comme celui sur
-            <a href="https://portfolio.devchallenges.io/JessicaThi">devchallenges.io</a> et vous pouvez voir mon avancée
-            sur mon
-            <a href="https://github.com/JessicaThi">GitHub</a>. Pour les devs qui passent par ici je vous recommande de
-            faire le challenge "JavaScript30" de WesBos si ce n'est pas déjà fait 🚀
-          </p>
-        </div>
+          <div class="meta"><strong>Clor AI</strong><span class="label">React · TypeScript · 2026</span></div>
+        </a></article>
+        <article class="card"><a href="projets/otoctone.html">
+          <div class="thumb vg tilt" style="--base: #3f3126; --glow: #e9b98f;">
+            <div class="vg-tilt"><div class="vg-win"><div class="vg-vp"><video src="projets/otoctone/interactions.mp4" poster="projets/otoctone/home-hero.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div></div></div><div class="vg-ph side"><img src="projets/otoctone/mobile-villa-hero.webp" alt="" loading="lazy"></div><div class="vg-t"><span class="vg-n">Otoctone</span><span class="vg-g" data-t="vOtoctone"></span></div>
+          </div>
+          <div class="meta"><strong>Otoctone</strong><span class="label" data-t="mOtoctone"></span></div>
+        </a></article>
+        <article class="card"><a href="projets/pando2.html">
+          <div class="thumb vg cascade" style="--base: #3f4bab; --glow: #9fe3d0;">
+            <div class="vg-cw w1"><div class="vg-win"><div class="vg-vp"><img src="projets/pando2/evaluations.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-cw w2"><div class="vg-win"><div class="vg-vp"><img src="projets/pando2/polluants-consommation.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-cw w3"><div class="vg-win"><div class="vg-vp"><img src="projets/pando2/tableau-de-bord.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-t"><span class="vg-n">Pando2</span><span class="vg-g" data-t="vPando"></span></div>
+          </div>
+          <div class="meta"><strong>Pando2</strong><span class="label" data-t="mPando2"></span></div>
+        </a></article>
+        <article class="card"><a href="projets/leplein.html">
+          <div class="thumb vg static giant" style="--base: #063532; --glow: #f5ff02;">
+            <div class="vg-win"><div class="vg-vp"><img src="projets/leplein/accueil.webp" alt="" loading="lazy" style="object-position: top;"></div></div><span class="vg-tag" data-t="vLeplein"></span><span class="vg-giant">Le Plein</span>
+          </div>
+          <div class="meta"><strong>Le Plein</strong><span class="label">Astro · Tailwind.css · 2023</span></div>
+        </a></article>
+        <article class="card"><a href="projets/skade.html">
+          <div class="thumb vg big" style="--base: #4f63e0; --glow: #c9d4ff;">
+            <div class="vg-big"><div class="vg-win"><div class="vg-vp"><img src="projets/skade/app-fil.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-t"><span class="vg-n">Skade</span><span class="vg-g" data-t="vSkade"></span></div>
+          </div>
+          <div class="meta"><strong>Skade</strong><span class="label">Nuxt.js · Astro · 2022 – 2023</span></div>
+        </a></article>
+        <article class="card"><a href="projets/ouipharma.html">
+          <div class="thumb vg ba" style="--base: #134a85; --glow: #7fd6c2;">
+            <div class="vg-baw"><div class="vg-win"><div class="vg-vp"><div class="vg-bafr"><img class="before" src="projets/ouipharma/accueil-avant-desktop.webp" alt="" loading="lazy"><img class="after" src="projets/ouipharma/accueil-apres-desktop.webp" alt="" loading="lazy"><span class="vg-bline"></span></div></div></div></div><span class="vg-lab ya">2019</span><span class="vg-lab yb">2022</span><div class="vg-t"><span class="vg-n">Ouipharma</span><span class="vg-g" data-t="vOuipharma"></span></div>
+          </div>
+          <div class="meta"><strong>Ouipharma</strong><span class="label" data-t="mOuipharma"></span></div>
+        </a></article>
+        <article class="card"><a href="projets/nomiks.html">
+          <div class="thumb vg tilt" style="--base: #121b3a; --glow: #2fd2ff;">
+            <div class="vg-tilt"><div class="vg-win"><div class="vg-vp"><video src="projets/nomiks/parallaxe.mp4" poster="projets/nomiks/analytic-ouverture.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div></div></div><div class="vg-ph side"><img src="projets/nomiks/mobile-home.webp" alt="" loading="lazy"></div><div class="vg-t"><span class="vg-n">Nomiks</span><span class="vg-g" data-t="vNomiks"></span></div>
+          </div>
+          <div class="meta"><strong>Nomiks</strong><span class="label">Next.js · React · 2022</span></div>
+        </a></article>
+        <article class="card"><a href="projets/dotworld.html">
+          <div class="thumb vg collage" style="--base: #0f2a8f; --glow: #6fa8ff;">
+            <div class="vg-ck rz"><img src="projets/dotworld/rezilli-landing-desktop.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck tw"><img src="projets/dotworld/twenty-site-desktop.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck cv"><img src="projets/dotworld/cvninja-lyon.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck ph"><img src="projets/dotworld/twenty-app-index.webp" alt="" loading="lazy" style="object-position: top;"></div><span class="vg-lab l1">Rezilli</span><span class="vg-lab l2">Twenty Pay</span><span class="vg-lab l3">CV Ninja</span><div class="vg-t"><span class="vg-n">Dotworld</span><span class="vg-g" data-t="vDotworld"></span></div>
+          </div>
+          <div class="meta"><strong>Dotworld</strong><span class="label">Vue.js · Nuxt.js · 2021 – 2022</span></div>
+        </a></article>
       </div>
-    </section>
-    <section class="work">
-      <div class="work-container">
-        <h2>Quelques projets</h2>
-        <ul class="widget-list">
-          <li data-tilt data-tilt-reverse="true" class="blog widget">
-            <a href="http://lumy-foody.netlify.app/">
-              <!-- <img src="images/thumb-mac.jpg" alt="" /> -->
-              <div class="work-info">
-                <h3>Blog</h3>
-                <p class="skills-text">Gridsome (Vue.js)</p>
-              </div>
-            </a>
-          </li>
-          <li data-tilt data-tilt-reverse="true" class="aoki widget">
-            <a href="https://side-project-patisserie-aoki.netlify.app">
-              <!-- <img src="images/thumb-mac.jpg" alt="" /> -->
-              <div class="work-info">
-                <h3>Patisserie Aoki</h3>
-                <p class="skills-text">GSAP</p>
-              </div>
-            </a>
-          </li>
-          <li data-tilt data-tilt-reverse="true" class="mac widget">
-            <a href="https://macxpony-lipsticks.netlify.app">
-              <!-- <img src="images/thumb-mac.jpg" alt="" /> -->
-              <div class="work-info">
-                <h3>Mac Cosmetics</h3>
-                <p class="skills-text">Vue.js</p>
-              </div>
-            </a>
-          </li>
-          <li data-tilt data-tilt-reverse="true" class="leboncoin widget">
-            <a href="https://www.behance.net/gallery/50933759/Redesign-leboncoin">
-              <!-- <img src="images/thumb-leboncoin.jpg" alt="" /> -->
-              <div class="work-info">
-                <h3>Refonte Leboncoin</h3>
-                <p class="skills-text">Photoshop</p>
-              </div>
-            </a>
-          </li>
-          <li data-tilt data-tilt-reverse="true" class="mountains widget">
-            <a href="https://side-project-mountains.netlify.app/">
-              <!-- <img src="images/thumb-mountains.jpg" alt="" /> -->
-              <div class="work-info">
-                <h3>Mountains</h3>
-                <p class="skills-text">HTML5, Sass</p>
-              </div>
-            </a>
-          </li>
+      <div class="others">
+        <h3 data-t="otherTitle"></h3>
+        <ul>
+          <li><span class="o-year">2022</span><strong>Campsider</strong><span class="o-desc" data-t="oCampsider"></span><span class="label">Twig · React · Sass</span></li>
+          <li><span class="o-year">2022</span><strong>Brahms</strong><span class="o-desc" data-t="oBrahms"></span><span class="label">Vue.js · Tailwind.css</span></li>
+          <li><span class="o-year">2022</span><strong>FamilleBebe</strong><span class="o-desc" data-t="oFamille"></span><span class="label">HTML · Sass</span></li>
+          <li><span class="o-year">2022</span><strong>LinkFinance</strong><span class="o-desc" data-t="oLink"></span><span class="label">HTML · Sass</span></li>
+          <li><span class="o-year">2021</span><strong>Liteflow</strong><span class="o-desc" data-t="oLiteflow"></span><span class="label">Next.js · React · Tailwind.css</span></li>
+          <li><span class="o-year">2021</span><strong>Fleurs d'ici</strong><span class="o-desc" data-t="oFleurs"></span><span class="label">Nuxt.js</span></li>
+          <li><span class="o-year">2021</span><strong>Edilians</strong><span class="o-desc" data-t="oEdilians"></span><span class="label">Tailwind.css</span></li>
         </ul>
       </div>
-    </section>
-  </main>
-  <footer id="contact">
-    <div class="container-link">
-      <a href="https://twitter.com/Jessica_thlmns" target="_blank">
-        <svg id="twitter" width="23px" height="18px" viewBox="0 0 298 243">
-          <g class="color" fill="#fff">
-            <path
-              d="M93.71877,242.18702 C206.17915,242.18702 267.67504,149.01937 267.67504,68.23077 C267.67504,65.58449 267.62114,62.95015 267.50244,60.32772 C279.44043,51.69756 289.8169,40.92773 298.00006,28.66788 C287.04547,33.53725 275.25648,36.81529 262.88935,38.29339 C275.51276,30.7241 285.20381,18.75035 289.77518,4.476 C277.96234,11.47907 264.88001,16.56897 250.95135,19.31655 C239.79412,7.43219 223.91056,-1.13686838e-13 206.32243,-1.13686838e-13 C172.55869,-1.13686838e-13 145.17817,27.38052 145.17817,61.13233 C145.17817,65.93017 145.71457,70.59691 146.76355,75.0729 C95.94809,72.51604 50.89002,48.18708 20.73809,11.19299 C15.48727,20.22844 12.45957,30.7241 12.45957,41.92305 C12.45957,63.13491 23.25323,81.86142 39.66723,92.81601 C29.63646,92.50609 20.2136,89.75253 11.97679,85.16925 C11.96779,85.42577 11.96779,85.67586 11.96779,85.95002 C11.96779,115.55959 33.04257,140.28192 61.01909,145.88437 C55.88152,147.28499 50.47574,148.03595 44.89713,148.03595 C40.96349,148.03595 37.13117,147.64879 33.40614,146.93335 C41.18997,171.22655 63.76071,188.90408 90.52139,189.39878 C69.59561,205.80085 43.23427,215.5694 14.58427,215.5694 C9.65529,215.5694 4.78593,215.28904 0,214.72306 C27.05868,232.06685 59.18936,242.18702 93.72193,242.18702"
-              id="path3611"></path>
-          </g>
-        </svg>
-      </a>
-      <a href="https://www.behance.net/thielemans1ef3" target="_blank">
-        <svg id="behance" width="24px" height="16px" viewBox="0 0 24 16">
-          <g class="color" fill="#FFF">
-            <g
-              transform="translate(11.988015, 7.580524) scale(-1, 1) rotate(-180.000000) translate(-11.988015, -7.580524) translate(0.000000, 0.026966)">
-              <path
-                d="M0,7.55355805 L0,0 L4.05393258,0.0119850187 C7.63445693,0.0209737828 8.14082397,0.0269662921 8.40449438,0.0689138577 C9.80674157,0.299625468 10.7655431,0.728089888 11.493633,1.45617978 C12.0808989,2.04044944 12.4224719,2.69363296 12.5752809,3.52059925 C12.647191,3.90411985 12.647191,4.88089888 12.5722846,5.27640449 C12.3475655,6.50786517 11.670412,7.4247191 10.6217228,7.92808989 C10.4419476,8.01498127 10.2142322,8.11086142 10.1213483,8.14082397 C10.0254682,8.17078652 9.94756554,8.20074906 9.94756554,8.20973783 C9.9505618,8.21872659 10.0734082,8.29962547 10.2262172,8.38651685 C11.376779,9.04868914 11.9250936,10.0164794 11.9250936,11.3827715 C11.9250936,13.3243446 10.9632959,14.5048689 9.04868914,14.9213483 C8.26067416,15.0891386 8.40749064,15.0861423 4.03895131,15.0951311 L0,15.1071161 L0,7.55355805 Z M7.05617978,12.4674157 C7.96104869,12.3355805 8.50337079,11.9191011 8.64719101,11.2329588 C8.71011236,10.9393258 8.68913858,10.4029963 8.60224719,10.1273408 C8.40749064,9.50411985 7.8411985,9.117603 6.99625468,9.02172285 C6.8494382,9.00674157 5.96254682,8.9917603 5.02771536,8.9917603 L3.3258427,8.9917603 L3.3258427,10.7445693 L3.3258427,12.4973783 L5.08764045,12.4973783 C6.09438202,12.4973783 6.93632959,12.482397 7.05617978,12.4674157 Z M7.79625468,6.61872659 C8.74606742,6.35805243 9.20149813,5.81872659 9.28838951,4.85393258 C9.35430712,4.0988764 9.19250936,3.5835206 8.75805243,3.17902622 C8.53333333,2.96629213 8.23970037,2.8164794 7.83520599,2.70861423 L7.53558052,2.62771536 L5.43220974,2.61573034 L3.3258427,2.60674157 L3.3258427,4.66217228 L3.3258427,6.717603 L5.41722846,6.70861423 L7.50561798,6.69662921 L7.79625468,6.61872659 Z"
-                id="Shape" fill-rule="nonzero"></path>
-              <polygon id="Path"
-                points="15.5505618 13.4861423 15.5505618 12.6172285 18.6067416 12.6172285 21.6629213 12.6172285 21.6629213 13.4861423 21.6629213 14.3550562 18.6067416 14.3550562 15.5505618 14.3550562">
-              </polygon>
-              <path
-                d="M17.8187266,11.4636704 C16.9228464,11.340824 16.0659176,11.0052434 15.340824,10.4958801 C14.9932584,10.2501873 14.4,9.66292135 14.1632959,9.33333333 C13.459176,8.33857678 13.1146067,7.28089888 13.0726592,5.97752809 C13.0337079,4.75805243 13.2314607,3.7752809 13.7138577,2.81947566 C13.9805243,2.28913858 14.247191,1.91161049 14.6217228,1.53108614 C15.3917603,0.746067416 16.3805243,0.263670412 17.6029963,0.0719101124 C18.0224719,0.00599250936 19.2,-0.00299625468 19.6254682,0.0599250936 C21.1355805,0.275655431 22.2921348,0.949812734 23.0052434,2.02546816 C23.2749064,2.43595506 23.694382,3.31685393 23.7513109,3.60149813 L23.7692884,3.68838951 L22.4329588,3.68838951 L21.0996255,3.68838951 L21.0786517,3.60149813 C21.0337079,3.3917603 20.7370787,3.03520599 20.4074906,2.79250936 C19.8501873,2.38202247 19.2209738,2.22022472 18.42397,2.28314607 C16.9857678,2.39700375 16.2307116,3.20299625 16.1018727,4.76104869 L16.0808989,5.00674157 L20.0299625,5.00674157 L23.97603,5.00674157 L23.9610487,5.71985019 C23.9400749,6.64868914 23.8531835,7.18801498 23.6074906,7.92808989 C23.2898876,8.88089888 22.7116105,9.77078652 22.0374532,10.3340824 C21.2464419,10.9992509 20.3895131,11.3617978 19.3498127,11.4756554 C18.9632959,11.5205993 18.1812734,11.5116105 17.8187266,11.4636704 Z M19.2988764,9.14456929 C19.8741573,8.99475655 20.2456929,8.68913858 20.5393258,8.11985019 C20.6801498,7.84419476 20.8209738,7.45468165 20.8928839,7.12808989 L20.9378277,6.92434457 L18.5108614,6.92434457 L16.0838951,6.92434457 L16.1048689,7.09513109 C16.2456929,8.21573034 16.9468165,8.98576779 18.0164794,9.18951311 C18.3220974,9.24644195 18.9992509,9.22546816 19.2988764,9.14456929 Z"
-                id="Shape" fill-rule="nonzero"></path>
-            </g>
-          </g>
-        </svg>
-      </a>
-      <a href="https://www.linkedin.com/in/jessica-thielemans/" target="_blank">
-        <svg id="linkedin" width="22px" height="22px" viewBox="0 0 2490 2490">
-          <path class="color"
-            d="M0,178.365703 C0,79.9134375 82.4228906,0 184.026563,0 L2305.97344,0 C2407.61602,0 2490,79.9134375 2490,178.365703 L2490,2311.66348 C2490,2410.14492 2407.61602,2490 2305.97344,2490 L184.026563,2490 C82.4326172,2490 0,2410.15465 0,2311.69266 L0,178.336523 L0,178.365703 Z"
-            id="Path" fill="#fff"></path>
-          <path
-            d="M756.687656,2083.7993 L756.687656,962.793516 L384.0825,962.793516 L384.0825,2083.7993 L756.726562,2083.7993 L756.687656,2083.7993 Z M570.462891,809.765508 C700.370859,809.765508 781.247227,723.68543 781.247227,616.109648 C778.815586,506.082773 700.370859,422.405156 572.933438,422.405156 C445.408477,422.405156 362.119922,506.082773 362.119922,616.099922 C362.119922,723.675703 442.967109,809.755781 568.021523,809.755781 L570.433711,809.755781 L570.462891,809.765508 Z M962.929688,2083.7993 L1335.50566,2083.7993 L1335.50566,1457.84637 C1335.50566,1424.38699 1337.9373,1390.84008 1347.78059,1366.94191 C1374.70371,1299.97453 1436.01023,1230.65332 1538.9659,1230.65332 C1673.7566,1230.65332 1727.70984,1333.44363 1727.70984,1484.15672 L1727.70984,2083.7993 L2100.27609,2083.7993 L2100.27609,1441.04859 C2100.27609,1096.73801 1916.48297,936.512344 1671.34441,936.512344 C1470.36445,936.512344 1382.0959,1048.84441 1333.05457,1125.35355 L1335.53484,1125.35355 L1335.53484,962.832422 L962.949141,962.832422 C967.812422,1067.99602 962.919961,2083.8382 962.919961,2083.8382 L962.929688,2083.7993 Z"
-            id="Shape" fill="#333" fill-rule="nonzero"></path>
-        </svg>
-      </a>
-      <a href="https://github.com/JessicaThi" target="_blank">
-        <svg id="github" width="25px" height="25px" viewBox="0 0 1024 999">
-          <g fill="#FFF">
-            <path
-              d="M512,0 C229.12,0 0,229.12 0,512 C0,738.56 146.56,929.92 350.08,997.76 C375.68,1002.24 385.28,986.88 385.28,973.44 C385.28,961.28 384.64,920.96 384.64,878.08 C256,901.76 222.72,846.72 212.48,817.92 C206.72,803.2 181.76,757.76 160,745.6 C142.08,736 116.48,712.32 159.36,711.68 C199.68,711.04 228.48,748.8 238.08,764.16 C284.16,841.6 357.76,819.84 387.2,806.4 C391.68,773.12 405.12,750.72 419.84,737.92 C305.92,725.12 186.88,680.96 186.88,485.12 C186.88,429.44 206.72,383.36 239.36,347.52 C234.24,334.72 216.32,282.24 244.48,211.84 C244.48,211.84 287.36,198.4 385.28,264.32 C426.24,252.8 469.76,247.04 513.28,247.04 C556.8,247.04 600.32,252.8 641.28,264.32 C739.2,197.76 782.08,211.84 782.08,211.84 C810.24,282.24 792.32,334.72 787.2,347.52 C819.84,383.36 839.68,428.8 839.68,485.12 C839.68,681.6 720,725.12 606.08,737.92 C624.64,753.92 640.64,784.64 640.64,832.64 C640.64,901.12 640,956.16 640,973.44 C640,986.88 649.6,1002.88 675.2,997.76 C877.44,929.92 1024,737.92 1024,512 C1024,229.12 794.88,0 512,0 Z"
-              id="Path"></path>
-          </g>
-        </svg>
-      </a>
-      <script type="text/javascript">
-        var name = "thielemans.jessica";
-        var domain = "gmail.com";
-        var subject = "subject=Anti spam";
-        document.write(
-          '<a href="mailto:' + name + "@" + domain + " ?" + subject + '">'
-        );
-        document.write(
-          '<svg id="email" width="25px" height="17px" viewBox="0 0 25 17"><g class="color" fill="#fff"><path d="M24.829932,16.0714286 L16.4965986,8.33333333 L14.1156463,9.69387755 C13.1802721,10.2891156 11.9047619,10.2891156 10.8843537,9.69387755 L8.67346939,8.24829932 L0.170068027,16.0714286 C0.425170068,16.4965986 0.93537415,16.7517007 1.44557823,16.7517007 L23.5544218,16.7517007 C24.0646259,16.7517007 24.5748299,16.4965986 24.829932,16.0714286 Z" id="Path"></path><polygon id="Path" points="0 2.89115646 0 14.5408163 7.56802721 7.56802721"></polygon><path d="M0,1.44557823 L11.6496599,8.67346939 C12.1598639,9.01360544 12.9251701,9.01360544 13.4353741,8.67346939 L25,1.8707483 L25,1.36054422 C25,0.510204082 24.3197279,0 23.5544218,0 L1.44557823,0 C0.765306122,0 0,0.510204082 0,1.36054422 L0,1.44557823 Z" id="Path"></path><polygon id="Path" points="25 14.5408163 25 3.31632653 17.6020408 7.65306122"></polygon></g></svg>'
-        );
-      </script>
     </div>
-    <p>© 2020 Jessica Thielemans - Portfolio</p>
-  </footer>
-  <script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <script src="http://threejs.org/examples/js/libs/stats.min.js"></script>
-  <script src="particles-custom.js"></script>
-  <script src="vanilla-tilt.js"></script>
-  <script src="https://unpkg.com/scrollreveal"></script>
-  <script>
-    ScrollReveal().reveal(".intro-scroll p", { delay: 500 });
-    ScrollReveal().reveal(".know-more-picture img");
-    ScrollReveal().reveal(".rectangle-picture");
-    ScrollReveal().reveal(".know-more-text", { delay: 100 });
-    ScrollReveal().reveal(".work-container h2");
-    ScrollReveal().reveal(".widget", { interval: 200 });
-  </script>
-</body>
+  </section>
 
+  <section id="contact" class="contact">
+    <!-- en mode clair : billet vertical sur bande lavande-rose -->
+    <div class="end-day">
+      <div class="end-txt">
+        <div class="end-hello"><span class="mj"><span class="mj-float"><img class="mj-pose on" data-pose="ordinateur" src="memoji/ordinateur.webp" alt="" width="140" height="140"><picture class="mj-pose" data-pose="tete"><source media="(prefers-reduced-motion: reduce)" srcset="memoji/sourire.webp"><img src="memoji/sourire-anime.webp" alt="" width="140" height="140" loading="lazy"></picture></span><span class="mj-shadow" aria-hidden="true"></span></span><span class="end-bubble" data-t="endHello"></span></div>
+        <span class="end-k" data-t="contactLabel"></span>
+        <h2 data-t="passTitle"></h2>
+        <p data-t="nightText"></p>
+        <a class="end-btn" href="mailto:jt.jessicathi@gmail.com" data-t="endCta"></a>
+        <p class="end-links"><a href="mailto:jt.jessicathi@gmail.com">jt.jessicathi@gmail.com</a><a href="https://www.linkedin.com/in/jessica-thielemans">LinkedIn</a><a href="https://github.com/JessicaThi">GitHub</a></p>
+      </div>
+      <div class="vpass" aria-hidden="true">
+        <div class="vp-top"><img src="logo-jt.svg" alt="" width="34" height="24"><span data-t="passKind"></span></div>
+        <div class="vp-route"><b>BRU</b><span><i>✈</i></span><b>ICN</b></div>
+        <div class="vp-f"><div><span data-t="passName"></span><b>Jessica T.</b></div><div><span data-t="passFlight"></span><b>JT 2026</b></div><div><span data-t="passSeat"></span><b>Front-end</b></div><div><span data-t="passGate"></span><b data-t="contactLabel"></b></div></div>
+        <div class="vp-cut"></div>
+        <div class="vp-bar"></div>
+      </div>
+    </div>
+    <!-- en mode sombre : billet en verre sur ciel de nuit -->
+    <div class="end-night">
+      <div class="night-stars" aria-hidden="true"></div>
+      <span class="night-shoot" aria-hidden="true"></span>
+      <div class="end-head"><div class="end-hello"><span class="mj"><span class="mj-float"><img class="mj-pose on" data-pose="ordinateur" src="memoji/ordinateur.webp" alt="" width="140" height="140"><picture class="mj-pose" data-pose="tete"><source media="(prefers-reduced-motion: reduce)" srcset="memoji/sourire.webp"><img src="memoji/sourire-anime.webp" alt="" width="140" height="140" loading="lazy"></picture></span><span class="mj-shadow" aria-hidden="true"></span></span><span class="end-bubble" data-t="endHello"></span></div><h2 data-t="nightTitle"></h2></div>
+      <div class="glass">
+        <div class="g-main">
+          <span class="g-k"><span data-t="passKind"></span> · JT 2026</span>
+          <div class="g-route"><b>BRU</b><span aria-hidden="true"></span><b>ICN</b></div>
+          <span class="g-k">E-mail</span>
+          <a class="g-mail" href="mailto:jt.jessicathi@gmail.com">jt.jessicathi@gmail.com</a>
+          <p class="g-links"><a href="https://www.linkedin.com/in/jessica-thielemans">LinkedIn</a><a href="https://github.com/JessicaThi">GitHub</a></p>
+        </div>
+        <div class="g-stub">
+          <div><h3 data-t="passNext"></h3><p data-t="passYours"></p></div>
+          <a class="end-btn" href="mailto:jt.jessicathi@gmail.com" data-t="endCta"></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <a class="label" href="#" data-t="back"></a>
+  <p class="label">© 2026 Jessica Thielemans</p>
+</footer>
+<canvas id="sparkle" aria-hidden="true"></canvas>
+
+<script>
+  /* ---------- Textes dans les 3 langues ---------- */
+  const T = {
+    fr: {
+      tagline: "Développeuse front-end avec plus de cinq ans d'expérience en développement web.",
+      hello: "Bonjour, c'est Jessica.",
+      now: "Développeuse front-end à Séoul, chez Infinique.",
+      before: "Avant ça, freelance et agence web en France.",
+      flightLabel: "Plan de vol",
+      flightTitle: 'De Bruxelles à Séoul, <span>en passant par la France.</span>',
+      s1role: "Bachelor développement web et design",
+      s1text: "Front-end, UX/UI, gestion de projet.",
+      s2role: "Stage · intégration front-end",
+      s2text: "HTML, CSS, JavaScript, méthode BEM.",
+      s3role: "Alternance · développeuse front-end",
+      s3text: "Sites responsive, WordPress sur mesure, Drupal, PrestaShop.",
+      s4role: "Développeuse front-end freelance",
+      s4text: "De l'analyse des besoins à l'intégration de l'interface et à la maintenance, pour des clients variés.",
+      nowTag: "Actuel",
+      untilNow: "présent",
+      s5role: "Développeuse front-end",
+      s5text: "Front-end de Clor AI, plateforme d'édition d'images par IA. React, TypeScript, Tailwind.css.",
+      workLabel: "Projets",
+      workTitle: 'Quelques projets <span>sur lesquels j\'ai travaillé.</span>',
+      noImage: "visuel à venir",
+      vClor: "Éditeur photo par IA",
+      vOtoctone: "Séjours d'exception",
+      vPando: "Air et énergie des bâtiments",
+      vLeplein: "Recharge électrique",
+      vSkade: "Apprendre à investir, ensemble",
+      vOuipharma: "Marketplace des pharmacies",
+      vNomiks: "Blockchain et Web3",
+      vDotworld: "CV Ninja, Twenty Pay, Rezilli",
+      mOtoctone: "Intégration · Tourisme de luxe · 2025",
+      mPando2: "Intégration · Gestion de bâtiments · 2023 – 2024",
+      mOuipharma: "Front-end · Marketplace · 2021 – 2023",
+      ariaHome: "Jessica Thielemans, accueil",
+      ariaTheme: "Mode clair ou sombre",
+      oCampsider: "Place de marché de matériel de sport outdoor d'occasion : pages du site.",
+      oLiteflow: "Landing page d'un prestataire de services blockchain et NFT.",
+      oFleurs: "Fleurs locales et de saison : espace entreprise pour commander des bouquets.",
+      otherTitle: "Autres projets",
+      oBrahms: "Sites de concours de musique classique pour medici.tv : accueil, résultats, replays.",
+      oFamille: "Site sur la parentalité : articles, fiches d'experts et espace personnel.",
+      oLink: "Média sur l'emploi en finance : gabarits d'articles et de rubriques.",
+      oEdilians: "Fabricant de tuiles et matériaux de toiture : pages Carrières et RSE.",
+      endCta: "Écrire un e-mail",
+      endHello: "Bonjour ! 안녕하세요 !",
+      endEvening: "Bonsoir ! 안녕하세요 !",
+      endLate: "Vous travaillez tard aussi ? 🌙",
+      endThanks: "Merci ! 감사합니다 !",
+      passNext: "Une question ?",
+      passYours: "Écrivez-moi, je réponds avec plaisir.",
+      passKind: "Carte d'embarquement",
+      passFrom: "Bruxelles",
+      passTo: "Séoul",
+      passName: "Passagère",
+      passFlight: "Vol",
+      passSeat: "Siège",
+      passGate: "Porte",
+      passLinks: "Ailleurs",
+      passTitle: "Merci d'être arrivé·e jusqu'ici",
+      nightTitle: "Merci d'être arrivé·e jusqu'ici",
+      nightText: "Une question ou envie d'en savoir plus ? Écrivez-moi, je réponds avec plaisir.",
+      contactLabel: "Contact",
+      back: "↑ Retour à la porte d'embarquement"
+    },
+    en: {
+      tagline: "Frontend developer with more than five years of experience in web development.",
+      hello: "Hi, it's Jessica.",
+      now: "Frontend developer in Seoul, at Infinique.",
+      before: "Before that, freelance and web agency work in France.",
+      flightLabel: "Flight plan",
+      flightTitle: 'From Brussels to Seoul, <span>by way of France.</span>',
+      s1role: "Bachelor's in web development and design",
+      s1text: "Frontend, UX/UI, project management.",
+      s2role: "Internship · frontend integration",
+      s2text: "HTML, CSS, JavaScript, BEM.",
+      s3role: "Work-study · frontend developer",
+      s3text: "Responsive websites, custom WordPress, Drupal, PrestaShop.",
+      s4role: "Freelance frontend developer",
+      s4text: "From understanding client needs to UI implementation and maintenance, for a range of clients.",
+      nowTag: "Current",
+      untilNow: "present",
+      s5role: "Frontend developer",
+      s5text: "Frontend of Clor AI, an AI-powered image editing platform. React, TypeScript, Tailwind.css.",
+      workLabel: "Work",
+      workTitle: 'A few projects <span>I worked on.</span>',
+      noImage: "visual coming soon",
+      vClor: "AI photo editor",
+      vOtoctone: "Exceptional getaways",
+      vPando: "Building air and energy",
+      vLeplein: "EV charging",
+      vSkade: "Learn to invest, together",
+      vOuipharma: "Pharmacy marketplace",
+      vNomiks: "Blockchain and Web3",
+      vDotworld: "CV Ninja, Twenty Pay, Rezilli",
+      mOtoctone: "Integration · Luxury travel · 2025",
+      mPando2: "Integration · Building management · 2023 – 2024",
+      mOuipharma: "Frontend · Marketplace · 2021 – 2023",
+      ariaHome: "Jessica Thielemans, home",
+      ariaTheme: "Light or dark mode",
+      oCampsider: "Second-hand outdoor gear marketplace: website pages.",
+      oLiteflow: "Landing page for a blockchain and NFT service provider.",
+      oFleurs: "Local, seasonal flowers: business space for ordering bouquets.",
+      otherTitle: "Other projects",
+      oBrahms: "Classical music competition websites for medici.tv: home, results, replays.",
+      oFamille: "Parenting website: articles, expert profiles and personal space.",
+      oLink: "Finance careers media: article and section templates.",
+      oEdilians: "Roof tile and roofing materials manufacturer: Careers and CSR pages.",
+      endCta: "Send an email",
+      endHello: "Hello! 안녕하세요!",
+      endEvening: "Good evening! 안녕하세요!",
+      endLate: "Working late too? 🌙",
+      endThanks: "Thank you! 감사합니다!",
+      passNext: "A question?",
+      passYours: "Drop me a line, I'd be happy to reply.",
+      passKind: "Boarding pass",
+      passFrom: "Brussels",
+      passTo: "Seoul",
+      passName: "Passenger",
+      passFlight: "Flight",
+      passSeat: "Seat",
+      passGate: "Gate",
+      passLinks: "Elsewhere",
+      passTitle: "Thanks for making it this far",
+      nightTitle: "Thanks for making it this far",
+      nightText: "A question or want to know more? Drop me a line, I'd be happy to reply.",
+      contactLabel: "Contact",
+      back: "↑ Return to gate"
+    },
+    ko: {
+      tagline: "웹 개발 및 프론트엔드 분야에서 5년 이상의 경력을 쌓아 온 프론트엔드 개발자입니다.",
+      hello: "안녕하세요, 제시카입니다.",
+      now: "서울 인피니크에서 일하는 프론트엔드 개발자입니다.",
+      before: "이전에는 프랑스에서 프리랜서와 웹 에이전시에서 일했습니다.",
+      flightLabel: "비행 계획",
+      flightTitle: '브뤼셀에서 서울까지, <span>프랑스를 거쳐.</span>',
+      s1role: "웹 개발 및 디자인 학사",
+      s1text: "프론트엔드, UX/UI, 프로젝트 관리.",
+      s2role: "인턴 · 프론트엔드 퍼블리싱",
+      s2text: "HTML, CSS, JavaScript, BEM 방법론.",
+      s3role: "일·학습 병행 · 프론트엔드 개발자",
+      s3text: "반응형 웹사이트, 맞춤형 WordPress, Drupal, PrestaShop.",
+      s4role: "프리랜서 프론트엔드 개발자",
+      s4text: "요구사항 분석부터 UI 구현, 유지보수까지 다양한 고객사와 함께했습니다.",
+      nowTag: "재직 중",
+      untilNow: "현재",
+      s5role: "프론트엔드 개발자",
+      s5text: "AI 이미지 편집 플랫폼 Clor AI 프론트엔드 개발. React, TypeScript, Tailwind.css.",
+      workLabel: "프로젝트",
+      workTitle: '참여한 <span>프로젝트들.</span>',
+      noImage: "이미지 준비 중",
+      vClor: "AI 사진 편집기",
+      vOtoctone: "특별한 여행지",
+      vPando: "건물 공기질·에너지 관리",
+      vLeplein: "전기차 충전",
+      vSkade: "함께 배우는 투자",
+      vOuipharma: "약국 마켓플레이스",
+      vNomiks: "블록체인·Web3",
+      vDotworld: "CV Ninja, Twenty Pay, Rezilli",
+      mOtoctone: "퍼블리싱 · 럭셔리 여행 · 2025",
+      mPando2: "퍼블리싱 · 건물 관리 · 2023 – 2024",
+      mOuipharma: "프론트엔드 · 마켓플레이스 · 2021 – 2023",
+      ariaHome: "제시카 틸레만스, 홈",
+      ariaTheme: "라이트 모드 또는 다크 모드",
+      oCampsider: "중고 아웃도어 장비 마켓플레이스: 웹사이트 페이지.",
+      oLiteflow: "블록체인·NFT 서비스 기업 랜딩 페이지.",
+      oFleurs: "제철 로컬 꽃 배송: 기업 고객 주문 페이지.",
+      otherTitle: "기타 프로젝트",
+      oBrahms: "medici.tv 클래식 음악 콩쿠르 웹사이트: 메인, 결과, 다시보기.",
+      oFamille: "육아 정보 웹사이트: 기사, 전문가 프로필, 마이페이지.",
+      oLink: "금융 채용 미디어: 기사 및 카테고리 템플릿.",
+      oEdilians: "기와 및 지붕재 제조사: 채용 및 ESG 페이지.",
+      endCta: "이메일 보내기",
+      endHello: "안녕하세요! Bonjour!",
+      endEvening: "좋은 저녁이에요! Bonsoir!",
+      endLate: "늦게까지 일하시나요? 🌙",
+      endThanks: "감사합니다! Merci!",
+      passNext: "궁금한 점이 있나요?",
+      passYours: "편하게 연락 주세요.",
+      passKind: "탑승권",
+      passFrom: "브뤼셀",
+      passTo: "서울",
+      passName: "승객",
+      passFlight: "항공편",
+      passSeat: "좌석",
+      passGate: "게이트",
+      passLinks: "다른 곳",
+      passTitle: "여기까지 와 주셔서 감사합니다",
+      nightTitle: "여기까지 와 주셔서 감사합니다",
+      nightText: "궁금한 점이 있거나 더 알고 싶으시면 편하게 연락 주세요.",
+      contactLabel: "연락처",
+      back: "↑ 탑승구로 돌아가기"
+    }
+  };
+
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+
+  /* ---------- Le texte qui s'écrit tout seul, comme dans un terminal ---------- */
+  const typed = document.getElementById("typed");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let typingTimer;
+  function typeText(text) {
+    clearTimeout(typingTimer);
+    if (reduceMotion) { typed.textContent = text; return; }
+    let i = 0;
+    typed.textContent = "";
+    (function step() {
+      typed.textContent = text.slice(0, ++i);
+      if (i < text.length) typingTimer = setTimeout(step, 35);
+    })();
+  }
+
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    typeText(T[lang].tagline);
+    document.querySelectorAll("[data-t]").forEach(el => {
+      el.innerHTML = T[lang][el.dataset.t];
+    });
+    document.querySelectorAll("[data-ta]").forEach(el => el.setAttribute("aria-label", T[lang][el.dataset.ta]));
+    document.querySelectorAll("[data-lang]").forEach(b => {
+      b.setAttribute("aria-pressed", b.dataset.lang === lang);
+    });
+    store.set("lang", lang);
+    // cartes de projets : vers la page dans la langue choisie (clor-ai.html, clor-ai.en.html, clor-ai.ko.html)
+    document.querySelectorAll('a[href^="projets/"]').forEach(a => {
+      const base = a.dataset.base || (a.dataset.base = a.getAttribute("href"));
+      a.setAttribute("href", lang === "fr" ? base : base.replace(/\.html$/, `.${lang}.html`));
+    });
+    // liens vers un site qui a sa version coréenne (Infinique)
+    document.querySelectorAll("[data-href-ko]").forEach(a => { a.href = lang === "ko" ? a.dataset.hrefKo : a.dataset.href; });
+    // dates : 07.2025 en français et en anglais, 2025.07 en coréen
+    document.querySelectorAll("[data-date]").forEach(el => {
+      const [y, m] = el.dataset.date.split("-");
+      el.textContent = m ? (lang === "ko" ? `${y}.${m}` : `${m}.${y}`) : y;
+    });
+  }
+  document.querySelectorAll("[data-lang]").forEach(b => {
+    b.addEventListener("click", () => { store.set("langChoisie", b.dataset.lang); setLang(b.dataset.lang); });
+  });
+  // langue d'ouverture : celle choisie avec les boutons, sinon celle du navigateur (coréen, français), sinon l'anglais
+  const browserLang = () => {
+    for (const l of navigator.languages || [navigator.language || ""]) {
+      const c = l.slice(0, 2).toLowerCase();
+      if (T[c]) return c;
+    }
+    return "en";
+  };
+  setLang(store.get("langChoisie") || browserLang());
+
+  /* ---------- « Retour à la porte d'embarquement » : on scanne le billet avant de remonter ---------- */
+  (() => {
+    const link = document.querySelector('footer [data-t="back"]'), passes = [...document.querySelectorAll(".vpass, .glass")];
+    if (!link || !passes.length) return;
+    let busy = false;
+    link.addEventListener("click", e => {
+      // le billet affiché : blanc en mode clair, en verre en mode sombre
+      const pass = passes.find(p => { const r = p.getBoundingClientRect(); return r.height && r.bottom > 0 && r.top < innerHeight; });
+      if (busy || !pass || matchMedia("(prefers-reduced-motion: reduce)").matches) return; // billet hors écran : on remonte direct
+      e.preventDefault();
+      busy = true;
+      pass.classList.add("scanned");
+      setTimeout(() => { scrollTo({ top: 0 }); }, 1650);
+    });
+    // une fois loin du billet, on le remet en place pour la prochaine visite
+    const io = new IntersectionObserver(entries => entries.forEach(en => {
+      if (!en.isIntersecting && en.target.classList.contains("scanned")) { en.target.classList.remove("scanned"); busy = false; }
+    }));
+    passes.forEach(p => io.observe(p));
+  })();
+
+  /* ---------- Memoji : poses, bulle selon l'heure, merci au clic, codage de nuit ---------- */
+  (() => {
+    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const say = (bubble, key) => { bubble.dataset.t = key; bubble.innerHTML = T[document.documentElement.lang || "fr"][key]; };
+    const greeting = () => {
+      const h = new Date().getHours(), dark = document.documentElement.dataset.theme === "dark";
+      if (dark && (h >= 21 || h < 5)) return "endLate";
+      return (h >= 18 || h < 5) ? "endEvening" : "endHello";
+    };
+    const zones = [...document.querySelectorAll(".end-day, .end-night")].map(zone => {
+      const hello = zone.querySelector(".end-hello"), bubble = hello.querySelector(".end-bubble");
+      const poses = [...hello.querySelectorAll(".mj-pose")];
+      const show = name => poses.forEach(p => p.classList.toggle("on", p.dataset.pose === name));
+      const mj = hello.querySelector(".mj");
+      const pop = name => {
+        mj.classList.add("pop"); void mj.offsetWidth;                  // la nouvelle pose part de petit
+        const sparks = Array.from({ length: 10 }, (_, i) => {
+          const s = document.createElement("span"); s.className = "mj-spark"; s.style.setProperty("--a", i * 36 + "deg"); return s;
+        });
+        mj.append(...sparks);
+        show(name);
+        setTimeout(() => { sparks.forEach(s => s.remove()); mj.classList.remove("pop"); }, 900);
+      };
+      let rest = "tete", busy = false;
+      say(bubble, greeting());
+      const type = (key, done) => {
+        const lang = document.documentElement.lang || "fr", msg = [...T[lang][key]];
+        bubble.dataset.t = key; bubble.textContent = "";
+        // texte complet invisible pour réserver la place, texte tapé par-dessus
+        const ghost = document.createElement("span"), line = document.createElement("span");
+        ghost.className = "bub-ghost"; ghost.setAttribute("aria-hidden", "true"); line.className = "bub-line";
+        const txt = document.createElement("span"), cur = document.createElement("span"); cur.className = "cur";
+        ghost.textContent = msg.join("");
+        line.append(txt, cur);
+        bubble.append(ghost, line);
+        let i = 0;
+        const iv = setInterval(() => {
+          txt.textContent = msg.slice(0, ++i).join("");
+          if (i >= msg.length) { clearInterval(iv); setTimeout(() => cur.remove(), 1500); done && done(); }
+        }, 65);
+      };
+      const wake = () => {
+        if (calm) { show(rest); hello.classList.add("up", "awake"); return; }
+        hello.classList.add("up");                                      // 1. elle surgit, derrière l'ordinateur
+        setTimeout(() => pop(rest), 1100);                               // 2. pop d'étincelles : elle passe au sourire
+        setTimeout(() => {                                               // 3. la bulle s'écrit au clavier
+          hello.classList.add("awake");
+          type(greeting());
+        }, 1400);
+      };
+      new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { wake(); o.disconnect(); } }, { threshold: .5 }).observe(zone);
+      zone.querySelectorAll(".end-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          busy = true; say(bubble, "endThanks");
+          setTimeout(() => { busy = false; say(bubble, greeting()); }, 4000);
+        });
+      });
+      return { show, bubble, get rest() { return rest; } };
+    });
+    // en passant en mode sombre, retour devant l'ordinateur un instant : on code la nuit
+    document.getElementById("theme").addEventListener("click", () => {
+      zones.forEach(z => {
+        say(z.bubble, greeting());
+      });
+    });
+    // l'étape Infinique : le petit Memoji apparaît quand elle arrive à l'écran
+    const stop = document.querySelector(".stop h3 .mini-mj")?.closest(".stop");
+    if (stop) new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { stop.classList.add("seen"); o.disconnect(); } }, { threshold: .6 }).observe(stop);
+  })();
+
+  /* ---------- Projets : apparition douce au défilement, carte après carte ---------- */
+  (() => {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+    const els = document.querySelectorAll("#projets .section-title, #projets .card, #projets .others h3, #projets .others li");
+    const io = new IntersectionObserver(entries => {
+      // les éléments qui arrivent ensemble apparaissent l'un après l'autre
+      entries.filter(e => e.isIntersecting).forEach((e, i) => {
+        e.target.style.setProperty("--d", (i * 0.12) + "s");
+        e.target.classList.add("in");
+        io.unobserve(e.target);
+      });
+    }, { threshold: .15, rootMargin: "0px 0px -40px 0px" });
+    els.forEach(el => { el.classList.add("rv"); io.observe(el); });
+    // une fois apparu, on enlève le délai pour que le survol reste vif
+    document.addEventListener("transitionend", e => { if (e.target.classList?.contains("in")) e.target.style.removeProperty("--d"); });
+  })();
+
+  /* ---------- Clic sur un projet : petite transition avant d'ouvrir la page ---------- */
+  (() => {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    document.querySelectorAll("#projets .card a").forEach(a => a.addEventListener("click", e => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; // nouvel onglet : on laisse faire
+      e.preventDefault();
+      a.closest(".card").classList.add("chosen");
+      document.documentElement.classList.add("leaving");
+      setTimeout(() => { location.href = a.href; }, 500);
+    }));
+    // retour en arrière (page gardée en mémoire par le navigateur) : on remet tout en place
+    addEventListener("pageshow", e => { if (e.persisted) { document.documentElement.classList.remove("leaving"); document.querySelectorAll(".card.chosen").forEach(c => c.classList.remove("chosen")); } });
+  })();
+
+  /* ---------- Vignettes : grand nom ajusté, défilement de page, vidéo au survol ---------- */
+  (() => {
+    const fit = () => {
+      document.querySelectorAll(".vg-giant").forEach(g => {
+        const v = g.closest(".vg"); g.style.fontSize = "100px";
+        g.style.fontSize = Math.min(v.clientWidth * 0.9 / g.scrollWidth * 100, v.clientHeight * 0.42) + "px";
+      });
+      document.querySelectorAll(".vg.scroll .vg-vp").forEach(vp => {
+        const im = vp.querySelector("img"); const d = im.getBoundingClientRect().height - vp.getBoundingClientRect().height;
+        vp.closest(".vg").style.setProperty("--dist", (d > 0 ? -d : 0) + "px");
+      });
+    };
+    window.addEventListener("load", fit); window.addEventListener("resize", fit);
+    document.querySelectorAll(".vg.tilt").forEach(v => {
+      const vid = v.querySelector("video"); const a = v.closest("a");
+      if (!vid || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      a.addEventListener("mouseenter", () => { vid.preload = "auto"; vid.play().catch(() => {}); });
+      /* load() remet la vidéo à zéro et réaffiche l'image poster (la 1re image de la vidéo est noire) */
+      a.addEventListener("mouseleave", () => { vid.pause(); vid.preload = "none"; vid.load(); });
+    });
+  })();
+
+  /* ---------- Clair / sombre : ciel de jour / ciel de nuit ---------- */
+  const themeBtn = document.getElementById("theme");
+  function setTheme(t) {
+    document.documentElement.dataset.theme = t;
+    themeBtn.textContent = t === "dark" ? "☀" : "☾";
+    store.set("theme", t);
+  }
+  themeBtn.addEventListener("click", () => {
+    setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+  });
+  setTheme(store.get("theme") || "light");
+
+  /* ---------- Koïs qui nagent dans le fond ---------- */
+  const pond = document.getElementById("pond");
+  const pctx = pond.getContext("2d");
+  let PW = 0, PH = 0;
+
+  // Bruit doux (pour que les poissons changent de direction tranquillement)
+  const rnd1 = x => { const s = Math.sin(x * 127.1) * 43758.5453; return s - Math.floor(s); };
+  function noise1(x) {
+    const i = Math.floor(x), f = x - i, u = f * f * (3 - 2 * f);
+    return rnd1(i) + (rnd1(i + 1) - rnd1(i)) * u;
+  }
+  const angleDiff = (a, b) => Math.atan2(Math.sin(a - b), Math.cos(a - b));
+  function rgba(hex, a) {
+    const n = parseInt(hex.replace("#", ""), 16);
+    return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${a})`;
+  }
+
+  class Koi {
+    constructor(scale, seed) {
+      this.s = scale;
+      this.seed = seed;
+      this.n = 24;                                  // nombre de "vertèbres"
+      this.seg = KOI.headX * scale / (this.n - 1);  // la colonne couvre tout le poisson
+      this.flip = 1;
+      this.speed = 18 + rnd1(seed) * 10;
+      this.phase = rnd1(seed + 1) * 10;
+      this.swim = rnd1(seed + 8) * 10;
+      this.respawn(true);
+    }
+
+    // Nage en ligne droite. Quand le poisson est sorti de l'écran,
+    // il revient par un bord au hasard, avec une nouvelle direction.
+    respawn(first) {
+      const len = KOI.w * this.s;
+      if (first) { // au chargement : déjà dans l'écran, à des endroits différents
+        // répartis en largeur, dans le tiers du haut, et nageant plutôt à l'horizontale
+        this.x = PW * (0.3 + (this.seed - 1) * 0.25 + rnd1(this.seed * 7.3) * 0.08);
+        this.y = PH * (0.1 + rnd1(this.seed * 3.1) * 0.2);
+        this.a = (rnd1(this.seed * 5.7) < 0.5 ? 0 : Math.PI) + (rnd1(this.seed * 2.9) - 0.5) * 0.3;
+        return;
+      }
+      // toujours à l'horizontale : entre par la gauche ou la droite, dans la partie haute du bassin
+      const fromLeft = Math.random() < 0.5;
+      this.y = PH * (0.08 + Math.random() * 0.55);
+      this.x = fromLeft ? -20 : PW + 20;
+      this.a = (fromLeft ? 0 : Math.PI) + (Math.random() - 0.5) * 0.3;
+    }
+
+    update(dt) {
+      this.swim += dt; // horloge de nage (ondulation de la queue, battement des nageoires)
+      this.x += Math.cos(this.a) * this.speed * dt;
+      this.y += Math.sin(this.a) * this.speed * dt;
+      const m = KOI.w * this.s + 20;
+      if (this.x < -m - 1 || this.x > PW + m + 1 || this.y < -m - 1 || this.y > PH + m + 1) this.respawn(false);
+    }
+
+    // Dessine l'image du koï en la faisant onduler le long de sa colonne vertébrale.
+    // 1) on déforme le poisson "à plat" dans un canvas à part, en tranches verticales
+    //    alignées sur les pixels (pas de chevauchement, donc pas de lignes visibles) ;
+    // 2) on pose ce canvas sur la page, tourné dans la direction de nage.
+    draw(ctx, t, tex) {
+      const n = this.n, last = n - 1, sc = this.s;
+      const dpr = window.devicePixelRatio || 1;
+
+      // canvas de travail propre à ce poisson
+      if (!this.buf) {
+        this.buf = document.createElement("canvas");
+        this.bw = Math.ceil(KOI.w * sc) + 20;          // en px CSS
+        this.bh = Math.ceil(KOI.h * sc) + 420;         // marge pour les courbes
+        this.buf.width = Math.ceil(this.bw * dpr);
+        this.buf.height = Math.ceil(this.bh * dpr);
+        this.bx = this.bw - 10 - (KOI.w - KOI.headX) * sc; // position de la tête
+        this.by = this.bh / 2;
+        this.bctx = this.buf.getContext("2d");
+      }
+
+      // direction de nage + légère ondulation de la queue (la tête reste stable)
+      const head = { x: this.x, y: this.y }, th = this.a;
+      const lat = [];
+      for (let i = 0; i < n; i++) {
+        const k = i / last;
+        lat[i] = Math.sin(this.swim * 3 - i * 0.3 + this.phase) * this.seg * 0.45 * Math.pow(k, 1.8);
+      }
+      const latAt = s => { // s = distance depuis la tête (px CSS)
+        const f = Math.min(Math.max(s / this.seg, 0), last - 0.001);
+        const i = Math.floor(f);
+        return lat[i] + (lat[i + 1] - lat[i]) * (f - i);
+      };
+
+      const b = this.bctx, step = 3; // largeur d'une tranche, en px écran réels
+      b.setTransform(1, 0, 0, 1, 0, 0);
+      b.clearRect(0, 0, this.buf.width, this.buf.height);
+
+      // nageoires avant : elles battent doucement autour de leur point d'attache
+      // (dessinées avant le corps, pour que leur base passe dessous)
+      const flap = Math.sin(this.swim * 3.5 + this.phase) * 0.22;
+      ["top", "bottom"].forEach(name => {
+        const fin = KOI.fins[name], f = this.flip;
+        const px = this.bx + (fin.px - KOI.headX) * sc;
+        const py = this.by + f * (fin.py - KOI.axisY) * sc;
+        b.setTransform(dpr, 0, 0, dpr, 0, 0);
+        b.translate(px, py);
+        b.rotate(f * fin.side * flap);
+        b.scale(sc, f * sc);
+        b.drawImage(tex[name], fin.x - fin.px, fin.y - fin.py);
+      });
+      const x0px = Math.floor((this.bx - KOI.headX * sc) * dpr); // bout de la queue
+      const x1px = Math.ceil((this.bx + (KOI.w - KOI.headX) * sc) * dpr);
+      const maxY = this.bh / 2 - KOI.h * sc / 2 - 2;
+      for (let X = x0px; X < x1px; X += step) {
+        const xa = X / dpr, xb = (X + step) / dpr;           // px CSS
+        const u0 = KOI.headX - (this.bx - xa) / sc;          // colonne de l'image
+        const uw = step / dpr / sc;
+        const ya = Math.max(-maxY, Math.min(maxY, latAt(this.bx - xa)));
+        const yb = Math.max(-maxY, Math.min(maxY, latAt(this.bx - xb)));
+        const slope = (yb - ya) / (xb - xa);
+        const f = this.flip;
+        // image (u, v) -> tranche cisaillée : bords verticaux, donc raccords parfaits
+        b.setTransform(sc * dpr, slope * sc * dpr, 0, f * sc * dpr,
+                       X, (this.by + ya - f * KOI.axisY * sc) * dpr);
+        b.drawImage(tex.body, u0, 0, uw, KOI.h, 0, 0, uw, KOI.h);
+      }
+
+      // pose sur la page, tourné dans la direction de nage
+      ctx.save();
+      ctx.translate(head.x, head.y);
+      ctx.rotate(th);
+      ctx.drawImage(this.buf, -this.bx, -this.by, this.bw, this.bh);
+      ctx.restore();
+    }
+  }
+
+  // Images du koï (fond retiré, tête à droite, axe du corps à l'horizontale) :
+  // le corps sans les nageoires avant, et chaque nageoire avant à part pour pouvoir l'animer
+  const KOI = {
+    w: 1295, h: 713, headX: 1290, axisY: 388,
+    fins: {
+      top:    { x: 776, y: 159, px: 1062, py: 303, side: 1 },
+      bottom: { x: 845, y: 475, px: 1070, py: 485, side: -1 }
+    },
+    sets: null, ready: false
+  };
+  // version de nuit : même forme, teintée en mauve clair lumineux
+  function nightVersion(img) {
+    const c = document.createElement("canvas");
+    c.width = img.width; c.height = img.height;
+    const x = c.getContext("2d");
+    x.drawImage(img, 0, 0);
+    x.globalCompositeOperation = "source-in";
+    const g = x.createLinearGradient(img.width, 0, 0, 0);
+    g.addColorStop(0, "#efe6ff");
+    g.addColorStop(0.5, "#d9c2ff");
+    g.addColorStop(1, "#f2b6dc");
+    x.fillStyle = g;
+    x.fillRect(0, 0, img.width, img.height);
+    return c;
+  }
+  const loadImg = src => new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = src; });
+  Promise.all(["koi-body.png", "koi-fin-top.png", "koi-fin-bottom.png"].map(loadImg)).then(([body, top, bottom]) => {
+    KOI.sets = {
+      day: { body, top, bottom },
+      night: { body: nightVersion(body), top: nightVersion(top), bottom: nightVersion(bottom) }
+    };
+    KOI.ready = true;
+    drawPond(prevT);
+  });
+
+
+  let fish = [];
+  function resizePond() {
+    const dpr = window.devicePixelRatio || 1;
+    PW = pond.clientWidth; PH = pond.clientHeight;
+    pond.width = PW * dpr; pond.height = PH * dpr;
+    pctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (!fish.length) {
+      const k = PW < 700 ? 0.6 : 1;
+      fish = [new Koi(0.26 * k, 1), new Koi(0.22 * k, 2), new Koi(0.16 * k, 3)];
+      fish[2].y += PH * 0.06; // le petit koï démarre un peu plus bas
+      fish[0].a = Math.atan2(920, 2485); // première apparition du gros koï : en diagonale vers le bas à droite
+      fish[1].flip = -1; // un poisson en miroir, pour qu'ils ne soient pas identiques
+    }
+  }
+
+  /* ---------- Nuages qui passent sur l'étang (comme des reflets) ---------- */
+  function makeCloud(w, h, seed) {
+    const c = document.createElement("canvas");
+    c.width = w; c.height = h;
+    const x = c.getContext("2d");
+    let s = seed;
+    const r = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+    const puff = (px, py, pr, a) => {
+      const g = x.createRadialGradient(px, py, 0, px, py, pr);
+      g.addColorStop(0, `rgba(255,255,255,${a})`);
+      g.addColorStop(0.55, `rgba(255,255,255,${a * 0.45})`);
+      g.addColorStop(1, "rgba(255,255,255,0)");
+      x.fillStyle = g;
+      x.fillRect(px - pr, py - pr, pr * 2, pr * 2);
+    };
+    // base allongée et un peu plate
+    for (let i = 0; i < 14; i++) {
+      const u = 0.1 + r() * 0.8;
+      puff(w * u, h * (0.68 + (r() - 0.5) * 0.06), h * (0.12 + r() * 0.08), 0.35);
+    }
+    // bosses arrondies sur le dessus, plus hautes au centre
+    for (let i = 0; i < 9; i++) {
+      const u = 0.2 + r() * 0.6, top = Math.sin(u * Math.PI);
+      const pr = h * (0.1 + top * 0.16 + r() * 0.05);
+      puff(w * u, h * 0.66 - top * h * 0.14 - r() * h * 0.05, pr, 0.4);
+    }
+    // petits détails pour donner de la matière
+    for (let i = 0; i < 18; i++) {
+      const u = 0.15 + r() * 0.7;
+      puff(w * u, h * (0.45 + r() * 0.3), h * (0.04 + r() * 0.05), 0.25);
+    }
+    return c;
+  }
+  const clouds = [
+    { seed: 11, y: 0.12, w: 620, speed: 7 },
+    { seed: 23, y: 0.42, w: 480, speed: 5 },
+    { seed: 37, y: 0.7, w: 700, speed: 9 },
+    { seed: 51, y: 0.25, w: 380, speed: 6 }
+  ].map((c, i) => ({ ...c, x: (i * 0.31 + 0.05), img: makeCloud(c.w, Math.round(c.w * 0.6), c.seed) }));
+  function drawClouds(t, night) {
+    const s = t / 1000;
+    pctx.globalAlpha = night ? 0.05 : 0.75;
+    clouds.forEach(c => {
+      const span = PW + c.w;
+      const x = ((c.x * span + s * c.speed) % span) - c.w;
+      pctx.drawImage(c.img, x, c.y * PH - c.img.height / 2);
+    });
+    pctx.globalAlpha = 1;
+  }
+
+  function drawPond(t) {
+    pctx.clearRect(0, 0, PW, PH);
+    if (!KOI.ready) return;
+    const css = getComputedStyle(document.documentElement);
+    const night = document.documentElement.dataset.theme === "dark";
+    drawClouds(t, night);
+    pctx.globalAlpha = parseFloat(css.getPropertyValue("--koi-alpha")) || 0.6;
+    fish.forEach(f => f.draw(pctx, t, KOI.sets[night ? "night" : "day"]));
+    pctx.globalAlpha = 1;
+    drawRipples(t, night);
+  }
+
+  /* ---------- Gouttes d'eau au clic ---------- */
+  const ripples = [];
+  const RIPPLE_LIFE = 3.2; // secondes
+  document.addEventListener("pointerdown", e => {
+    if (reduceMotion || e.target.closest("a, button")) return;
+    if (!e.target.closest(".hero")) return;
+    const r = pond.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    ripples.push({ x, y, t0: performance.now() });
+  });
+
+  // Une goutte = un petit creux d'impact, puis des ondes en relief qui s'élargissent.
+  // Chaque onde est un bourrelet doux éclairé par la gauche :
+  // une ombre décalée vers le bas à droite, un reflet clair décalé vers le haut à gauche.
+  function ring(cx, cy, r, w, color) {
+    if (r - w <= 0) return;
+    const g = pctx.createRadialGradient(cx, cy, r - w, cx, cy, r + w);
+    g.addColorStop(0, "rgba(0,0,0,0)");
+    g.addColorStop(0.5, color);
+    g.addColorStop(1, "rgba(0,0,0,0)");
+    pctx.fillStyle = g;
+    pctx.fillRect(cx - r - w, cy - r - w, (r + w) * 2, (r + w) * 2);
+  }
+
+  function drawRipples(t, night) {
+    const speed = 50, lambda = 22, waves = 2;
+    const shadowRGB = night ? "40,24,86" : "150,120,210";  // ombre mauve
+    const lightRGB = night ? "200,180,255" : "240,232,255"; // reflet lavande
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      const rp = ripples[i];
+      const a = (t - rp.t0) / 1000;
+      if (a >= RIPPLE_LIFE) { ripples.splice(i, 1); continue; }
+      if (a <= 0) continue;
+
+      // creux d'impact au tout début
+      if (a < 0.45) {
+        const k = 1 - a / 0.45, r = 6 + a * 18;
+        const g = pctx.createRadialGradient(rp.x + 1, rp.y + 1.5, 0, rp.x, rp.y, r);
+        g.addColorStop(0, `rgba(${shadowRGB},${0.08 * k})`);
+        g.addColorStop(1, `rgba(${shadowRGB},0)`);
+        pctx.fillStyle = g;
+        pctx.fillRect(rp.x - r, rp.y - r, r * 2, r * 2);
+      }
+
+      // ondes : la première est la plus marquée, les suivantes plus douces
+      const R = 6 + a * speed;
+      const fade = Math.pow(1 - a / RIPPLE_LIFE, 1.8) / (1 + R / 180); // se fond vite dans le fond
+      for (let k = 0; k < waves; k++) {
+        const r = R - k * lambda;
+        if (r < 8) continue;
+        const amp = fade * (1 - k / waves) * Math.min(1, (r - 8) / 10);
+        const w = lambda * (night ? 0.42 : 0.3);
+        const d = 0.8 + amp * 1.5; // hauteur du bourrelet : décalage de l'ombre et du reflet
+        ring(rp.x + d, rp.y + d * 1.2, r, w, `rgba(${shadowRGB},${amp * (night ? 0.2 : 0.11)})`);
+        ring(rp.x - d * 0.6, rp.y - d * 0.7, r, w * 0.7, `rgba(${lightRGB},${amp * (night ? 0.1 : 0.07)})`);
+      }
+    }
+  }
+
+  // On n'anime que quand l'accueil est visible (économise la batterie)
+  let pondVisible = true, prevT = 0;
+  new IntersectionObserver(([e]) => { pondVisible = e.isIntersecting; }).observe(pond);
+
+  function pondLoop(t) {
+    const dt = Math.min((t - prevT) / 1000, 0.05);
+    prevT = t;
+    if (pondVisible) {
+      fish.forEach(f => f.update(dt));
+      drawPond(t);
+    }
+    requestAnimationFrame(pondLoop);
+  }
+
+  resizePond();
+  window.addEventListener("resize", () => { resizePond(); drawPond(prevT); });
+  if (reduceMotion) {
+    // poissons immobiles si l'ordinateur demande moins d'animations
+    
+    drawPond(0);
+    themeBtn.addEventListener("click", () => drawPond(0));
+  } else {
+    requestAnimationFrame(t => { prevT = t; pondLoop(t); });
+  }
+
+  // Effet "on quitte l'accueil" : --p passe de 0 à 1 pendant qu'on fait défiler l'accueil
+  const heroEl = document.querySelector(".hero");
+  let pTicking = false;
+  function updateP() {
+    pTicking = false;
+    const p = Math.min(1, Math.max(0, scrollY / (heroEl.offsetHeight * 0.85)));
+    document.documentElement.style.setProperty("--p", p.toFixed(3));
+  }
+  if (!reduceMotion) {
+    window.addEventListener("scroll", () => { if (!pTicking) { pTicking = true; requestAnimationFrame(updateP); } }, { passive: true });
+    updateP();
+  }
+
+  /* ---------- Curseur cierge magique (스파클라) ---------- */
+  const sparkle = document.getElementById("sparkle");
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (finePointer && !reduceMotion) {
+    document.documentElement.classList.add("sparkler");
+    const sctx = sparkle.getContext("2d");
+    let SW = 0, SH = 0, mx = -100, my = -100, lastX = 0, lastY = 0, onPage = false, prevS = 0;
+    const sparks = [];
+    const COLORS_DAY = ["#f2b33d", "#ffcf6b", "#ff7fb6", "#a88be8"];
+    const COLORS_NIGHT = ["#ffe6a3", "#fff4d6", "#ffb3d9", "#cdb8ff"];
+    function resizeSparkle() {
+      const dpr = window.devicePixelRatio || 1;
+      SW = innerWidth; SH = innerHeight;
+      sparkle.width = SW * dpr; sparkle.height = SH * dpr;
+      sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resizeSparkle();
+    window.addEventListener("resize", resizeSparkle);
+    document.addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY; onPage = true; });
+    document.documentElement.addEventListener("pointerleave", () => { onPage = false; });
+
+    function spawn(x, y, gen, colors) {
+      const ang = Math.random() * Math.PI * 2;
+      const sp = (gen ? 40 : 60) + Math.random() * (gen ? 60 : 120);
+      const life = (gen ? 0.15 : 0.3) + Math.random() * (gen ? 0.2 : 0.35);
+      sparks.push({ x, y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, age: 0, life, gen,
+                    split: false, color: colors[Math.floor(Math.random() * colors.length)] });
+    }
+
+    (function sparkleLoop(t) {
+      const dt = Math.min((t - prevS) / 1000, 0.05);
+      prevS = t;
+      const night = document.documentElement.dataset.theme === "dark";
+      const colors = night ? COLORS_NIGHT : COLORS_DAY;
+      sctx.clearRect(0, 0, SW, SH);
+
+      if (onPage) {
+        // plus la souris bouge vite, plus ça crépite
+        const moved = Math.hypot(mx - lastX, my - lastY);
+        const n = 1 + Math.min(5, Math.floor(moved / 6)) + (Math.random() < 0.5 ? 1 : 0);
+        for (let i = 0; i < n; i++) spawn(mx, my, 0, colors);
+      }
+      lastX = mx; lastY = my;
+
+      sctx.globalCompositeOperation = night ? "lighter" : "source-over";
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const p = sparks[i];
+        p.age += dt;
+        if (p.age >= p.life) { sparks.splice(i, 1); continue; }
+        p.vy += 220 * dt;          // légère gravité
+        p.vx *= 0.97; p.vy *= 0.97;
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        // comme un vrai cierge : certaines étincelles éclatent en petites branches
+        if (!p.gen && !p.split && p.age > p.life * 0.55 && Math.random() < 0.08) {
+          p.split = true;
+          for (let k = 0; k < 3; k++) spawn(p.x, p.y, 1, colors);
+        }
+        const k = 1 - p.age / p.life;
+        sctx.strokeStyle = p.color;
+        sctx.globalAlpha = k;
+        sctx.lineWidth = (p.gen ? 0.8 : 1.4) * k + 0.3;
+        sctx.beginPath();
+        sctx.moveTo(p.x - p.vx * 0.025, p.y - p.vy * 0.025);
+        sctx.lineTo(p.x, p.y);
+        sctx.stroke();
+      }
+      sctx.globalAlpha = 1;
+
+      // la boule lumineuse, qui scintille
+      if (onPage) {
+        const flick = 0.85 + Math.random() * 0.3;
+        const r = 11 * flick;
+        const g = sctx.createRadialGradient(mx, my, 0, mx, my, r);
+        g.addColorStop(0, "rgba(255,252,240,1)");
+        g.addColorStop(0.25, night ? "rgba(255,228,160,0.95)" : "rgba(255,200,90,0.95)");
+        g.addColorStop(0.6, night ? "rgba(255,170,215,0.35)" : "rgba(255,130,180,0.35)");
+        g.addColorStop(1, "rgba(255,170,215,0)");
+        sctx.fillStyle = g;
+        sctx.beginPath();
+        sctx.arc(mx, my, r, 0, Math.PI * 2);
+        sctx.fill();
+      }
+      sctx.globalCompositeOperation = "source-over";
+      requestAnimationFrame(sparkleLoop);
+    })(0);
+  }
+
+  /* ---------- La ligne qui se remplit au scroll ---------- */
+  const flight = document.getElementById("flight");
+  const route = document.getElementById("route");
+  const track = document.getElementById("track");
+  const fill = document.getElementById("fill");
+  const tip = document.getElementById("tip");
+  const plane = document.getElementById("plane");
+  const stops = [...flight.querySelectorAll(".stop")];
+  const dots = stops.map(s => s.querySelector(".dot"));
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let total = 0;        // longueur du tracé
+  let knots = [];       // repères [hauteur, longueur] pour relier le défilement au tracé
+  let stopAt = [];      // longueur du tracé à laquelle se trouve chaque étape
+  let wanted = 0;       // où la ligne doit aller
+  let shown = 0;        // où la ligne est dessinée (elle rattrape « wanted » en douceur)
+  let running = false;
+
+  // longueur du tracé correspondant à une hauteur donnée (interpolée entre les repères)
+  function lengthAtY(y) {
+    if (!knots.length || y <= knots[0][0]) return 0;
+    for (let i = 1; i < knots.length; i++) {
+      const [ya, la] = knots[i - 1], [yb, lb] = knots[i];
+      if (y <= yb) return la + (lb - la) * (y - ya) / (yb - ya || 1);
+    }
+    return total;
+  }
+
+  // longueur d'un bout de tracé (mesurée avec le chemin gris, redessiné juste après)
+  function lengthOf(d) { track.setAttribute("d", d); return track.getTotalLength(); }
+
+  // dessine le tracé : courbe depuis l'avion, ligne droite par les étapes,
+  // et un looping juste avant la dernière étape (le départ pour Séoul)
+  function build() {
+    const f = flight.getBoundingClientRect();
+    const p = plane.getBoundingClientRect();
+    const centers = dots.map(d => {
+      const r = d.getBoundingClientRect();
+      return { x: r.left + r.width / 2 - f.left, y: r.top + r.height / 2 - f.top };
+    });
+    const x0 = p.left + p.width / 2 - f.left, y0 = p.bottom - f.top + 6;
+    const x1 = centers[0].x, y1 = centers[0].y - 30;
+    const yEnd = centers[centers.length - 1].y;
+    route.setAttribute("width", f.width);
+    route.setAttribute("height", f.height);
+
+    let d = `M${x0} ${y0} C${x0} ${y0 + (y1 - y0) * 0.7} ${x1} ${y0 + (y1 - y0) * 0.3} ${x1} ${y1}`;
+    knots = [[y0, 0], [y1, lengthOf(d)]];
+
+    // place libre entre le texte de l'avant-dernière étape et le point de la dernière
+    const prev = stops[stops.length - 2];
+    const textBottom = prev.lastElementChild.getBoundingClientRect().bottom - f.top;
+    const free = yEnd - 14 - textBottom;
+    if (free > 50) {
+      // looping : la ligne descend, tourne vers la droite, remonte, se croise et repart vers le bas
+      const a = Math.min(11, free * 0.75 / (2 * Math.PI));   // avancée vers le bas
+      const b = a * 2.6, c = a * 2.4;                         // taille de la boucle
+      const ys = textBottom + (free - 2 * Math.PI * a) / 2;
+      d += ` L${x1} ${ys}`;
+      knots.push([ys, lengthOf(d)]);
+      for (let i = 1; i <= 60; i++) {
+        const t = (i / 60) * 2 * Math.PI;
+        d += ` L${(x1 + c * (1 - Math.cos(t))).toFixed(2)} ${(ys + a * t + b * Math.sin(t)).toFixed(2)}`;
+      }
+      knots.push([ys + 2 * Math.PI * a, lengthOf(d)]);
+    }
+    d += ` L${x1} ${yEnd}`;
+    track.setAttribute("d", d);
+    fill.setAttribute("d", d);
+    total = fill.getTotalLength();
+    knots.push([yEnd, total]);
+    fill.style.strokeDasharray = `${total} ${total}`;
+    stopAt = centers.map(c => lengthAtY(c.y));
+    onScroll();
+    shown = calm ? wanted : Math.min(shown, total);
+    draw();
+  }
+
+  function draw() {
+    fill.style.strokeDashoffset = total - shown;
+    const pt = fill.getPointAtLength(shown);
+    tip.setAttribute("cx", pt.x);
+    tip.setAttribute("cy", pt.y);
+    tip.style.opacity = shown > 1 ? 1 : 0;
+    stops.forEach((s, i) => s.classList.toggle("on", stopAt[i] <= shown + 1));
+  }
+
+  function loop() {
+    shown += (wanted - shown) * 0.12;
+    if (Math.abs(wanted - shown) < 0.5) shown = wanted;
+    draw();
+    if (shown !== wanted) requestAnimationFrame(loop);
+    else running = false;
+  }
+
+  function onScroll() {
+    const h = window.innerHeight;
+    // le bout de la ligne suit un repère placé à 45 % de la hauteur de l'écran
+    wanted = lengthAtY(h * 0.45 - flight.getBoundingClientRect().top);
+    // les étapes encore en bas de l'écran sont floues et pâles
+    if (!calm) {
+      stops.forEach(s => {
+        const t = Math.min(Math.max((h * 0.95 - s.getBoundingClientRect().top) / (h * 0.25), 0), 1);
+        s.style.setProperty("--blur", ((1 - t) * 5).toFixed(2) + "px");
+        s.style.setProperty("--fade", (0.3 + 0.7 * t).toFixed(2));
+      });
+    }
+    if (calm) { shown = wanted; draw(); }
+    else if (!running) { running = true; requestAnimationFrame(loop); }
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  // redessine si la taille change (écran, police chargée, changement de langue)
+  new ResizeObserver(build).observe(flight);
+  build();
+</script>
+</body>
 </html>

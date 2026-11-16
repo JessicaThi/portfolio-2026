@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nomiks — 제시카 틸레만스</title>
+<link rel="icon" type="image/svg+xml" href="../logo-jt.svg">
+<link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<!-- la même page dans les autres langues (pour Google) -->
+<link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/nomiks.html">
+<link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/nomiks.en.html">
+<link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/nomiks.ko.html">
+<link rel="stylesheet" href="commun.css">
+<script src="apparition.js"></script>
+<style>
+  :root {
+    --bg: #ffffff; --surface: #ffffff; --text: #1d1a2b; --muted: #6f6a86;
+    --line: #ece8f4; --accent: #8b5cf6; --accent-soft: #f3eeff; --pink: #f08cb8;
+    --font: "Inter", "Inter fallback", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1126; --surface: #171a35; --text: #ecebf7; --muted: #9a98b8;
+    --line: #2a2d50; --accent: #a78bfa; --accent-soft: #2a2552;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.65; }
+  a { color: inherit; }
+  img { max-width: 100%; height: auto; display: block; }
+  .label { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+  header {
+    position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 32px; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  /* petite touche de mauve : un liseré en haut de page */
+  body::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 20; background: linear-gradient(90deg, var(--accent), var(--pink)); }
+  .logo { display: inline-flex; align-items: center; height: 34px; text-decoration: none; }
+  .logo img { height: 100%; width: auto; display: block; }
+  .back { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--muted); }
+  .back:hover { color: var(--text); }
+
+  main { max-width: 1120px; margin: 0 auto; padding: 0 16px 96px; }
+
+  /* En-tête du projet (inspiré d'eemonroy) */
+  .intro { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; padding: 72px 0 56px; border-bottom: 1px solid var(--line); }
+  .intro h1 { font-size: clamp(44px, 7vw, 84px); line-height: 1; margin: 16px 0 0; letter-spacing: -.02em; font-weight: 600; }
+  .summary { font-size: 20px; line-height: 1.5; margin: 0 0 32px; }
+  .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; margin: 0; }
+  .meta dt { margin-bottom: 4px; }
+  .meta dd { margin: 0; font-size: 15px; }
+
+  section { padding: 64px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: 0; }
+  .two { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
+  h2 { font-size: 26px; font-weight: 600; margin: 10px 0 0; line-height: 1.25; }
+  p { margin: 0 0 14px; }
+  .muted { color: var(--muted); }
+
+  .done { list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; }
+  .done li { display: grid; grid-template-columns: 70px 1fr; gap: 16px; }
+  .done .year { font-family: var(--mono); font-size: 13px; color: var(--accent); padding-top: 2px; }
+  .done strong { font-weight: 600; }
+
+  /* Avant / après avec curseur */
+  .compare-wrap { display: grid; grid-template-columns: 2.4fr 1fr; gap: 24px; align-items: start; margin-top: 32px; }
+  .compare {
+    position: relative; overflow: hidden; border-radius: 14px; border: 1px solid var(--line);
+    background: var(--surface); --pos: 50%; user-select: none; touch-action: pan-y;
+  }
+  .compare img { width: 100%; height: auto; }
+  .compare .stage { position: relative; }
+  .compare .before { position: absolute; top: 0; left: 0; width: 100%; height: auto; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+  .compare .handle {
+    position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; background: #d8ccfb; transform: translateX(-1px); pointer-events: none;
+  }
+  .compare .handle::after {
+    content: "↔"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+    background: #ede7fe; color: #7c5cc4; font-size: 16px; border: 1px solid #d8ccfb;
+    box-shadow: 0 4px 14px rgba(60, 30, 140, .12);
+  }
+  .compare input {
+    position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize;
+  }
+  .compare .tag {
+    position: absolute; top: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; pointer-events: none;
+  }
+  .compare .tag.l { left: 12px; } .compare .tag.r { right: 12px; }
+  .compare.mobile { max-height: 760px; overflow-y: auto; }
+  figcaption { margin-top: 10px; font-size: 13px; color: var(--muted); }
+
+  .shots { display: grid; grid-template-columns: 2.4fr 1fr; gap: 24px; margin-top: 32px; align-items: start; }
+  .shot { border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); }
+
+  .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px; align-items: start; }
+  .gallery figure { margin: 0; }
+  .sub { font-size: 18px; font-weight: 600; margin: 48px 0 0; }
+  .gallery.phones { grid-template-columns: repeat(4, 1fr); }
+  .phones .zoom { aspect-ratio: 390 / 844; }
+  .phones .zoom img { height: 100%; object-fit: cover; object-position: top; }
+  .video { margin: 24px 0 0; }
+  .video video { display: block; width: 100%; border-radius: 12px; border: 1px solid var(--line); background: #f4f2fb; opacity: 0; transition: opacity 1.2s ease; }
+  .video video.on { opacity: 1; }
+  figcaption strong { color: var(--text); font-weight: 600; }
+  .zoom { display: block; width: 100%; padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; cursor: zoom-in; }
+  .zoom img { width: 100%; height: auto; transition: transform .3s; }
+  .zoom:hover img { transform: scale(1.02); }
+  .zoom:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #zoom { border: 0; padding: 0; max-width: min(1400px, 94vw); width: 100%; background: transparent; overflow: visible; }
+  #zoom.tall { max-width: min(420px, 94vw); }
+  #zoom::backdrop { background: rgba(15, 17, 38, .8); }
+  #zoom .box { max-height: 90vh; overflow: auto; border-radius: 12px; background: #fff; }
+  #zoom .box img { display: block; width: 100%; height: auto; }
+  #zoom .close {
+    position: absolute; top: 12px; right: 12px; z-index: 1; width: 40px; height: 40px; border-radius: 50%;
+    display: grid; place-items: center; border: 0; padding: 0; cursor: pointer;
+    background: rgba(29, 26, 43, .75); color: #fff; box-shadow: 0 4px 14px rgba(0, 0, 0, .2);
+  }
+  #zoom .close:hover { background: rgba(29, 26, 43, .95); }
+
+  .placeholder {
+    margin-top: 28px; border: 1px dashed var(--line); border-radius: 14px; padding: 28px; text-align: center; color: var(--muted);
+    font-family: var(--mono); font-size: 13px;
+  }
+  .todo { background: var(--accent-soft); border-radius: 10px; padding: 14px 18px; font-size: 14px; }
+
+  .note { font-size: 13px; color: var(--muted); padding-top: 40px; }
+  .next { display: flex; justify-content: space-between; padding-top: 32px; font-family: var(--mono); font-size: 13px; }
+  .next a { text-decoration: none; }
+
+  .parallax { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; align-items: center; margin-top: 32px; }
+  .parallax .video { margin: 0; }
+  .parallax .video video { background: #0b0d14; }
+  .gallery.phones.five { grid-template-columns: repeat(5, 1fr); }
+
+  @media (max-width: 820px) {
+    header { padding: 14px 16px; }
+    .intro, .two, .compare-wrap, .shots, .parallax { grid-template-columns: 1fr; gap: 28px; }
+    .intro { padding-top: 40px; }
+    .done li { grid-template-columns: 56px 1fr; }
+    .gallery { grid-template-columns: 1fr; }
+    .gallery.phones, .gallery.phones.five { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="../index.html" aria-label="제시카 틸레만스, 홈"><img src="../logo-jt.svg" alt=""></a>
+  <a class="back" href="../index.html#projets">← 전체 프로젝트</a>
+</header>
+
+<main>
+  <div class="intro">
+    <div>
+      <span class="label">프리랜서 · Web3 및 암호화폐</span>
+      <h1>Nomiks</h1>
+    </div>
+    <div>
+      <p class="summary">블록체인 컨설팅 및 투자 회사 Nomiks의 소개 사이트입니다. 홈 페이지와 두 서비스 Analytic, Capital을 소개하는 페이지로 구성되며, 영어와 프랑스어로 제공됩니다.</p>
+      <dl class="meta">
+        <div><dt class="label">역할</dt><dd>프리랜서 프론트엔드 개발자, 디자이너의 시안을 바탕으로 코드 전체를 단독 개발</dd></div>
+        <div><dt class="label">기간</dt><dd>2022</dd></div>
+        <div><dt class="label">기술 스택</dt><dd>Next.js, React, TypeScript, Tailwind.css</dd></div>
+        <div><dt class="label">기타</dt><dd>next-i18next(다국어), Headless UI, Rellax(패럴랙스)</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <figure class="stage" style="--band: #3b4d6e; --frame: #0b0d14; --ink: #dce4f2;">
+    <div class="scene apart">
+      <div class="browser"><img src="nomiks/analytic-ouverture.webp" alt="Nomiks: 제목, 일러스트, 파란 점 물결이 있는 Analytic 페이지, 데스크톱과 모바일 화면"></div>
+      <div class="phone"><img src="nomiks/mobile-home.webp" alt=""></div>
+    </div>
+    <figcaption>데스크톱의 Analytic 페이지와 모바일의 홈 화면</figcaption>
+  </figure>
+
+  <section class="two">
+    <div>
+      <span class="label">배경</span>
+      <h2>움직임이 있는 어두운 톤의 사이트</h2>
+    </div>
+    <div>
+      <p>Nomiks는 블록체인 프로젝트를 지원하고(Nomiks Analytic) 암호화폐 투자 상품을 제공합니다(Nomiks Capital). 디자이너는 파란색 그라데이션, 일러스트, 스크롤에 따라 움직이는 요소가 있는 어두운 톤의 사이트를 구상했습니다.</p>
+      <p>Next.js 프로젝트 생성부터 다국어 적용까지 사이트 전체를 개발했으며, 디자이너의 시안과 피드백을 따랐습니다.</p>
+    </div>
+  </section>
+
+  <section class="two">
+    <div>
+      <span class="label">담당 업무</span>
+      <h2>3개 페이지, 2개 언어</h2>
+    </div>
+    <div>
+      <ul class="done">
+        <li><span class="year" data-date="2022-02">02.2022</span><span><strong>홈</strong>: React 컴포넌트 분리, 모바일 버전, 햄버거 메뉴, Rellax를 활용한 패럴랙스(모바일에서는 비활성화)</span></li>
+        <li><span class="year" data-date="2022-03">03.2022</span><span><strong>Analytic, Capital 페이지</strong>: 데스크톱 및 모바일 버전, 애니메이션 아코디언, 모바일 고정 헤더, Headless UI를 활용한 드롭다운 목록</span></li>
+        <li><span class="year" data-date="2022-03">03.2022</span><span><strong>마무리 작업</strong>: 법적 고지, 파비콘, 검색 최적화(SEO) 및 공유용 제목과 설명(Open Graph)</span></li>
+        <li><span class="year" data-date="2022-04">04.2022</span><span><strong>다국어 적용</strong>: next-i18next로 사이트 전체 영어·프랑스어 지원, 언어 선택 기능</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">화면</span>
+    <h2>주요 화면</h2>
+    <p class="muted" style="margin-top:12px">최신 버전(2022년 5월)의 사이트를 로컬에서 다시 실행해 캡처했습니다. 이미지를 클릭하면 크게 볼 수 있습니다.</p>
+    <div class="parallax">
+      <figure class="video"><video src="nomiks/parallaxe.mp4" poster="nomiks/parallaxe-fixe.webp" muted loop playsinline preload="auto" aria-label="Nomiks: 스크롤하면 일러스트 주변의 버블과 빛 효과가 텍스트와 다른 속도로 움직이는 모습, 홈 화면과 Analytic 페이지(헤더, 4단계 방법론)"></video></figure>
+      <div>
+        <h3 class="sub" style="margin-top:0">스크롤 패럴랙스</h3>
+        <p class="muted">일러스트 주변의 도형은 텍스트와 다른 속도로 스크롤됩니다. 어떤 도형은 더 빠르게, 어떤 도형은 더 느리게 올라갑니다. Rellax로 구현했으며 모바일에서는 비활성화했습니다.</p>
+        <ol class="muted" style="padding-left:20px;margin:0">
+          <li>홈: 큰 로고</li>
+          <li>Analytic 페이지: 헤더</li>
+          <li>Analytic 페이지: 카드 뒤에 큰 버블이 있는 4단계 방법론</li>
+        </ol>
+      </div>
+    </div>
+    <div class="gallery">
+      <figure><button type="button" class="zoom" aria-label="크게 보기: 홈"><img src="nomiks/home-hero.webp" alt="Nomiks: 어두운 배경에 파란색 그라데이션의 큰 로고가 있는 홈 화면" loading="lazy"></button><figcaption><strong>홈</strong>: 패럴랙스 효과가 적용된 큰 로고</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="크게 보기: 두 가지 서비스"><img src="nomiks/home-offres.webp" alt="Nomiks: + 버튼으로 연결된 두 개의 둥근 카드, Nomiks Analytic과 Nomiks Capital" loading="lazy"></button><figcaption><strong>두 가지 서비스</strong>: “+”로 연결된 Analytic과 Capital</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="크게 보기: Analytic 소개"><img src="nomiks/home-analytic.webp" alt="Nomiks: 태블릿 일러스트와 아이콘이 있는 6개 서비스로 구성된 Nomiks Analytic 섹션" loading="lazy"></button><figcaption><strong>Analytic 소개</strong>: 패럴랙스 일러스트와 서비스 목록</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="크게 보기: Analytic 페이지"><img src="nomiks/analytic-hero.webp" alt="Nomiks Analytic: 제목, 소개 문구, 일러스트가 있는 헤더" loading="lazy"></button><figcaption><strong>Analytic 페이지</strong>: 헤더와 메뉴</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="크게 보기: Analytic 서비스"><img src="nomiks/analytic-services.webp" alt="Nomiks Analytic: 펼칠 수 있는 목록이 있는 Model Your Business, Develop Your Tech 섹션" loading="lazy"></button><figcaption><strong>Analytic 서비스</strong>: 펼칠 수 있는 목록(아코디언)</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="크게 보기: 4단계 방법론"><img src="nomiks/analytic-process.webp" alt="Nomiks Analytic: 화살표로 연결된 번호가 매겨진 카드 4개" loading="lazy"></button><figcaption><strong>4단계 방법론</strong>: 화살표로 연결된 카드</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="크게 보기: Capital 상품"><img src="nomiks/capital-stable.webp" alt="Nomiks Capital: 6가지 장점과 아이콘으로 구성된 Nomiks Stable 상품 소개" loading="lazy"></button><figcaption><strong>Capital 상품</strong>: 텍스트, 아이콘, 버튼</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="크게 보기: FAQ"><img src="nomiks/capital-faq.webp" alt="Nomiks Capital: 아코디언 형식의 자주 묻는 질문" loading="lazy"></button><figcaption><strong>FAQ</strong>: 펼칠 수 있는 질문</figcaption></figure>
+    </div>
+
+    <div class="showcase" style="--band: #3b4d6e; --frame: #0b0d14; --ink: #dce4f2;">
+      <div class="row">
+        <div class="phone"><img src="nomiks/mobile-home.webp" alt="" loading="lazy"></div>
+        <div class="phone"><img src="nomiks/mobile-home-offres.webp" alt="모바일의 Nomiks: + 버튼으로 연결되어 세로로 쌓인 두 카드" loading="lazy"></div>
+        <div class="phone"><img src="nomiks/mobile-analytic.webp" alt="모바일의 Nomiks Analytic: 헤더" loading="lazy"></div>
+        <div class="phone"><img src="nomiks/mobile-capital-faq.webp" alt="모바일의 Nomiks Capital: FAQ" loading="lazy"></div>
+      </div>
+      <p>모바일 화면: 홈, 두 가지 서비스, Analytic 페이지, FAQ</p>
+    </div>
+  </section>
+
+  <section class="two">
+    <div>
+      <span class="label">배운 점</span>
+      <h2>처음부터 끝까지 단독으로</h2>
+    </div>
+    <div>
+      <p>Nomiks에서는 Next.js 프로젝트 생성부터 사이트 오픈까지 프로젝트를 혼자 진행했습니다.</p>
+      <p>시안이 검사할 수 있는 파일 없이 PDF로만 전달되어, 디자인을 충실히 구현하기 위해 크기와 간격을 직접 찾아내는 방법을 익혔습니다.</p>
+      <p>가장 까다로웠던 부분은 패럴랙스였습니다. 데스크톱부터 모바일까지 레이아웃이 깨지지 않으면서 도형이 움직여야 했습니다. 각 섹션을 여러 화면 크기에서 확인했습니다.</p>
+    </div>
+  </section>
+
+  <div class="next">
+    <a href="../index.html#projets">← 전체 프로젝트</a>
+    <a href="dotworld.ko.html">다음 프로젝트: Dotworld →</a>
+  </div>
+  <dialog id="zoom" aria-label="확대 이미지">
+    <button type="button" class="close" aria-label="닫기"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <div class="box"><img src="" alt=""></div>
+  </dialog>
+</main>
+
+<script>
+  // thème clair / sombre choisi sur l'accueil
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+
+  // dates : 07.2025 en français et en anglais, 2025.07 en coréen (langue choisie sur l'accueil)
+  try {
+    const ko = document.documentElement.lang === "ko";
+    document.querySelectorAll("[data-date]").forEach(el => {
+      const [y, m] = el.dataset.date.split("-");
+      el.textContent = m ? (ko ? `${y}.${m}` : `${m}.${y}`) : y;
+    });
+  } catch (e) {}
+
+  // vidéo de la borne : démarre en douceur quand elle arrive à l'écran
+  const vid = document.querySelector(".video video");
+  if (vid) {
+    vid.playbackRate = 1;
+    const calme = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const start = () => { vid.classList.add("on"); if (!calme) { vid.playbackRate = 1; vid.play().catch(() => {}); } };
+    new IntersectionObserver((entries, obs) => {
+      if (entries[0].isIntersecting) {
+        if (vid.readyState >= 2) start(); else vid.addEventListener("loadeddata", start, { once: true });
+        obs.disconnect();
+      }
+    }, { threshold: 0.4 }).observe(vid);
+  }
+
+  // image agrandie au clic
+  const zoom = document.getElementById("zoom");
+  const zoomImg = zoom.querySelector("img");
+  document.querySelectorAll(".zoom").forEach(btn => btn.addEventListener("click", () => {
+    const img = btn.querySelector("img");
+    zoomImg.src = img.src; zoomImg.alt = img.alt;
+    zoom.classList.toggle("tall", !!btn.closest(".phones"));
+    zoom.showModal();
+    zoom.querySelector(".box").scrollTop = 0;
+  }));
+  zoom.querySelector(".close").addEventListener("click", () => zoom.close());
+  zoom.addEventListener("click", e => { if (e.target === zoom) zoom.close(); });
+</script>
+</body>
+</html>

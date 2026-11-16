@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dotworld — Jessica Thielemans</title>
+<link rel="icon" type="image/svg+xml" href="../logo-jt.svg">
+<link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<!-- la même page dans les autres langues (pour Google) -->
+<link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/dotworld.html">
+<link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/dotworld.en.html">
+<link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/dotworld.ko.html">
+<link rel="stylesheet" href="commun.css">
+<script src="apparition.js"></script>
+<style>
+  :root {
+    --bg: #ffffff; --surface: #ffffff; --text: #1d1a2b; --muted: #6f6a86;
+    --line: #ece8f4; --accent: #8b5cf6; --accent-soft: #f3eeff; --pink: #f08cb8;
+    --font: "Inter", "Inter fallback", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1126; --surface: #171a35; --text: #ecebf7; --muted: #9a98b8;
+    --line: #2a2d50; --accent: #a78bfa; --accent-soft: #2a2552;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.65; }
+  a { color: inherit; }
+  img { max-width: 100%; height: auto; display: block; }
+  .label { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+  header {
+    position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 32px; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  /* petite touche de mauve : un liseré en haut de page */
+  body::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 20; background: linear-gradient(90deg, var(--accent), var(--pink)); }
+  .logo { display: inline-flex; align-items: center; height: 34px; text-decoration: none; }
+  .logo img { height: 100%; width: auto; display: block; }
+  .back { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--muted); }
+  .back:hover { color: var(--text); }
+
+  main { max-width: 1120px; margin: 0 auto; padding: 0 16px 96px; }
+
+  /* En-tête du projet (inspiré d'eemonroy) */
+  .intro { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; padding: 72px 0 56px; border-bottom: 1px solid var(--line); }
+  .intro h1 { font-size: clamp(44px, 7vw, 84px); line-height: 1; margin: 16px 0 0; letter-spacing: -.02em; font-weight: 600; }
+  .summary { font-size: 20px; line-height: 1.5; margin: 0 0 32px; }
+  .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; margin: 0; }
+  .meta dt { margin-bottom: 4px; }
+  .meta dd { margin: 0; font-size: 15px; }
+
+  section { padding: 64px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: 0; }
+  .two { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
+  h2 { font-size: 26px; font-weight: 600; margin: 10px 0 0; line-height: 1.25; }
+  p { margin: 0 0 14px; }
+  .muted { color: var(--muted); }
+
+  .done { list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; }
+  .done li { display: grid; grid-template-columns: 70px 1fr; gap: 16px; }
+  .done .year { font-family: var(--mono); font-size: 13px; color: var(--accent); padding-top: 2px; }
+  .done strong { font-weight: 600; }
+
+  /* Avant / après avec curseur */
+  .compare-wrap { display: grid; grid-template-columns: 2.4fr 1fr; gap: 24px; align-items: start; margin-top: 32px; }
+  .compare {
+    position: relative; overflow: hidden; border-radius: 14px; border: 1px solid var(--line);
+    background: var(--surface); --pos: 50%; user-select: none; touch-action: pan-y;
+  }
+  .compare img { width: 100%; height: auto; }
+  .compare .stage { position: relative; }
+  .compare .before { position: absolute; top: 0; left: 0; width: 100%; height: auto; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+  .compare .handle {
+    position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; background: #d8ccfb; transform: translateX(-1px); pointer-events: none;
+  }
+  .compare .handle::after {
+    content: "↔"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+    background: #ede7fe; color: #7c5cc4; font-size: 16px; border: 1px solid #d8ccfb;
+    box-shadow: 0 4px 14px rgba(60, 30, 140, .12);
+  }
+  .compare input {
+    position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize;
+  }
+  .compare .tag {
+    position: absolute; top: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; pointer-events: none;
+  }
+  .compare .tag.l { left: 12px; } .compare .tag.r { right: 12px; }
+  .compare.mobile { max-height: 760px; overflow-y: auto; }
+  figcaption { margin-top: 10px; font-size: 13px; color: var(--muted); }
+
+  .shots { display: grid; grid-template-columns: 2.4fr 1fr; gap: 24px; margin-top: 32px; align-items: start; }
+  .shot { border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); }
+
+  .phones { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 28px; }
+  .phones figure, .shots figure { margin: 0; }
+  /* longues pages : aperçu du haut, fondu en bas ; au clic, la page entière s'ouvre en grand (plus de défilement dans la page) */
+  .shot.scroll { position: relative; display: block; width: 100%; max-height: 640px; overflow: hidden; padding: 0; font: inherit; cursor: zoom-in; }
+  .shot.scroll::after { content: ""; position: absolute; inset: auto 0 0 0; height: 120px; background: linear-gradient(to bottom, transparent, var(--surface)); pointer-events: none; }
+  .shot.scroll .more { position: absolute; left: 50%; bottom: 16px; z-index: 1; transform: translateX(-50%); white-space: nowrap; padding: 6px 12px; border-radius: 999px; background: var(--text); color: var(--bg); font-family: var(--mono); font-size: 12px; }
+  .shot.scroll img { display: block; width: 100%; height: auto; transition: none; }
+  .shot.scroll:hover img { transform: none; }
+  #zoom.tall { max-width: min(420px, 94vw); }
+  .shots.even { grid-template-columns: 1fr 1fr; }
+  .sub { font-size: 18px; font-weight: 600; margin: 48px 0 0; }
+  .cvs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 28px; }
+  .cvs figure { margin: 0; }
+  .zoom { display: block; width: 100%; padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; cursor: zoom-in; }
+  .zoom img { width: 100%; height: auto; transition: transform .3s; }
+  .zoom:hover img { transform: scale(1.02); }
+  .zoom:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #zoom { border: 0; padding: 0; max-width: min(900px, 94vw); width: 100%; background: transparent; overflow: visible; }
+  #zoom::backdrop { background: rgba(15, 17, 38, .8); }
+  #zoom .box { max-height: 90vh; overflow: auto; border-radius: 12px; background: #fff; }
+  #zoom .box img { display: block; width: 100%; height: auto; }
+  #zoom .close {
+    position: absolute; top: 12px; right: 12px; z-index: 1; width: 40px; height: 40px; border-radius: 50%;
+    display: grid; place-items: center; border: 0; padding: 0; cursor: pointer;
+    background: rgba(29, 26, 43, .75); color: #fff; box-shadow: 0 4px 14px rgba(0, 0, 0, .2);
+  }
+  #zoom .close:hover { background: rgba(29, 26, 43, .95); }
+  #zoom .close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+  .placeholder {
+    margin-top: 28px; border: 1px dashed var(--line); border-radius: 14px; padding: 28px; text-align: center; color: var(--muted);
+    font-family: var(--mono); font-size: 13px;
+  }
+  .todo { background: var(--accent-soft); border-radius: 10px; padding: 14px 18px; font-size: 14px; }
+
+  .note { font-size: 13px; color: var(--muted); padding-top: 40px; }
+  .next { display: flex; justify-content: space-between; padding-top: 32px; font-family: var(--mono); font-size: 13px; }
+  .next a { text-decoration: none; }
+
+  @media (max-width: 820px) {
+    header { padding: 14px 16px; }
+    .intro, .two, .compare-wrap, .shots { grid-template-columns: 1fr; gap: 28px; }
+    .intro { padding-top: 40px; }
+    .done li { grid-template-columns: 56px 1fr; }
+    .phones { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .shots.even { grid-template-columns: 1fr; }
+    .cvs { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="../index.html" aria-label="Jessica Thielemans, home"><img src="../logo-jt.svg" alt=""></a>
+  <a class="back" href="../index.html#projets">← All projects</a>
+</header>
+
+<main>
+  <div class="intro">
+    <div>
+      <span class="label">Freelance · Web services and promotional sites</span>
+      <h1>Dotworld</h1>
+    </div>
+    <div>
+      <p class="summary">Three products for the same client: a site to create a CV, an app to pay the bill at a restaurant, and a service to cancel subscriptions.</p>
+      <dl class="meta">
+        <div><dt class="label">Role</dt><dd>Freelance frontend developer, in a small team</dd></div>
+        <div><dt class="label">Period</dt><dd>2021 – 2022</dd></div>
+        <div><dt class="label">Stack</dt><dd>Vue.js, Nuxt.js, Tailwind.css</dd></div>
+        <div><dt class="label">Environment</dt><dd>Laravel</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <figure class="stage" style="--ratio: 16 / 10; --band: #f1ece4; --frame: #1d2433; --ink: #5a5146;">
+    <div class="scene">
+      <div class="browser"><img src="dotworld/twenty-site-desktop.webp" alt="Twenty Pay: the promotional site for restaurants, and the app home screen on mobile"></div>
+      <div class="phone"><img src="dotworld/twenty-app-index.webp" alt=""></div>
+    </div>
+    <figcaption>Twenty Pay: the promotional site on desktop and the app on mobile</figcaption>
+  </figure>
+
+  <section class="two">
+    <div>
+      <span class="label">Context</span>
+      <h2>One client, three projects</h2>
+    </div>
+    <div>
+      <p>Dotworld is a company based in Lausanne, Switzerland, that launches several web services. I started working with them in March 2021, when I began working as a freelancer.</p>
+      <p>I worked on <strong>CV Ninja</strong> (creating a CV online), <strong>Twenty Pay</strong> (paying the bill at a restaurant) and <strong>Rezilli</strong> (cancelling a subscription).</p>
+      <p>My role: building the mockups into responsive interfaces, for desktop and mobile, with Vue.js or Nuxt.js and Tailwind.css.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="two">
+      <div>
+        <span class="label">CV Ninja · 2021</span>
+        <h2>Creating a CV online</h2>
+      </div>
+      <div>
+        <p>A site to fill in a CV step by step, choose a template and download it.</p>
+        <ul class="done">
+          <li><span class="year">Templates</span><span><strong>Five CV templates</strong> (Bordeaux, Lyon, Nantes, Nice, Toulouse): built from the mockups, color variants, finishing touches. The name size adapts to its length, and long email addresses wrap to the next line.</span></li>
+          <li><span class="year">Site</span><span>A few small changes on the rest of the site.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="cvs" style="margin-top:40px">
+      <figure><button type="button" class="zoom" aria-label="Enlarge: Bordeaux template"><img src="dotworld/cvninja-bordeaux.webp" alt="CV Ninja: Bordeaux template, with a blue column on the right" loading="lazy"></button><figcaption>Bordeaux</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="Enlarge: Lyon template"><img src="dotworld/cvninja-lyon.webp" alt="CV Ninja: Lyon template, with a beige band at the top" loading="lazy"></button><figcaption>Lyon</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="Enlarge: Nantes template"><img src="dotworld/cvninja-nantes.webp" alt="CV Ninja: Nantes template, with the round photo at the top left" loading="lazy"></button><figcaption>Nantes</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="Enlarge: Nice template"><img src="dotworld/cvninja-nice.webp" alt="CV Ninja: Nice template, with a yellow square behind the photo" loading="lazy"></button><figcaption>Nice</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="Enlarge: Toulouse template"><img src="dotworld/cvninja-toulouse.webp" alt="CV Ninja: Toulouse template, with the round photo next to the name" loading="lazy"></button><figcaption>Toulouse</figcaption></figure>
+    </div>
+    <p class="muted" style="font-size:13px;margin-top:16px">The same fictional CV in each template, displayed locally. Click a CV to enlarge it.</p>
+  </section>
+
+  <section>
+    <div class="two">
+      <div>
+        <span class="label">Twenty Pay · 2021 – 2022</span>
+        <h2>Paying the bill at a restaurant</h2>
+      </div>
+      <div>
+        <p>You scan a QR code on the table, see the bill and pay from your phone.</p>
+        <ul class="done">
+          <li><span class="year">App</span><span><strong>The screens of the user flow</strong>: menu, dishes, summary, bill splitting, payment, review and thank-you page.</span></li>
+          <li><span class="year">Site</span><span><strong>The promotional site</strong> for restaurants: demo sections with video, benefits, reviews, FAQ and contact; fixed menu, mobile layout, legal pages.</span></li>
+        </ul>
+      </div>
+    </div>
+    <h3 class="sub">The app</h3>
+    <div class="showcase" style="--band: #f1ece4; --frame: #1d2433; --ink: #5a5146;">
+      <div class="row">
+        <div class="phone"><img src="dotworld/twenty-app-index.webp" alt="Twenty Pay: restaurant home screen, with buttons to view the menu and pay the bill" loading="lazy"></div>
+        <div class="phone"><img src="dotworld/twenty-app-bill.webp" alt="Twenty Pay: the bill for the table" loading="lazy"></div>
+        <div class="phone"><img src="dotworld/twenty-app-share.webp" alt="Twenty Pay: splitting the bill between several people" loading="lazy"></div>
+        <div class="phone"><img src="dotworld/twenty-app-payment.webp" alt="Twenty Pay: payment by card, Apple Pay or Twint" loading="lazy"></div>
+      </div>
+      <p>The app: restaurant home screen, bill, splitting and payment</p>
+    </div>
+
+    <h3 class="sub">The promotional site</h3>
+    <div class="shots">
+      <figure><button type="button" class="zoom shot scroll" aria-label="View the full page"><img src="dotworld/twenty-site-desktop.webp" alt="Twenty Pay promotional site on desktop, full page" loading="lazy"><span class="more" aria-hidden="true">View full page ↗</span></button><figcaption>On desktop</figcaption></figure>
+      <figure><button type="button" class="zoom shot scroll tall" aria-label="View the full page"><img src="dotworld/twenty-site-mobile.webp" alt="Twenty Pay promotional site on mobile, full page" loading="lazy"><span class="more" aria-hidden="true">View full page ↗</span></button><figcaption>On mobile</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="two">
+      <div>
+        <span class="label">Rezilli · 2021 – 2022</span>
+        <h2>Cancelling a subscription</h2>
+      </div>
+      <div>
+        <p>An online service that prepares and sends letters to cancel a contract or a subscription.</p>
+        <ul class="done" style="--w:110px">
+          <li><span class="year">Integration</span><span><strong>Design integration</strong>: forms (animated labels, required fields), information pages with a dropdown menu on mobile, filter by category and by service, FAQ, pop-up windows.</span></li>
+        </ul>
+      </div>
+    </div>
+    <h3 class="sub">Home page</h3>
+    <div class="shots">
+      <figure><button type="button" class="zoom shot scroll" aria-label="View the full page"><img src="dotworld/rezilli-landing-desktop.webp" alt="Rezilli home page on desktop, full page" loading="lazy"><span class="more" aria-hidden="true">View full page ↗</span></button><figcaption>Home page, on desktop</figcaption></figure>
+      <figure><button type="button" class="zoom shot scroll tall" aria-label="View the full page"><img src="dotworld/rezilli-landing-mobile.webp" alt="Rezilli home page on mobile, full page" loading="lazy"><span class="more" aria-hidden="true">View full page ↗</span></button><figcaption>Home page, on mobile</figcaption></figure>
+    </div>
+
+    <h3 class="sub">Form and library</h3>
+    <div class="shots even">
+      <figure><button type="button" class="zoom shot scroll" aria-label="View the full page"><img src="dotworld/rezilli-lettre.webp" alt="Rezilli: cancellation form with the letter preview" loading="lazy"><span class="more" aria-hidden="true">View full page ↗</span></button><figcaption>Form, with the letter preview</figcaption></figure>
+      <figure><button type="button" class="zoom shot scroll" aria-label="View the full page"><img src="dotworld/rezilli-biblio.webp" alt="Rezilli: library of letter templates, with search and category filter" loading="lazy"><span class="more" aria-hidden="true">View full page ↗</span></button><figcaption>Template library</figcaption></figure>
+    </div>
+    <p class="muted" style="font-size:13px;margin-top:16px">Screenshots taken locally, with sample data.</p>
+  </section>
+
+  <section class="two">
+    <div>
+      <span class="label">What I learned</span>
+      <h2>Building for real data</h2>
+    </div>
+    <div>
+      <p>On the CV Ninja templates, the layout had to hold up whatever the content: a very long name, an email address that overflows. I learned to build for real data, not only for the mockup.</p>
+    </div>
+  </section>
+
+  <div class="next">
+    <a href="../index.html#projets">← All projects</a>
+    <a href="clor-ai.en.html">Next project: Clor AI →</a>
+  </div>
+  <dialog id="zoom" aria-label="Enlarged image">
+    <button type="button" class="close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <div class="box"><img src="" alt=""></div>
+  </dialog>
+</main>
+
+<script>
+  // thème clair / sombre choisi sur l'accueil
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+
+  // image agrandie au clic
+  const zoom = document.getElementById("zoom");
+  const zoomImg = zoom.querySelector("img");
+  document.querySelectorAll(".zoom").forEach(btn => btn.addEventListener("click", () => {
+    const img = btn.querySelector("img");
+    zoomImg.src = img.src; zoomImg.alt = img.alt;
+    zoom.classList.toggle("tall", btn.classList.contains("tall"));   // page mobile : fenêtre étroite
+    zoom.showModal();
+    zoom.querySelector(".box").scrollTop = 0;
+  }));
+  zoom.querySelector(".close").addEventListener("click", () => zoom.close());
+  zoom.addEventListener("click", e => { if (e.target === zoom) zoom.close(); });
+</script>
+</body>
+</html>
