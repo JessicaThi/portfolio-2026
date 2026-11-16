@@ -107,7 +107,11 @@
 .duo .phone { width: 22%; flex: none; }
 /* deux téléphones à côté de l'écran (landing page de Skade) : écran plus grand, téléphones plus petits */
 .duo .pair:has(.phone + .phone) { gap: 3%; }
-.duo .pair:has(.phone + .phone) .phone { width: 15%; }
+.duo .pair:has(.phone + .phone) .phone { width: 16.5%; }
+/* le second téléphone remonte un peu, pour que les trois écrans ne soient pas posés sur la même ligne */
+.duo .pair:has(.phone + .phone) .phone + .phone { margin-bottom: 5.6%; }
+/* sa capture commence sur « Show me » coupé : on la recadre un peu en haut (l'image agrandie reste entière) */
+.duo .pair:has(.phone + .phone) .phone + .phone img { aspect-ratio: 390 / 800; object-position: 50% 100%; }
 .duo .zoom { border: 0; border-radius: 0; background: none; padding: 0; display: block; width: 100%; cursor: zoom-in; }
 .duo .phone .zoom { border-radius: min(26px, 6vw); overflow: hidden; }
 .duo .phone .zoom img { border-radius: 0; }
@@ -185,6 +189,8 @@ body > header .back { color: var(--text); }
 @media print {
   /* garder les fonds de couleur des bandes (le navigateur les enlève sinon) */
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  /* pas d'ombres : Aperçu (Mac) les affiche comme des rectangles noirs dans le PDF */
+  * { box-shadow: none !important; }
   /* rien ne reste caché par l'apparition au défilement, rien ne bouge */
   .rv { opacity: 1 !important; translate: none !important; transition: none !important; }
   /* ce qui ne sert qu'à l'écran : liseré, lien retour, vidéo, fenêtre d'agrandissement, bas de page */
