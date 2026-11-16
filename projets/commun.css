@@ -89,7 +89,7 @@
 /* ---------- Duos : le même écran sur ordinateur et sur mobile ---------- */
 .duos {
   --band: #eef0f6; --frame: #1d2433; --ink: #3b4a6b;
-  margin: 28px calc(50% - 50vw) 0; padding: 64px 16px; background: var(--band);
+  margin: 44px calc(50% - 50vw) 0; padding: 64px 16px; background: var(--band);
   display: grid; gap: 72px;
 }
 .duo { max-width: 1000px; width: 100%; margin: 0 auto; }
@@ -105,6 +105,9 @@
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .06);
 }
 .duo .phone { width: 22%; flex: none; }
+/* deux téléphones à côté de l'écran (landing page de Skade) : écran plus grand, téléphones plus petits */
+.duo .pair:has(.phone + .phone) { gap: 3%; }
+.duo .pair:has(.phone + .phone) .phone { width: 15%; }
 .duo .zoom { border: 0; border-radius: 0; background: none; padding: 0; display: block; width: 100%; cursor: zoom-in; }
 .duo .phone .zoom { border-radius: min(26px, 6vw); overflow: hidden; }
 .duo .phone .zoom img { border-radius: 0; }
@@ -114,7 +117,12 @@
 @media (max-width: 820px) {
   .duos { gap: 48px; }
   .duo .phone { width: 30%; }
+  .duo .pair:has(.phone + .phone) .phone { width: 22%; }
 }
+
+/* une section qui finit par une bande de couleur, suivie d'une autre section de captures : pas de trait gris entre les deux,
+   la bande fait déjà la séparation. Avant « Ce que j'ai appris » (section .two), le trait reste, comme sur toutes les pages. */
+section:has(> .duos:last-child, > .showcase:last-child, > .board:last-child):has(+ section:not(.two)) { border-bottom: 0; padding-bottom: 0; }
 
 /* ---------- Apparition douce au défilement (apparition.js) ---------- */
 /* « translate » plutôt que « transform » : les blocs qui ont déjà leur propre rotation ou décalage les gardent */
@@ -131,7 +139,9 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 /* ---------- Barre du haut : pastilles en verre dépoli (glassmorphism) ---------- */
 /* « body > header » : plus précis que le style de chaque page, donc c'est celui-ci qui s'applique */
 body > header { background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom: 0; overflow-x: clip; }   /* clip : le voile ne fait pas déborder la page sur le côté */
-/* pastilles en verre dépoli derrière le logo et « Tous les projets » (la barre elle-même reste transparente) */
+/* pastilles en verre dépoli derrière le logo et « Tous les projets », seulement sur tablette et téléphone
+   (sur ordinateur, la barre reste transparente, sans pastille) */
+@media (max-width: 820px) {
 body > header .logo, body > header .back { position: relative; isolation: isolate; }
 /* voile flou aux bords diffus : il s'estompe vers l'extérieur au lieu d'avoir un contour net */
 body > header .logo::before, body > header .back::before {
@@ -143,7 +153,9 @@ body > header .logo::before, body > header .back::before {
   mask-image: var(--fade);
 }
 body > header .logo { height: 44px; padding: 5px 14px; box-sizing: border-box; }
-body > header .back { padding: 10px 16px; color: var(--text); --veil: 75%; }   /* voile plus marqué : lisible même sur les bandes sombres */   /* lisible même sur les bandes sombres */
+body > header .back { padding: 10px 16px; --veil: 75%; }   /* voile plus marqué : lisible même sur les bandes sombres */
+}
+body > header .back { color: var(--text); }
 
 /* tablette et téléphone : logo collé à gauche, aligné sur le texte */
 @media (max-width: 820px) { body > header .logo { padding-left: 0; padding-right: 0; } }
@@ -157,6 +169,14 @@ body > header .back { padding: 10px 16px; color: var(--text); --veil: 75%; }   /
   /* bas de page : « Tous les projets » est déjà dans la barre du haut, on garde seulement le projet suivant */
   body .next { justify-content: flex-end; }
   body .next a[href*="index.html"] { display: none; }
+}
+
+/* ---------- Barre de progression de lecture ---------- */
+/* Le trait en dégradé en haut de l'écran se remplit au fil du défilement.
+   Navigateurs qui ne savent pas le faire : la barre reste pleine, comme avant. */
+@supports (animation-timeline: scroll()) {
+  body::before { transform-origin: left; animation: lecture linear both; animation-timeline: scroll(); }
+  @keyframes lecture { from { transform: scaleX(0); } }
 }
 
 /* ---------- Version PDF : Imprimer → Enregistrer en PDF ---------- */

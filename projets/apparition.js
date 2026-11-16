@@ -54,3 +54,14 @@
   });
   addEventListener("afterprint", () => { if (theme) document.documentElement.dataset.theme = theme; });
 })();
+// Images « lazy » : le navigateur (surtout Safari) attend qu'elles soient presque à l'écran pour les charger,
+// elles apparaissent donc en retard. On lance leur chargement un peu avant, environ deux écrans plus tôt.
+(() => {
+  if (!("IntersectionObserver" in window)) return;
+  document.addEventListener("DOMContentLoaded", () => {
+    const io = new IntersectionObserver(entries => {
+      entries.filter(e => e.isIntersecting).forEach(e => { e.target.loading = "eager"; io.unobserve(e.target); });
+    }, { rootMargin: "200% 0px" });
+    document.querySelectorAll('img[loading="lazy"]').forEach(img => { img.decoding = "async"; io.observe(img); });
+  });
+})();
