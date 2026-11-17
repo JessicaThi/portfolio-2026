@@ -1021,7 +1021,7 @@
       a.setAttribute("href", lang === "fr" ? base : base.replace(/\.html$/, `.${lang}.html`));
     });
     // portfolio PDF dans la langue choisie
-    document.querySelectorAll("[data-pdf]").forEach(a => { a.href = `pdf/jessica-thielemans-portfolio-${lang}.pdf?v=2`;   // ?v= : à augmenter à chaque nouvel export, pour que le navigateur ne garde pas l'ancien PDF });
+    document.querySelectorAll("[data-pdf]").forEach(a => { a.href = `pdf/jessica-thielemans-portfolio-${lang}.pdf?v=2`; });   // ?v= : à augmenter à chaque nouvel export, sinon le navigateur peut garder l'ancien PDF
     // liens vers un site qui a sa version coréenne (Infinique)
     document.querySelectorAll("[data-href-ko]").forEach(a => { a.href = lang === "ko" ? a.dataset.hrefKo : a.dataset.href; });
     // dates : 07.2025 en français et en anglais, 2025.07 en coréen
