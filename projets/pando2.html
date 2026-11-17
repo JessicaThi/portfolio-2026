@@ -238,7 +238,7 @@
     <span class="label">Captures</span>
     <h2>Quelques écrans</h2>
     <p class="muted" style="margin-top:12px">Captures de mes pages d'intégration, lancées en local avec des données d'exemple. Cliquez sur une capture pour l'agrandir.</p>
-    <figure class="video"><video src="pando2/borne-vagues.mp4" muted loop playsinline preload="auto" aria-label="Borne d'affichage de Pando2 avec le fond de vagues animé en SVG"></video><figcaption><strong>Borne d'affichage</strong> : le fond de vagues animé en SVG</figcaption></figure>
+    <figure class="video"><video src="pando2/borne-vagues.mp4" poster="pando2/borne-vagues-fixe.webp" muted loop playsinline preload="auto" aria-label="Borne d'affichage de Pando2 avec le fond de vagues animé en SVG"></video><figcaption><strong>Borne d'affichage</strong> : le fond de vagues animé en SVG</figcaption></figure>
     <div class="gallery">
       <figure><button type="button" class="zoom" aria-label="Agrandir : Tableau de bord"><img width="1600" height="911" src="pando2/tableau-de-bord.webp" alt="Pando2 : tableau de bord avec les totaux, trois graphiques en anneau et le classement des établissements" loading="lazy"></button><figcaption><strong>Tableau de bord</strong> : indicateurs, graphiques en anneau, classement des établissements</figcaption></figure>
       <figure><button type="button" class="zoom" aria-label="Agrandir : Polluants et consommation"><img width="1600" height="911" src="pando2/polluants-consommation.webp" alt="Pando2 : répartition des polluants, consommation d'électricité et de gaz, liste des événements" loading="lazy"></button><figcaption><strong>Polluants et consommation</strong> : répartition des polluants, électricité et gaz, événements</figcaption></figure>
@@ -292,7 +292,7 @@
     const start = () => { vid.classList.add("on"); if (!calme) { vid.playbackRate = 0.7; vid.play().catch(() => {}); } };
     new IntersectionObserver((entries, obs) => {
       if (entries[0].isIntersecting) {
-        if (vid.readyState >= 2) start(); else vid.addEventListener("loadeddata", start, { once: true });
+        start();   // sans attendre le chargement : sur iPhone (économie d'énergie, KakaoTalk) il peut ne jamais venir, l'image fixe s'affiche alors
         obs.disconnect();
       }
     }, { threshold: 0.4 }).observe(vid);

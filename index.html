@@ -484,7 +484,16 @@
   .end-txt p { margin: 0; color: #6f6a86; }
   .end-links { display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: var(--mono); font-size: 13px; margin-top: 6px !important; }
   .end-links a { color: #4b3f8a; text-underline-offset: 4px; }
-  .end-links a:first-child { flex-basis: 100%; }   /* l'e-mail sur sa ligne, LinkedIn, GitHub et le PDF en dessous */
+  .end-links .end-mail { flex-basis: 100%; display: flex; align-items: center; gap: 6px; }   /* l'e-mail sur sa ligne, LinkedIn, GitHub et le PDF en dessous */
+  /* icône « copier » à côté de l'adresse : copier sans que la boîte mail s'ouvre ; devient ✓ une seconde après le clic */
+  .copy-mail { display: inline-grid; place-items: center; padding: 4px; margin: -4px 0; border: 0; border-radius: 6px; background: none; color: #4b3f8a; cursor: pointer; opacity: .7; transition: opacity .2s, background .2s; }
+  .copy-mail:hover { opacity: 1; background: rgba(75, 63, 138, .08); }
+  .copy-mail:focus-visible { outline: 2px solid #8b5cf6; outline-offset: 1px; opacity: 1; }
+  .copy-mail svg { grid-area: 1 / 1; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: opacity .2s, transform .2s; }
+  .copy-mail .i-done { opacity: 0; transform: scale(.6); }
+  .copy-mail.done { opacity: 1; color: #1f7a4d; }
+  .copy-mail.done .i-copy { opacity: 0; transform: scale(.6); }
+  .copy-mail.done .i-done { opacity: 1; transform: none; }
   .vpass { width: 290px; border-radius: 24px; background: #fff; color: #1d1a2b; box-shadow: 0 30px 60px rgba(80, 40, 160, .22); transform: rotate(4deg); overflow: hidden; transition: transform .5s; }
   .end-day:hover .vpass { transform: rotate(0) translateY(-6px); }
   .vp-top { padding: 20px 22px; background: linear-gradient(135deg, #7c5cf0, #f08cb8); color: #fff; display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
@@ -517,6 +526,9 @@
   :root[data-theme="dark"] .end-txt p { color: #b9b6d8; }
   :root[data-theme="dark"] .end-k { color: #f08cb8; }
   :root[data-theme="dark"] .end-links a { color: #d6d2f2; }
+  :root[data-theme="dark"] .copy-mail { color: #d6d2f2; }
+  :root[data-theme="dark"] .copy-mail:hover { background: rgba(255, 255, 255, .1); }
+  :root[data-theme="dark"] .copy-mail.done { color: #8fe0b5; }
   :root[data-theme="dark"] .end-bubble { background: #252a5c; color: #ecebf7; border: 1px solid rgba(255, 255, 255, .2); box-shadow: none; }   /* fond plein : l'étoile filante passe derrière la bulle */
   :root[data-theme="dark"] .end-bubble .cur { background: #f08cb8; }
   :root[data-theme="dark"] .end-day .mj-shadow { background: rgba(0, 0, 0, .45); }
@@ -732,7 +744,7 @@
         <h2 data-t="passTitle"></h2>
         <p data-t="nightText"></p>
         <a class="end-btn" href="mailto:jt.jessicathi@gmail.com" data-t="endCta"></a>
-        <p class="end-links"><a href="mailto:jt.jessicathi@gmail.com">jt.jessicathi@gmail.com</a><a href="https://www.linkedin.com/in/jessica-thielemans">LinkedIn</a><a href="https://github.com/JessicaThi">GitHub</a><a href="pdf/jessica-thielemans-portfolio-fr.pdf" data-pdf target="_blank" rel="noopener" data-t="pdfLink"></a></p>
+        <p class="end-links"><span class="end-mail"><a href="mailto:jt.jessicathi@gmail.com">jt.jessicathi@gmail.com</a><button type="button" class="copy-mail" data-ta="copyMail"><svg class="i-copy" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V5"/></svg><svg class="i-done" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></span><a href="https://www.linkedin.com/in/jessica-thielemans">LinkedIn</a><a href="https://github.com/JessicaThi">GitHub</a><a href="pdf/jessica-thielemans-portfolio-fr.pdf" data-pdf target="_blank" rel="noopener" data-t="pdfLink"></a></p>
       </div>
       <div class="vpass" aria-hidden="true">
         <div class="vp-top"><img src="logo-jt.svg" alt="" width="34" height="24"><span data-t="passKind"></span></div>
@@ -798,6 +810,8 @@
       oLink: "Média sur l'emploi en finance : gabarits d'articles et de rubriques.",
       oEdilians: "Fabricant de tuiles et matériaux de toiture : pages Carrières et RSE.",
       endCta: "Écrire un e-mail",
+      copyMail: "Copier l'adresse e-mail",
+      copyMailDone: "Adresse copiée",
       pdfLink: "Portfolio (PDF)",
       endHello: "Bonjour ! 안녕하세요 !",
       endEvening: "Bonsoir ! 안녕하세요 !",
@@ -863,6 +877,8 @@
       oLink: "Finance careers media: article and section templates.",
       oEdilians: "Roof tile and roofing materials manufacturer: Careers and CSR pages.",
       endCta: "Send an email",
+      copyMail: "Copy email address",
+      copyMailDone: "Address copied",
       pdfLink: "Portfolio (PDF)",
       endHello: "Hello! 안녕하세요!",
       endEvening: "Good evening! 안녕하세요!",
@@ -928,6 +944,8 @@
       oLink: "금융 채용 미디어: 기사 및 카테고리 템플릿.",
       oEdilians: "기와 및 지붕재 제조사: 채용 및 ESG 페이지.",
       endCta: "이메일 보내기",
+      copyMail: "이메일 주소 복사",
+      copyMailDone: "주소가 복사되었습니다",
       pdfLink: "포트폴리오 (PDF)",
       endHello: "안녕하세요! Bonjour!",
       endEvening: "좋은 저녁이에요! Bonsoir!",
@@ -970,6 +988,21 @@
       if (i < text.length) typingTimer = setTimeout(step, 35);
     })();
   }
+
+  // bouton « Copier » du contact : l'adresse va dans le presse-papiers, sans ouvrir la boîte mail
+  document.querySelectorAll(".copy-mail").forEach(btn => btn.addEventListener("click", async () => {
+    const mail = "jt.jessicathi@gmail.com";
+    try { await navigator.clipboard.writeText(mail); }
+    catch (e) {   // ancien navigateur ou page ouverte en fichier local : copie à l'ancienne
+      const t = document.createElement("textarea"); t.value = mail; t.setAttribute("readonly", "");
+      t.style.cssText = "position:fixed;opacity:0"; document.body.appendChild(t); t.select();
+      try { document.execCommand("copy"); } catch (e2) {} t.remove();
+    }
+    const lang = document.documentElement.lang in T ? document.documentElement.lang : "fr";
+    btn.setAttribute("aria-label", T[lang].copyMailDone); btn.classList.add("done");   // lecteur d'écran : « Adresse copiée »
+    clearTimeout(btn._t);
+    btn._t = setTimeout(() => { btn.setAttribute("aria-label", T[document.documentElement.lang in T ? document.documentElement.lang : "fr"].copyMail); btn.classList.remove("done"); }, 1500);
+  }));
 
   function setLang(lang) {
     document.documentElement.lang = lang;

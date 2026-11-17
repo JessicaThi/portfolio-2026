@@ -238,7 +238,7 @@
     <span class="label">스크린샷</span>
     <h2>주요 화면</h2>
     <p class="muted" style="margin-top:12px">제가 퍼블리싱한 페이지를 로컬 환경에서 예시 데이터로 실행해 캡처한 화면입니다. 이미지를 클릭하면 크게 볼 수 있습니다.</p>
-    <figure class="video"><video src="pando2/borne-vagues.mp4" muted loop playsinline preload="auto" aria-label="SVG 애니메이션 물결 배경이 적용된 Pando2 디스플레이 단말"></video><figcaption><strong>디스플레이 단말</strong>: SVG 애니메이션 물결 배경</figcaption></figure>
+    <figure class="video"><video src="pando2/borne-vagues.mp4" poster="pando2/borne-vagues-fixe.webp" muted loop playsinline preload="auto" aria-label="SVG 애니메이션 물결 배경이 적용된 Pando2 디스플레이 단말"></video><figcaption><strong>디스플레이 단말</strong>: SVG 애니메이션 물결 배경</figcaption></figure>
     <div class="gallery">
       <figure><button type="button" class="zoom" aria-label="크게 보기: 대시보드"><img width="1600" height="911" src="pando2/tableau-de-bord.webp" alt="Pando2: 합계, 도넛 차트 3개, 시설 순위가 있는 대시보드" loading="lazy"></button><figcaption><strong>대시보드</strong>: 지표, 도넛 차트, 시설 순위</figcaption></figure>
       <figure><button type="button" class="zoom" aria-label="크게 보기: 오염물질 및 에너지 사용량"><img width="1600" height="911" src="pando2/polluants-consommation.webp" alt="Pando2: 오염물질 분포, 전기·가스 사용량, 이벤트 목록" loading="lazy"></button><figcaption><strong>오염물질 및 에너지 사용량</strong>: 오염물질 분포, 전기·가스, 이벤트</figcaption></figure>
@@ -292,7 +292,7 @@
     const start = () => { vid.classList.add("on"); if (!calme) { vid.playbackRate = 0.7; vid.play().catch(() => {}); } };
     new IntersectionObserver((entries, obs) => {
       if (entries[0].isIntersecting) {
-        if (vid.readyState >= 2) start(); else vid.addEventListener("loadeddata", start, { once: true });
+        start();   // sans attendre le chargement : sur iPhone (économie d'énergie, KakaoTalk) il peut ne jamais venir, l'image fixe s'affiche alors
         obs.disconnect();
       }
     }, { threshold: 0.4 }).observe(vid);

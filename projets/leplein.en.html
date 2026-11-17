@@ -287,7 +287,7 @@
     const start = () => { vid.classList.add("on"); if (!calme) { vid.playbackRate = 1; vid.play().catch(() => {}); } };
     new IntersectionObserver((entries, obs) => {
       if (entries[0].isIntersecting) {
-        if (vid.readyState >= 2) start(); else vid.addEventListener("loadeddata", start, { once: true });
+        start();   // sans attendre le chargement : sur iPhone (économie d'énergie, KakaoTalk) il peut ne jamais venir, l'image fixe s'affiche alors
         obs.disconnect();
       }
     }, { threshold: 0.4 }).observe(vid);

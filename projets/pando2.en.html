@@ -238,7 +238,7 @@
     <span class="label">Screenshots</span>
     <h2>Some screens</h2>
     <p class="muted" style="margin-top:12px">Screenshots of my integration pages, run locally with sample data. Click a screenshot to enlarge it.</p>
-    <figure class="video"><video src="pando2/borne-vagues.mp4" muted loop playsinline preload="auto" aria-label="Pando2 display screen with the animated SVG wave background"></video><figcaption><strong>Display screen</strong>: the animated SVG wave background</figcaption></figure>
+    <figure class="video"><video src="pando2/borne-vagues.mp4" poster="pando2/borne-vagues-fixe.webp" muted loop playsinline preload="auto" aria-label="Pando2 display screen with the animated SVG wave background"></video><figcaption><strong>Display screen</strong>: the animated SVG wave background</figcaption></figure>
     <div class="gallery">
       <figure><button type="button" class="zoom" aria-label="Enlarge: Dashboard"><img width="1600" height="911" src="pando2/tableau-de-bord.webp" alt="Pando2: dashboard with totals, three donut charts and the ranking of sites" loading="lazy"></button><figcaption><strong>Dashboard</strong>: indicators, donut charts, ranking of sites</figcaption></figure>
       <figure><button type="button" class="zoom" aria-label="Enlarge: Pollutants and consumption"><img width="1600" height="911" src="pando2/polluants-consommation.webp" alt="Pando2: breakdown of pollutants, electricity and gas consumption, list of events" loading="lazy"></button><figcaption><strong>Pollutants and consumption</strong>: breakdown of pollutants, electricity and gas, events</figcaption></figure>
@@ -292,7 +292,7 @@
     const start = () => { vid.classList.add("on"); if (!calme) { vid.playbackRate = 0.7; vid.play().catch(() => {}); } };
     new IntersectionObserver((entries, obs) => {
       if (entries[0].isIntersecting) {
-        if (vid.readyState >= 2) start(); else vid.addEventListener("loadeddata", start, { once: true });
+        start();   // sans attendre le chargement : sur iPhone (économie d'énergie, KakaoTalk) il peut ne jamais venir, l'image fixe s'affiche alors
         obs.disconnect();
       }
     }, { threshold: 0.4 }).observe(vid);
