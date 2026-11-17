@@ -67,7 +67,7 @@
     @keyframes ch-respire { from { scale: .92; } to { scale: 1.08; } }
     #chargement .pourcent {
       font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 13px; letter-spacing: .14em;
-      color: ${sombre ? "#9a98b8" : "#7a7590"}; font-variant-numeric: tabular-nums;
+      color: ${sombre ? "#9a98b8" : "#6f6a86"}; font-variant-numeric: tabular-nums;
     }
     /* moins d'animations demandé : la lumière reste immobile */
     @media (prefers-reduced-motion: reduce) {
@@ -78,7 +78,8 @@
 
   // ---------- le haut de la page est-il prêt ? ----------
   const aLEcran = el => { const r = el.getBoundingClientRect(); return r.width > 0 && r.bottom > 0 && r.top < innerHeight; };
-  const policesPretes = () => !document.fonts || document.fonts.status === "loaded" || performance.now() - t0 > POLICES;
+  // on attend seulement les polices du site (Inter, JetBrains Mono), pas la police coréenne de Google, plus lourde, qui arrive ensuite
+  const policesPretes = () => !document.fonts || (document.fonts.check('16px "Inter"') && document.fonts.check('13px "JetBrains Mono"')) || performance.now() - t0 > POLICES;
   const etat = () => {
     const imgs = [...document.images].filter(img => img.src && aLEcran(img));
     const pretes = imgs.filter(img => img.complete).length;           // complete = chargée (ou en erreur : on n'attend pas)

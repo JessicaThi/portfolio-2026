@@ -44,7 +44,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+/* polices du site (copie de fonts/fonts.css, écrite ici pour éviter une requête avant l'affichage) */
+/* Polices du site, hébergées avec le site (plus rapide que Google Fonts : le texte ne change plus de police au chargement).
+   Inter et JetBrains Mono, licence SIL Open Font License. Polices variables : un fichier couvre toutes les graisses. */
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 600; font-display: swap; src: url('fonts/inter-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 600; font-display: swap; src: url('fonts/inter-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400 500; font-display: swap; src: url('fonts/jetbrains-mono-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400 500; font-display: swap; src: url('fonts/jetbrains-mono-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+/* police de secours aux mêmes mesures qu'Inter : si Inter arrive un peu tard, le texte ne bouge presque pas */
+@font-face { font-family: 'Inter fallback'; src: local('Arial'); ascent-override: 90.2%; descent-override: 22.48%; line-gap-override: 0%; size-adjust: 107.4%; }
+</style>
 <script src="chargement.js"></script>
 <!-- polices coréennes : restent chez Google Fonts (découpées en petits morceaux, chargés seulement pour le coréen affiché) -->
 <!-- chargée sans bloquer l'affichage : la page s'affiche tout de suite, la police coréenne arrive juste après -->
@@ -56,7 +66,7 @@
     --bg: #f4f1fb;
     --surface: #ffffff;
     --text: #1d1a2b;
-    --muted: #7a7590;
+    --muted: #6f6a86;   /* assez foncé pour être lisible sur le fond lavande (contraste 4,6:1) */
     --line: #dcd6ec;
     --accent: #8b5cf6;
     --accent-soft: #e6dcfd;
@@ -661,25 +671,25 @@
         </a></article>
         <article class="card"><a href="projets/pando2.html">
           <div class="thumb vg cascade" style="--base: #3f4bab; --glow: #9fe3d0;">
-            <div class="vg-cw w1"><div class="vg-win"><div class="vg-vp"><img src="miniatures/pando2-evaluations.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-cw w2"><div class="vg-win"><div class="vg-vp"><img src="miniatures/pando2-polluants-consommation.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-cw w3"><div class="vg-win"><div class="vg-vp"><img src="miniatures/pando2-tableau-de-bord.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-t"><span class="vg-n">Pando2</span><span class="vg-g" data-t="vPando"></span></div>
+            <div class="vg-cw w1"><div class="vg-win"><div class="vg-vp"><img src="miniatures/pando2-evaluations.webp" srcset="miniatures/pando2-evaluations-petit.webp 430w, miniatures/pando2-evaluations.webp 860w" sizes="(max-width: 680px) calc((100vw - 32px) * 0.66), 315px" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-cw w2"><div class="vg-win"><div class="vg-vp"><img src="miniatures/pando2-polluants-consommation.webp" srcset="miniatures/pando2-polluants-consommation-petit.webp 430w, miniatures/pando2-polluants-consommation.webp 860w" sizes="(max-width: 680px) calc((100vw - 32px) * 0.66), 315px" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-cw w3"><div class="vg-win"><div class="vg-vp"><img src="miniatures/pando2-tableau-de-bord.webp" srcset="miniatures/pando2-tableau-de-bord-petit.webp 430w, miniatures/pando2-tableau-de-bord.webp 860w" sizes="(max-width: 680px) calc((100vw - 32px) * 0.66), 315px" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-t"><span class="vg-n">Pando2</span><span class="vg-g" data-t="vPando"></span></div>
           </div>
           <div class="meta"><strong>Pando2</strong><span class="label" data-t="mPando2"></span></div>
         </a></article>
         <article class="card"><a href="projets/leplein.html">
           <div class="thumb vg static giant" style="--base: #063532; --glow: #f5ff02;">
-            <div class="vg-win"><div class="vg-vp"><img src="miniatures/leplein-accueil.webp" alt="" loading="lazy" style="object-position: top;"></div></div><span class="vg-tag" data-t="vLeplein"></span><span class="vg-giant">Le Plein</span>
+            <div class="vg-win"><div class="vg-vp"><img src="miniatures/leplein-accueil.webp" srcset="miniatures/leplein-accueil-petit.webp 460w, miniatures/leplein-accueil.webp 920w" sizes="(max-width: 680px) calc((100vw - 32px) * 0.7), 335px" alt="" loading="lazy" style="object-position: top;"></div></div><span class="vg-tag" data-t="vLeplein"></span><span class="vg-giant">Le Plein</span>
           </div>
           <div class="meta"><strong>Le Plein</strong><span class="label">Astro · Tailwind.css · 2023</span></div>
         </a></article>
         <article class="card"><a href="projets/skade.html">
           <div class="thumb vg big" style="--base: #4f63e0; --glow: #c9d4ff;">
-            <div class="vg-big"><div class="vg-win"><div class="vg-vp"><img src="miniatures/skade-app-fil.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-t"><span class="vg-n">Skade</span><span class="vg-g" data-t="vSkade"></span></div>
+            <div class="vg-big"><div class="vg-win"><div class="vg-vp"><img src="miniatures/skade-app-fil.webp" srcset="miniatures/skade-app-fil-petit.webp 650w, miniatures/skade-app-fil.webp 1300w" sizes="(max-width: 680px) calc((100vw - 32px) * 1.0), 478px" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-t"><span class="vg-n">Skade</span><span class="vg-g" data-t="vSkade"></span></div>
           </div>
           <div class="meta"><strong>Skade</strong><span class="label">Nuxt.js · Astro · 2022 – 2023</span></div>
         </a></article>
         <article class="card"><a href="projets/ouipharma.html">
           <div class="thumb vg ba" style="--base: #134a85; --glow: #7fd6c2;">
-            <div class="vg-baw"><div class="vg-win"><div class="vg-vp"><div class="vg-bafr"><img class="before" src="miniatures/ouipharma-accueil-avant-desktop.webp" alt="" loading="lazy"><img class="after" src="miniatures/ouipharma-accueil-apres-desktop.webp" alt="" loading="lazy"><span class="vg-bline"></span></div></div></div></div><span class="vg-lab ya">2019</span><span class="vg-lab yb">2022</span><div class="vg-t"><span class="vg-n">Ouipharma</span><span class="vg-g" data-t="vOuipharma"></span></div>
+            <div class="vg-baw"><div class="vg-win"><div class="vg-vp"><div class="vg-bafr"><img class="before" src="miniatures/ouipharma-accueil-avant-desktop.webp" srcset="miniatures/ouipharma-accueil-avant-desktop-petit.webp 500w, miniatures/ouipharma-accueil-avant-desktop.webp 1000w" sizes="(max-width: 680px) calc((100vw - 32px) * 0.76), 363px" alt="" loading="lazy"><img class="after" src="miniatures/ouipharma-accueil-apres-desktop.webp" srcset="miniatures/ouipharma-accueil-apres-desktop-petit.webp 500w, miniatures/ouipharma-accueil-apres-desktop.webp 1000w" sizes="(max-width: 680px) calc((100vw - 32px) * 0.76), 363px" alt="" loading="lazy"><span class="vg-bline"></span></div></div></div></div><span class="vg-lab ya">2019</span><span class="vg-lab yb">2022</span><div class="vg-t"><span class="vg-n">Ouipharma</span><span class="vg-g" data-t="vOuipharma"></span></div>
           </div>
           <div class="meta"><strong>Ouipharma</strong><span class="label" data-t="mOuipharma"></span></div>
         </a></article>
@@ -691,7 +701,7 @@
         </a></article>
         <article class="card"><a href="projets/dotworld.html">
           <div class="thumb vg collage" style="--base: #0f2a8f; --glow: #6fa8ff;">
-            <div class="vg-ck rz"><img src="miniatures/dotworld-rezilli-landing-desktop.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck tw"><img src="miniatures/dotworld-twenty-site-desktop.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck cv"><img src="miniatures/dotworld-cvninja-lyon.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck ph"><img src="miniatures/dotworld-twenty-app-index.webp" alt="" loading="lazy" style="object-position: top;"></div><span class="vg-lab l1">Rezilli</span><span class="vg-lab l2">Twenty Pay</span><span class="vg-lab l3">CV Ninja</span><div class="vg-t"><span class="vg-n">Dotworld</span><span class="vg-g" data-t="vDotworld"></span></div>
+            <div class="vg-ck rz"><img src="miniatures/dotworld-rezilli-landing-desktop.webp" srcset="miniatures/dotworld-rezilli-landing-desktop-petit.webp 405w, miniatures/dotworld-rezilli-landing-desktop.webp 810w" sizes="(max-width: 680px) calc((100vw - 32px) * 0.62), 296px" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck tw"><img src="miniatures/dotworld-twenty-site-desktop.webp" srcset="miniatures/dotworld-twenty-site-desktop-petit.webp 365w, miniatures/dotworld-twenty-site-desktop.webp 730w" sizes="(max-width: 680px) calc((100vw - 32px) * 0.56), 268px" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck cv"><img src="miniatures/dotworld-cvninja-lyon.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck ph"><img src="miniatures/dotworld-twenty-app-index.webp" alt="" loading="lazy" style="object-position: top;"></div><span class="vg-lab l1">Rezilli</span><span class="vg-lab l2">Twenty Pay</span><span class="vg-lab l3">CV Ninja</span><div class="vg-t"><span class="vg-n">Dotworld</span><span class="vg-g" data-t="vDotworld"></span></div>
           </div>
           <div class="meta"><strong>Dotworld</strong><span class="label">Vue.js · Nuxt.js · 2021 – 2022</span></div>
         </a></article>
@@ -1318,7 +1328,7 @@
     return c;
   }
   const loadImg = src => new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = src; });
-  Promise.all(["koi-body.png", "koi-fin-top.png", "koi-fin-bottom.png"].map(loadImg)).then(([body, top, bottom]) => {
+  Promise.all(["koi-body.webp", "koi-fin-top.webp", "koi-fin-bottom.webp"].map(loadImg)).then(([body, top, bottom]) => {
     KOI.sets = {
       day: { body, top, bottom },
       night: { body: nightVersion(body), top: nightVersion(top), bottom: nightVersion(bottom) }
