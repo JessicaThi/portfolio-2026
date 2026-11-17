@@ -131,6 +131,9 @@
 /* une section qui finit par une bande de couleur, suivie d'une autre section de captures : pas de trait gris entre les deux,
    la bande fait déjà la séparation. Avant « Ce que j'ai appris » (section .two), le trait reste, comme sur toutes les pages. */
 section:has(> .duos:last-child, > .showcase:last-child, > .board:last-child):has(+ section:not(.two)) { border-bottom: 0; padding-bottom: 0; }
+/* même chose sous l'intro (rôle, période, stack) : la bande de l'ouverture qui suit fait la séparation.
+   Le trait se voyait surtout sur Clor AI, dont la bande est sombre comme le fond de la page. */
+.intro:has(+ .stage) { border-bottom: 0; }
 
 /* ---------- Apparition douce au défilement (apparition.js) ---------- */
 /* « translate » plutôt que « transform » : les blocs qui ont déjà leur propre rotation ou décalage les gardent */
