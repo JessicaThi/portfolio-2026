@@ -4,14 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pando2 — 제시카 틸레만스</title>
+<meta name="description" content="공기질(특히 CO2 농도)과 에너지 사용량을 모니터링하는 건물 관리 소프트웨어(SaaS)의 인터페이스입니다.">
+<link rel="canonical" href="https://jessica-thielemans.com/projets/pando2.ko">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1126" media="(prefers-color-scheme: dark)">
+<!-- aperçu quand le lien est partagé (LinkedIn, KakaoTalk, iMessage…) -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Jessica Thielemans">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://jessica-thielemans.com/projets/pando2.ko">
+<meta property="og:title" content="Pando2 — 제시카 틸레만스">
+<meta property="og:description" content="공기질(특히 CO2 농도)과 에너지 사용량을 모니터링하는 건물 관리 소프트웨어(SaaS)의 인터페이스입니다.">
+<meta property="og:image" content="https://jessica-thielemans.com/projets/pando2/apercu.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="프로젝트 미리보기 Pando2">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="icon" type="image/svg+xml" href="../logo-jt.svg">
 <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../fonts/fonts.css">
 <!-- la même page dans les autres langues (pour Google) -->
-<link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/pando2.html">
-<link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/pando2.en.html">
-<link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/pando2.ko.html">
+<link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/pando2">
+<link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/pando2.en">
+<link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/pando2.ko">
+<link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/pando2">
 <link rel="stylesheet" href="commun.css">
 <script src="apparition.js"></script>
 <script src="../chargement.js"></script>
@@ -172,8 +190,8 @@
 
   <figure class="stage" style="--band: #e7eef8; --frame: #1d2433; --ink: #3b4a6b;">
     <div class="scene">
-      <div class="browser"><img src="pando2/tableau-de-bord.webp" alt="Pando2: 차트가 있는 대시보드와 모바일 화면의 실내 디스플레이 단말"></div>
-      <div class="phone"><img src="pando2/mobile-borne.webp" alt=""></div>
+      <div class="browser"><img width="1600" height="911" src="pando2/tableau-de-bord.webp" alt="Pando2: 차트가 있는 대시보드와 모바일 화면의 실내 디스플레이 단말"></div>
+      <div class="phone"><img width="600" height="1299" src="pando2/mobile-borne.webp" alt=""></div>
     </div>
     <figcaption>데스크톱의 대시보드와 모바일의 디스플레이 단말 화면</figcaption>
   </figure>
@@ -222,20 +240,20 @@
     <p class="muted" style="margin-top:12px">제가 퍼블리싱한 페이지를 로컬 환경에서 예시 데이터로 실행해 캡처한 화면입니다. 이미지를 클릭하면 크게 볼 수 있습니다.</p>
     <figure class="video"><video src="pando2/borne-vagues.mp4" muted loop playsinline preload="auto" aria-label="SVG 애니메이션 물결 배경이 적용된 Pando2 디스플레이 단말"></video><figcaption><strong>디스플레이 단말</strong>: SVG 애니메이션 물결 배경</figcaption></figure>
     <div class="gallery">
-      <figure><button type="button" class="zoom" aria-label="크게 보기: 대시보드"><img src="pando2/tableau-de-bord.webp" alt="Pando2: 합계, 도넛 차트 3개, 시설 순위가 있는 대시보드" loading="lazy"></button><figcaption><strong>대시보드</strong>: 지표, 도넛 차트, 시설 순위</figcaption></figure>
-      <figure><button type="button" class="zoom" aria-label="크게 보기: 오염물질 및 에너지 사용량"><img src="pando2/polluants-consommation.webp" alt="Pando2: 오염물질 분포, 전기·가스 사용량, 이벤트 목록" loading="lazy"></button><figcaption><strong>오염물질 및 에너지 사용량</strong>: 오염물질 분포, 전기·가스, 이벤트</figcaption></figure>
-      <figure><button type="button" class="zoom" aria-label="크게 보기: 자가 진단 보고서"><img src="pando2/autodiagnostic.webp" alt="Pando2: CO2 직접 측정값과 준수한 모범 사례가 표시된 자가 진단 요약" loading="lazy"></button><figcaption><strong>자가 진단 보고서</strong>: CO2 측정값, 주제별 모범 사례</figcaption></figure>
-      <figure><button type="button" class="zoom" aria-label="크게 보기: 설비"><img src="pando2/equipements.webp" alt="Pando2: 검색, 필터, 작업 버튼이 있는 설비 목록" loading="lazy"></button><figcaption><strong>설비</strong>: 검색, 필터, 작업 버튼이 있는 테이블</figcaption></figure>
-      <figure><button type="button" class="zoom" aria-label="크게 보기: 건물 평가"><img src="pando2/evaluations.webp" alt="Pando2: 타임라인 위의 건물 평가 목록과 작성률, 담당자, 마감일, 작업 버튼" loading="lazy"></button><figcaption><strong>건물 평가</strong>: 타임라인, 작성률, 작업 버튼</figcaption></figure>
-      <figure><button type="button" class="zoom" aria-label="크게 보기: 다단계 폼"><img src="pando2/formulaire-etapes.webp" alt="Pando2: 4단계 폼, CSV 가져오기를 이용한 평가 대상 공간 설정" loading="lazy"></button><figcaption><strong>다단계 폼</strong>: 평가 대상 공간 설정</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="크게 보기: 대시보드"><img width="1600" height="911" src="pando2/tableau-de-bord.webp" alt="Pando2: 합계, 도넛 차트 3개, 시설 순위가 있는 대시보드" loading="lazy"></button><figcaption><strong>대시보드</strong>: 지표, 도넛 차트, 시설 순위</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="크게 보기: 오염물질 및 에너지 사용량"><img width="1600" height="911" src="pando2/polluants-consommation.webp" alt="Pando2: 오염물질 분포, 전기·가스 사용량, 이벤트 목록" loading="lazy"></button><figcaption><strong>오염물질 및 에너지 사용량</strong>: 오염물질 분포, 전기·가스, 이벤트</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="크게 보기: 자가 진단 보고서"><img width="1600" height="911" src="pando2/autodiagnostic.webp" alt="Pando2: CO2 직접 측정값과 준수한 모범 사례가 표시된 자가 진단 요약" loading="lazy"></button><figcaption><strong>자가 진단 보고서</strong>: CO2 측정값, 주제별 모범 사례</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="크게 보기: 설비"><img width="1600" height="911" src="pando2/equipements.webp" alt="Pando2: 검색, 필터, 작업 버튼이 있는 설비 목록" loading="lazy"></button><figcaption><strong>설비</strong>: 검색, 필터, 작업 버튼이 있는 테이블</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="크게 보기: 건물 평가"><img width="1824" height="1230" src="pando2/evaluations.webp" alt="Pando2: 타임라인 위의 건물 평가 목록과 작성률, 담당자, 마감일, 작업 버튼" loading="lazy"></button><figcaption><strong>건물 평가</strong>: 타임라인, 작성률, 작업 버튼</figcaption></figure>
+      <figure><button type="button" class="zoom" aria-label="크게 보기: 다단계 폼"><img width="1600" height="814" src="pando2/formulaire-etapes.webp" alt="Pando2: 4단계 폼, CSV 가져오기를 이용한 평가 대상 공간 설정" loading="lazy"></button><figcaption><strong>다단계 폼</strong>: 평가 대상 공간 설정</figcaption></figure>
     </div>
 
     <div class="showcase" style="--band: #e7eef8; --frame: #1d2433; --ink: #3b4a6b;">
       <div class="row">
-        <div class="phone"><img src="pando2/mobile-borne.webp" alt="" loading="lazy"></div>
-        <div class="phone"><img src="pando2/mobile-tableau-de-bord.webp" alt="모바일 Pando2: 합계와 세로로 배치된 차트가 있는 대시보드" loading="lazy"></div>
-        <div class="phone"><img src="pando2/mobile-classement.webp" alt="모바일 Pando2: 검색과 필터가 있는 시설 순위" loading="lazy"></div>
-        <div class="phone"><img src="pando2/mobile-evenements.webp" alt="모바일 Pando2: 페이지네이션이 있는 에너지 사용량 테이블과 이벤트 목록" loading="lazy"></div>
+        <div class="phone"><img width="600" height="1299" src="pando2/mobile-borne.webp" alt="" loading="lazy"></div>
+        <div class="phone"><img width="600" height="1299" src="pando2/mobile-tableau-de-bord.webp" alt="모바일 Pando2: 합계와 세로로 배치된 차트가 있는 대시보드" loading="lazy"></div>
+        <div class="phone"><img width="600" height="1350" src="pando2/mobile-classement.webp" alt="모바일 Pando2: 검색과 필터가 있는 시설 순위" loading="lazy"></div>
+        <div class="phone"><img width="600" height="1350" src="pando2/mobile-evenements.webp" alt="모바일 Pando2: 페이지네이션이 있는 에너지 사용량 테이블과 이벤트 목록" loading="lazy"></div>
       </div>
       <p>모바일 화면: 디스플레이 단말, 대시보드, 순위, 테이블</p>
     </div>
@@ -264,7 +282,7 @@
 
 <script>
   // thème clair / sombre choisi sur l'accueil
-  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  try { const t = localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : ""); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
 
   // vidéo de la borne : démarre en douceur quand elle arrive à l'écran
   const vid = document.querySelector(".video video");

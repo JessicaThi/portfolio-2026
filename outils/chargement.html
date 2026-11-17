@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Essai — écran de chargement</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="../logo-jt.svg">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<!-- Page d'essai de l'écran de chargement (../chargement.js), le même fichier que sur le site.
+     Modifier chargement.js puis recharger cette page pour voir le résultat. -->
+<script>
+  // si l'adresse n'indique pas de mode, on lance la simulation
+  if (!new URLSearchParams(location.search).has("chargement")) {
+    history.replaceState(null, "", "?chargement=sim");
+  }
+</script>
+<style>
+  :root { --bg: #f4f1fb; --text: #1d1a2b; --muted: #7a7590; --line: #dcd6ec; --accent: #8b5cf6; --font: "Inter", "Inter fallback", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace; }
+  :root[data-theme="dark"] { --bg: #0f1126; --text: #ecebf7; --muted: #9a98b8; --line: #2a2d50; --accent: #a78bfa; }
+  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); font-family: var(--font); }
+  /* boutons au-dessus de l'écran de chargement */
+  .panneau {
+    position: fixed; left: 50%; bottom: 24px; translate: -50% 0; z-index: 10001;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; align-items: center;
+    padding: 12px 18px; border: 1px solid var(--line); border-radius: 16px;
+    background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(8px);
+    font-size: 13px; max-width: calc(100vw - 32px); box-sizing: border-box;
+  }
+  .groupe { display: flex; gap: 6px; align-items: center; }
+  .groupe > span { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+  button {
+    font: inherit; color: var(--text); background: none; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px;
+  }
+  button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  input[type="range"] { width: 110px; accent-color: var(--accent); }
+</style>
+<script>
+  // thème enregistré (le même réglage que sur le site), appliqué avant l'écran de chargement
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<script src="../chargement.js"></script>
+</head>
+<body>
+
+<div class="panneau">
+  <div class="groupe">
+    <span>Thème</span>
+    <button type="button" data-theme-choix="light">Clair</button>
+    <button type="button" data-theme-choix="dark">Sombre</button>
+  </div>
+  <div class="groupe">
+    <span>Mode</span>
+    <button type="button" data-mode="sim">Simulation</button>
+    <button type="button" data-mode="fixe">Fixe</button>
+    <input type="range" min="0" max="100" step="1" aria-label="Pourcentage affiché">
+  </div>
+</div>
+
+<script>
+  const param = new URLSearchParams(location.search).get("chargement");
+  const sombre = document.documentElement.dataset.theme === "dark";
+  const curseur = document.querySelector('input[type="range"]');
+  curseur.value = /^\d+$/.test(param) ? param : 42;
+
+  // états des boutons
+  document.querySelector(`[data-theme-choix="${sombre ? "dark" : "light"}"]`).setAttribute("aria-pressed", "true");
+  document.querySelector(`[data-mode="${param === "sim" ? "sim" : "fixe"}"]`).setAttribute("aria-pressed", "true");
+
+  // changer de thème : on l'enregistre comme le site, puis on recharge
+  document.querySelectorAll("[data-theme-choix]").forEach(b => b.addEventListener("click", () => {
+    try { localStorage.setItem("theme", b.dataset.themeChoix); } catch (e) {}
+    location.reload();
+  }));
+  // changer de mode : simulation en boucle, ou pourcentage fixe choisi avec le curseur
+  const aller = v => { location.search = "?chargement=" + v; };
+  document.querySelector('[data-mode="sim"]').addEventListener("click", () => aller("sim"));
+  document.querySelector('[data-mode="fixe"]').addEventListener("click", () => aller(curseur.value));
+  curseur.addEventListener("change", () => aller(curseur.value));
+</script>
+</body>
+</html>

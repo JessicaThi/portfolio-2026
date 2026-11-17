@@ -27,9 +27,9 @@
   if (document.readyState === "complete" && !essai) return;
   const t0 = performance.now();
 
-  // thème clair ou sombre choisi sur le site (lu ici directement, avant que la page l'applique)
+  // thème clair ou sombre choisi sur le site, sinon celui de l'ordinateur (lu ici directement, avant que la page l'applique)
   let sombre = false;
-  try { sombre = localStorage.getItem("theme") === "dark"; } catch (e) {}
+  try { sombre = (localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "")) === "dark"; } catch (e) {}
 
   const css = `
     #chargement {

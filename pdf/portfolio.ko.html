@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>포트폴리오 — Jessica Thielemans</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="../logo-jt.svg">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<!-- Portfolio court, à enregistrer en PDF : Imprimer → Enregistrer en PDF.
+     Une diapositive 16:9 par page : couverture, profil, un projet par page, puis contact.
+     Les textes viennent des pages projets (projets/*.html) : les modifier là-bas d'abord. -->
+<style>
+  :root {
+    --text: #1d1a2b; --muted: #6f6a86; --line: #ece8f4; --accent: #8b5cf6; --pink: #f08cb8;
+    --font: "Inter", "Inter fallback", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  @page { size: 338.67mm 190.5mm; margin: 0; }   /* 16:9, comme une présentation (1280 × 720) */
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html { background: #e9e6f0; }
+  body { margin: 0; color: var(--text); font-family: var(--font); line-height: 1.5; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- Diapositive ---------- */
+  .slide {
+    position: relative; width: 1280px; height: 720px; overflow: hidden; background: #fff;
+    margin: 32px auto; box-shadow: 0 10px 40px rgba(29, 26, 43, .12);
+    display: grid; grid-template-columns: 500px 1fr;
+  }
+  /* liseré mauve en haut, comme sur le site */
+  .slide::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: linear-gradient(90deg, var(--accent), var(--pink)); z-index: 2; }
+  .label { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .foot {
+    position: absolute; left: 56px; bottom: 28px; display: flex; gap: 18px; align-items: center;
+    font-family: var(--mono); font-size: 10.5px; color: var(--muted);
+  }
+  .foot img { height: 18px; width: auto; }
+
+  /* ---------- Colonne texte ---------- */
+  .text { padding: 56px 40px 72px 56px; display: flex; flex-direction: column; }
+  .text h2 { font-size: 46px; line-height: 1; letter-spacing: -.02em; font-weight: 600; margin: 12px 0 16px; }
+  .summary { font-size: 15px; line-height: 1.5; margin: 0 0 20px; }
+  .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; margin: 0 0 22px; padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .meta dt { margin-bottom: 2px; font-size: 10px; }
+  .meta dd { margin: 0; font-size: 12.5px; line-height: 1.4; }
+  .meta .wide { grid-column: 1 / -1; }
+  .done { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .done li { font-size: 12.5px; line-height: 1.45; padding-left: 16px; position: relative; }
+  .done li::before { content: ""; position: absolute; left: 0; top: .55em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .done strong { font-weight: 600; }
+
+  /* ---------- Colonne visuel : bande de couleur du projet, écran d'ordinateur + téléphone ---------- */
+  .visual { --band: #eef0f6; --frame: #1d2433; background: var(--band); display: grid; place-items: center; padding: 48px 40px; }
+  .scene { position: relative; width: 100%; padding-right: 13%; }
+  /* pas d'ombres : Aperçu (Mac) les affiche comme des rectangles noirs dans le PDF */
+  .browser { border-radius: 10px; overflow: hidden; background: #fff; border: 1px solid rgba(15, 20, 40, .12); }
+  .browser::before {
+    content: ""; display: block; height: 22px;
+    background:
+      radial-gradient(circle, #ff5f57 3.5px, transparent 4px) 12px 50% / 10px 10px no-repeat,
+      radial-gradient(circle, #febc2e 3.5px, transparent 4px) 26px 50% / 10px 10px no-repeat,
+      radial-gradient(circle, #28c840 3.5px, transparent 4px) 40px 50% / 10px 10px no-repeat,
+      #f1f1f4;
+    border-bottom: 1px solid rgba(0, 0, 0, .06);
+  }
+  /* chaque capture garde son format d'origine (rien n'est coupé), sauf les pages très hautes (.long) coupées en bas */
+  .browser img { width: 100%; height: auto; }
+  .browser img.long { aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
+  .phone {
+    position: absolute; right: 0; bottom: -28px; width: 24%;
+    padding: 7px; border-radius: 28px; background: var(--frame);
+  }
+  .phone img { width: 100%; aspect-ratio: 390 / 844; object-fit: cover; object-position: top; border-radius: 21px; }
+
+  /* ---------- Couverture ---------- */
+  .cover { grid-template-columns: 1fr 1fr; }
+  .cover .text { padding: 72px 56px; justify-content: center; }
+  .cover .logo { height: 44px; width: auto; margin-bottom: 40px; }
+  .cover h1 { font-size: 64px; line-height: 1; letter-spacing: -.025em; font-weight: 600; margin: 14px 0 20px; }
+  .cover .lead { font-size: 18px; line-height: 1.5; margin: 0 0 10px; max-width: 460px; }
+  .cover .where { color: var(--muted); margin: 0; }
+  .index { background: #f6f3fd; padding: 72px 56px; display: flex; flex-direction: column; justify-content: center; }
+  .index ol { list-style: none; margin: 18px 0 0; padding: 0; }
+  .index li { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: baseline; padding: 9px 0; border-bottom: 1px solid #e6e0f5; }
+  .index li:last-child { border-bottom: 0; }
+  .index .n { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+  .index .name { font-size: 18px; font-weight: 600; }
+  .index .what { font-size: 12.5px; color: var(--muted); text-align: right; }
+
+  /* ---------- Profil ---------- */
+  .profile { grid-template-columns: 1fr 1fr; }
+  .profile .text { padding-right: 48px; }
+  .profile .text h2 { font-size: 40px; }
+  .profile .intro { font-size: 16px; line-height: 1.55; margin: 0 0 24px; }
+  .profile .done li { font-size: 13.5px; }
+  .side { background: #f6f3fd; padding: 56px 56px 72px 48px; }
+  .skills { margin: 12px 0 28px; display: grid; gap: 12px; }
+  .skills div { display: grid; grid-template-columns: 136px 1fr; align-items: start; gap: 12px; font-size: 13px; line-height: 1.45; }
+  .skills dt { line-height: 24px; white-space: nowrap; }
+  .skills dd { margin: 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tags span { display: inline-flex; align-items: center; height: 24px; line-height: 1; background: #fff; border: 1px solid #e6e0f5; border-radius: 999px; padding: 0 10px; font-size: 12px; }
+  .path { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
+  .path li { display: grid; grid-template-columns: 136px 1fr; gap: 12px; font-size: 13px; line-height: 1.4; }
+  .path .when { font-family: var(--mono); font-size: 11.5px; color: var(--accent); padding-top: 1px; }
+  .path .muted { color: var(--muted); }
+
+  /* ---------- Dernière page : contact ---------- */
+  .end { grid-template-columns: 1fr; padding: 56px 56px 72px; align-content: start; }
+  .end h2 { font-size: 34px; font-weight: 600; letter-spacing: -.01em; margin: 10px 0 28px; }
+  .contact { margin-top: 40px; padding: 28px 32px; border-radius: 14px; background: #f6f3fd; display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center; }
+  .contact h3 { font-size: 22px; font-weight: 600; margin: 0; }
+  .contact ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 32px; font-size: 14px; }
+  .contact ul span { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+  @media print {
+    html { background: none; }
+    .slide { margin: 0; box-shadow: none; break-after: page; }
+    * { box-shadow: none !important; }
+    .slide:last-child { break-after: auto; }
+  }
+
+  /* 한국어 : Inter에 없는 한글은 Apple SD Gothic Neo로, 단어 중간에서 줄바꿈하지 않음 */
+  :root { --font: "Inter", "Apple SD Gothic Neo", "Noto Sans KR", "Inter fallback", system-ui, sans-serif; }
+  body { word-break: keep-all; overflow-wrap: break-word; }
+  .label { letter-spacing: .08em; }
+</style>
+</head>
+<body>
+
+<!-- ===== Couverture ===== -->
+<section class="slide cover">
+  <div class="text">
+    <img class="logo" src="../logo-jt.svg" alt="">
+    <span class="label">포트폴리오</span>
+    <h1>Jessica Thielemans</h1>
+    <p class="lead">웹 개발 및 프론트엔드 분야에서 5년 이상의 경력을 쌓아 온 프론트엔드 개발자입니다.</p>
+    <p class="where">제시카 틸레만스 · 서울 인피니크 프론트엔드 개발자</p>
+  </div>
+  <div class="index">
+    <span class="label">프로젝트</span>
+    <ol>
+      <li><span class="n">01</span><span class="name">Clor AI</span><span class="what">AI 이미지 편집</span></li>
+      <li><span class="n">02</span><span class="name">Pando2</span><span class="what">건물 관리</span></li>
+      <li><span class="n">03</span><span class="name">Ouipharma</span><span class="what">약국 마켓플레이스</span></li>
+      <li><span class="n">04</span><span class="name">Nomiks</span><span class="what">Web3 및 암호화폐</span></li>
+      <li><span class="n">05</span><span class="name">Dotworld</span><span class="what">웹 서비스 및 홍보 사이트</span></li>
+      <li><span class="n">06</span><span class="name">Otoctone</span><span class="what">럭셔리 여행</span></li>
+      <li><span class="n">07</span><span class="name">Le Plein</span><span class="what">전기차 충전</span></li>
+      <li><span class="n">08</span><span class="name">Skade</span><span class="what">금융·커뮤니티</span></li>
+    </ol>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/">jessica-thielemans.com</a> · <a href="mailto:jt.jessicathi@gmail.com">jt.jessicathi@gmail.com</a></div>
+</section>
+
+<!-- ===== Profil ===== -->
+<section class="slide profile">
+  <div class="text">
+    <span class="label">프로필</span>
+    <h2>프론트엔드 개발자</h2>
+    <p class="intro">웹 개발 및 프론트엔드 분야에서 5년 이상의 경력을 쌓아 온 프론트엔드 개발자입니다. 2026년부터 서울 인피니크에서 프론트엔드 개발자로 일하고 있습니다. 2021년부터 2025년까지는 프리랜서로 10개 이상의 웹사이트와 애플리케이션의 인터페이스를 개발했습니다.</p>
+    <span class="label">강점</span>
+    <ul class="done" style="margin-top:12px">
+      <li>요구사항 분석부터 UI 구현, 유지보수까지 담당</li>
+      <li>React, TypeScript, Vue.js 기반 인터페이스 개발 및 CMS 프론트엔드 퍼블리싱</li>
+      <li>건물 관리, 마켓플레이스, AI 이미지 편집 등 다양한 분야의 경험</li>
+      <li>디자이너의 시안을 바탕으로 한 개발, 단독 작업과 팀 협업 모두 경험</li>
+    </ul>
+  </div>
+  <div class="side">
+    <span class="label">기술</span>
+    <dl class="skills">
+      <div><dt class="label">프론트엔드</dt><dd class="tags"><span>JavaScript</span><span>TypeScript</span><span>HTML</span><span>CSS</span><span>React</span><span>Next.js</span><span>Vue.js</span><span>Nuxt.js</span><span>Stimulus.js</span><span>jQuery</span></dd></div>
+      <div><dt class="label">스타일·디자인</dt><dd class="tags"><span>Tailwind.css</span><span>Sass</span><span>Figma</span></dd></div>
+      <div><dt class="label">CMS</dt><dd class="tags"><span>WordPress</span><span>Drupal</span><span>PrestaShop</span></dd></div>
+      <div><dt class="label">프로젝트</dt><dd>Ruby on Rails·Laravel 프로젝트의 프론트엔드 UI 구현</dd></div>
+      <div><dt class="label">AI 도구</dt><dd>Claude Code 등 AI 코딩 도구를 활용한 개발</dd></div>
+    </dl>
+    <span class="label">경력</span>
+    <ul class="path">
+      <li><span class="when">2026 – 현재</span><span><strong>인피니크 (Infinique)</strong>, 서울<br><span class="muted">프론트엔드 개발자</span></span></li>
+      <li><span class="when">2021 – 2025</span><span><strong>프리랜서</strong><br><span class="muted">프론트엔드 개발자</span></span></li>
+      <li><span class="when">2018 – 2019</span><span><strong>New Generation Agency</strong><br><span class="muted">일·학습 병행 · 프론트엔드 개발자</span></span></li>
+      <li><span class="when">2016 – 2019</span><span><strong>HETIC</strong><br><span class="muted">웹 개발 및 디자인 학사</span></span></li>
+    </ul>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 01 Clor AI ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">01 · Infinique · AI 이미지 편집</span>
+    <h2>Clor AI</h2>
+    <p class="summary">인물 보정, 포즈, 색상 등 AI 도구를 갖춘 사진 편집기로, 웹·데스크톱·모바일에서 사용할 수 있습니다.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">역할</dt><dd>프론트엔드 개발자, 개발팀</dd></div>
+      <div><dt class="label">기간</dt><dd>2026년부터</dd></div>
+      <div><dt class="label">기술 스택</dt><dd>React, TypeScript, Tailwind.css</dd></div>
+      <div class="wide"><dt class="label">플랫폼</dt><dd>Web, Windows (Electron), Android (Capacitor)</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>UI 기반 구축</strong>: Tailwind.css 색상·폰트 설정, 아이콘, 공통 컴포넌트, 로그인·회원가입 페이지</li>
+      <li><strong>편집기 도구</strong>: 툴바, 브러시·텍스트·도형 패널, 색상 선택기, 이동 가능한 패널</li>
+      <li><strong>모바일 앱</strong>: 홈, 라이브러리, 프로젝트, 구독, 보정 도구를 갖춘 편집 페이지</li>
+      <li><strong>AI 도구를 활용한 개발</strong>: Claude Code를 활용하되, 모든 변경 사항을 직접 검토하고 보내기 전에 앱에서 직접 테스트</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #1c1a24; --frame: #0e0d12;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/clor-ai/editeur-pinceau.webp" alt="Clor AI: 데스크톱 편집기"></div>
+      <div class="phone"><img src="../projets/clor-ai/mobile-accueil.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/clor-ai.ko">jessica-thielemans.com</a> · <a href="https://clor.kr">clor.kr</a></div>
+</section>
+
+<!-- ===== 02 Pando2 ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">02 · 프리랜서 · 건물 관리</span>
+    <h2>Pando2</h2>
+    <p class="summary">공기질(특히 CO2 농도)과 에너지 사용량을 모니터링하는 건물 관리 소프트웨어(SaaS)의 인터페이스입니다.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">역할</dt><dd>프리랜서 프론트엔드 개발자, 개발팀 참여, 디자이너의 시안을 바탕으로 개발</dd></div>
+      <div><dt class="label">기간</dt><dd>2023 – 2024</dd></div>
+      <div><dt class="label">기술 스택</dt><dd>Slim, Sass, Stimulus.js</dd></div>
+      <div class="wide"><dt class="label">개발 환경</dt><dd>Ruby on Rails</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>애플리케이션 기본 구조</strong>: 사이드 메뉴, 헤더, 탭, 테이블, 폼, 모달 및 사이드 패널 (데스크톱·모바일)</li>
+      <li><strong>대시보드</strong>: 차트, 시설 지도, 날씨 및 공공 데이터, 측정값 비교</li>
+      <li><strong>디스플레이 단말</strong>: 실내 공기질을 보여 주는 화면, SVG 애니메이션 배경</li>
+      <li><strong>평가 폼</strong>: 다단계 입력 흐름, 안내 모달, 요약 화면</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #e7eef8; --frame: #1d2433;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/pando2/tableau-de-bord.webp" alt="Pando2: 대시보드"></div>
+      <div class="phone"><img src="../projets/pando2/mobile-borne.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/pando2.ko">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 03 Ouipharma ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">03 · 프리랜서 · 약국 마켓플레이스</span>
+    <h2>Ouipharma</h2>
+    <p class="summary">약국 매물, 구인 공고, 약사를 위한 콘텐츠를 다루는 약국 마켓플레이스의 프론트엔드를 단계적으로 개편했습니다.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">역할</dt><dd>프리랜서 프론트엔드 개발자, 다른 개발자 1명과 협업, 이후 프론트엔드 단독 담당</dd></div>
+      <div><dt class="label">기간</dt><dd>2021 – 2023</dd></div>
+      <div><dt class="label">개발 환경</dt><dd>Ruby on Rails</dd></div>
+      <div class="wide"><dt class="label">기술 스택</dt><dd>Tailwind.css, Stimulus.js, Sass, HTML</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>매물 목록</strong>: 지역·도·도시별 페이지 개편</li>
+      <li><strong>매물 상세 페이지</strong>: 2021년 새 버전 제작 및 모바일 대응, 2023년 레이아웃 개편</li>
+      <li><strong>메시지</strong>: 새 페이지 디자인 제안 및 퍼블리싱 (데스크톱·모바일)</li>
+      <li><strong>CSS 정리</strong>: Semantic UI 제거, 이후 팀과 함께 Bootstrap 제거 후 Tailwind.css로 전환</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #e8f0fb; --frame: #1d2433;">
+    <div class="scene">
+      <div class="browser"><img class="long" src="../projets/ouipharma/accueil-apres-desktop.webp" alt="Ouipharma: 메인 페이지"></div>
+      <div class="phone"><img src="../projets/ouipharma/annonce-apres-mobile.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/ouipharma.ko">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 04 Nomiks ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">04 · 프리랜서 · Web3 및 암호화폐</span>
+    <h2>Nomiks</h2>
+    <p class="summary">블록체인 컨설팅 및 투자 회사 Nomiks의 소개 사이트입니다. 홈 페이지와 두 서비스 소개 페이지로 구성되며, 영어와 프랑스어로 제공됩니다.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">역할</dt><dd>프리랜서 프론트엔드 개발자, 디자이너의 시안을 바탕으로 코드 전체를 단독 개발</dd></div>
+      <div><dt class="label">기간</dt><dd>2022</dd></div>
+      <div><dt class="label">기술 스택</dt><dd>Next.js, React, TypeScript, Tailwind.css</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>홈</strong>: React 컴포넌트 분리, 모바일 버전, 햄버거 메뉴, Rellax를 활용한 패럴랙스 (모바일에서는 비활성화)</li>
+      <li><strong>Analytic, Capital 페이지</strong>: 데스크톱 및 모바일 버전, 애니메이션 아코디언, Headless UI를 활용한 드롭다운 목록</li>
+      <li><strong>마무리 작업</strong>: 법적 고지, 파비콘, 검색 최적화(SEO) 및 공유용 제목과 설명 (Open Graph)</li>
+      <li><strong>다국어 적용</strong>: next-i18next로 사이트 전체 영어·프랑스어 지원, 언어 선택 기능</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #3b4d6e; --frame: #0b0d14;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/nomiks/analytic-ouverture.webp" alt="Nomiks: Analytic 페이지"></div>
+      <div class="phone"><img src="../projets/nomiks/mobile-home.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/nomiks.ko">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 05 Dotworld ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">05 · 프리랜서 · 웹 서비스 및 홍보 사이트</span>
+    <h2>Dotworld</h2>
+    <p class="summary">한 클라이언트를 위한 세 가지 제품입니다. 이력서를 만드는 사이트, 레스토랑에서 계산하는 앱, 그리고 구독을 해지하는 서비스입니다.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">역할</dt><dd>소규모 팀의 프리랜서 프론트엔드 개발자</dd></div>
+      <div><dt class="label">기간</dt><dd>2021 – 2022</dd></div>
+      <div><dt class="label">기술 스택</dt><dd>Vue.js, Nuxt.js, Tailwind.css</dd></div>
+      <div class="wide"><dt class="label">개발 환경</dt><dd>Laravel</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>CV Ninja</strong>: 디자인 시안을 바탕으로 이력서 템플릿 5종 퍼블리싱, 색상 변형, 마무리 작업</li>
+      <li><strong>Twenty Pay 앱</strong>: 메뉴부터 결제까지 사용자 흐름 화면, 계산서 나누기 포함</li>
+      <li><strong>Twenty Pay 홍보 사이트</strong>: 영상이 포함된 데모 섹션, 장점, 리뷰, FAQ, 문의 섹션, 모바일 대응</li>
+      <li><strong>Rezilli</strong>: 디자인 퍼블리싱, 폼, 카테고리·서비스별 필터, FAQ</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #f1ece4; --frame: #1d2433;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/dotworld/twenty-site-ouverture.webp" alt="Twenty Pay: 홍보 사이트"></div>
+      <div class="phone"><img src="../projets/dotworld/twenty-app-index.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/dotworld.ko">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 06 Otoctone ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">06 · 프리랜서 · 럭셔리 여행</span>
+    <h2>Otoctone</h2>
+    <p class="summary">레만 호숫가의 빌라, 몽블랑의 샬레, 코스타리카의 주택 등 특별한 숙소를 소개하는 Otoctone 웹사이트의 새로운 스타일 작업입니다.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">역할</dt><dd>에이전시 프로젝트에 참여한 프리랜서 프론트엔드 개발자</dd></div>
+      <div><dt class="label">기간</dt><dd>2025</dd></div>
+      <div><dt class="label">개발 환경</dt><dd>Ruby on Rails</dd></div>
+      <div class="wide"><dt class="label">기술 스택</dt><dd>Tailwind.css, Sass, Slim, Stimulus.js</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>내비게이션</strong>: 메뉴, 하위 메뉴, 언어 선택, 모바일 헤더 및 푸터</li>
+      <li><strong>콘텐츠 블록</strong>: 제목 및 링크, 멀티미디어, 파트너, 주요 수치, 후기, 목록</li>
+      <li><strong>여행지 페이지</strong>: 패럴랙스 헤더 및 ‘더 알아보기’ 패널 (HTML, CSS, Stimulus.js 컨트롤러)</li>
+      <li><strong>메인 페이지</strong>: 전체 화면 영상, 스크롤을 따라 움직이는 ‘더 알아보기’ 버튼</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #efe7dc; --frame: #2f2a24;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/otoctone/home-hero.webp" alt="Otoctone: 메인 페이지"></div>
+      <div class="phone"><img src="../projets/otoctone/mobile-villa-hero.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/otoctone.ko">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 07 Le Plein ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">07 · 프리랜서 · 전기차 충전</span>
+    <h2>Le Plein</h2>
+    <p class="summary">멤버십 프로그램을 함께 운영하는 전기차 충전소 네트워크 Le Plein의 웹사이트입니다. 충전소는 제휴 매장 주차장에 설치되어 있습니다.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">역할</dt><dd>프리랜서 프론트엔드 개발자, 코드 단독 담당</dd></div>
+      <div><dt class="label">기간</dt><dd>2023</dd></div>
+      <div><dt class="label">기술 스택</dt><dd>Astro, Tailwind.css</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>메인 페이지</strong>: 사선 섹션, 모바일 버전 구현, 클라이언트 피드백 반영 후 두 번째 버전 제작</li>
+      <li><strong>멤버십</strong>: 제휴 멤버십 카드 및 포인트 내역 추가</li>
+      <li><strong>모바일 화면</strong>: 시작 화면 및 결제 방식 선택 화면 (Le Plein 이용 여부, 카드 또는 앱)</li>
+      <li><strong>법적 고지 페이지</strong>: 법적 고지 및 개인정보 처리방침</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #e7dbc3; --frame: #042827;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/leplein/accueil.webp" alt="Le Plein: 메인 페이지"></div>
+      <div class="phone"><img src="../projets/leplein/mobile-router-2.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/leplein.ko">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 08 Skade ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">08 · 프리랜서 · 금융·커뮤니티</span>
+    <h2>Skade</h2>
+    <p class="summary">위험 부담 없이 투자를 배울 수 있는 애플리케이션입니다. 가상 포트폴리오, 투자자 커뮤니티, 기업 뉴스를 제공합니다.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">역할</dt><dd>팀 내 프리랜서 프론트엔드 개발자</dd></div>
+      <div><dt class="label">기간</dt><dd>2022 – 2023</dd></div>
+      <div><dt class="label">애플리케이션</dt><dd>Nuxt.js, Tailwind.css</dd></div>
+      <div class="wide"><dt class="label">랜딩 페이지</dt><dd>Astro, Tailwind.css</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>게시물</strong>: 새 디자인 시안 퍼블리싱: 게시물 작성 화면, 답글, 게시물 상세 페이지, 모바일 내비게이션</li>
+      <li><strong>기업 카드</strong>: 차트가 포함된 새 스타일 퍼블리싱, 포트폴리오 거래 추가 창</li>
+      <li><strong>컴포넌트</strong>: 트랜지션이 적용된 버튼 통일, 이니셜 기반 아바타 생성</li>
+      <li><strong>랜딩 페이지</strong>: Astro로 제작, 영어·프랑스어 버전, 애플리케이션 법적 고지 페이지</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #dfe6ff; --frame: #1d2433;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/skade/app-fil.webp" alt="Skade: 애플리케이션 피드"></div>
+      <div class="phone"><img src="../projets/skade/mobile-accueil.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/skade.ko">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== Contact ===== -->
+<section class="slide end">
+  <img src="../logo-jt.svg" alt="" style="height:44px;width:auto;margin:120px 0 32px">
+  <span class="label">연락처</span>
+  <h2 style="font-size:52px;margin:12px 0 8px">감사합니다</h2>
+  <p style="font-size:18px;margin:0;color:var(--muted)">프로젝트별 상세 페이지는 jessica-thielemans.com에서 한국어, 영어, 프랑스어로 보실 수 있습니다.</p>
+  <div class="contact">
+    <h3>Jessica Thielemans</h3>
+    <ul>
+      <li><span>웹사이트</span><a href="https://jessica-thielemans.com/">jessica-thielemans.com</a></li>
+      <li><span>이메일</span><a href="mailto:jt.jessicathi@gmail.com">jt.jessicathi@gmail.com</a></li>
+      <li><span>GitHub</span><a href="https://github.com/JessicaThi">github.com/JessicaThi</a></li>
+      <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/jessica-thielemans">linkedin.com/in/jessica-thielemans</a></li>
+    </ul>
+  </div>
+</section>
+
+</body>
+</html>

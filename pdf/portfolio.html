@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio — Jessica Thielemans</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="../logo-jt.svg">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<!-- Portfolio court, à enregistrer en PDF : Imprimer → Enregistrer en PDF.
+     Une diapositive 16:9 par page : couverture, profil, un projet par page, puis contact.
+     Les textes viennent des pages projets (projets/*.html) : les modifier là-bas d'abord. -->
+<style>
+  :root {
+    --text: #1d1a2b; --muted: #6f6a86; --line: #ece8f4; --accent: #8b5cf6; --pink: #f08cb8;
+    --font: "Inter", "Inter fallback", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  @page { size: 338.67mm 190.5mm; margin: 0; }   /* 16:9, comme une présentation (1280 × 720) */
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html { background: #e9e6f0; }
+  body { margin: 0; color: var(--text); font-family: var(--font); line-height: 1.5; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- Diapositive ---------- */
+  .slide {
+    position: relative; width: 1280px; height: 720px; overflow: hidden; background: #fff;
+    margin: 32px auto; box-shadow: 0 10px 40px rgba(29, 26, 43, .12);
+    display: grid; grid-template-columns: 500px 1fr;
+  }
+  /* liseré mauve en haut, comme sur le site */
+  .slide::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: linear-gradient(90deg, var(--accent), var(--pink)); z-index: 2; }
+  .label { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .foot {
+    position: absolute; left: 56px; bottom: 28px; display: flex; gap: 18px; align-items: center;
+    font-family: var(--mono); font-size: 10.5px; color: var(--muted);
+  }
+  .foot img { height: 18px; width: auto; }
+
+  /* ---------- Colonne texte ---------- */
+  .text { padding: 56px 40px 72px 56px; display: flex; flex-direction: column; }
+  .text h2 { font-size: 46px; line-height: 1; letter-spacing: -.02em; font-weight: 600; margin: 12px 0 16px; }
+  .summary { font-size: 15px; line-height: 1.5; margin: 0 0 20px; }
+  .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; margin: 0 0 22px; padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .meta dt { margin-bottom: 2px; font-size: 10px; }
+  .meta dd { margin: 0; font-size: 12.5px; line-height: 1.4; }
+  .meta .wide { grid-column: 1 / -1; }
+  .done { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .done li { font-size: 12.5px; line-height: 1.45; padding-left: 16px; position: relative; }
+  .done li::before { content: ""; position: absolute; left: 0; top: .55em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .done strong { font-weight: 600; }
+
+  /* ---------- Colonne visuel : bande de couleur du projet, écran d'ordinateur + téléphone ---------- */
+  .visual { --band: #eef0f6; --frame: #1d2433; background: var(--band); display: grid; place-items: center; padding: 48px 40px; }
+  .scene { position: relative; width: 100%; padding-right: 13%; }
+  /* pas d'ombres : Aperçu (Mac) les affiche comme des rectangles noirs dans le PDF */
+  .browser { border-radius: 10px; overflow: hidden; background: #fff; border: 1px solid rgba(15, 20, 40, .12); }
+  .browser::before {
+    content: ""; display: block; height: 22px;
+    background:
+      radial-gradient(circle, #ff5f57 3.5px, transparent 4px) 12px 50% / 10px 10px no-repeat,
+      radial-gradient(circle, #febc2e 3.5px, transparent 4px) 26px 50% / 10px 10px no-repeat,
+      radial-gradient(circle, #28c840 3.5px, transparent 4px) 40px 50% / 10px 10px no-repeat,
+      #f1f1f4;
+    border-bottom: 1px solid rgba(0, 0, 0, .06);
+  }
+  /* chaque capture garde son format d'origine (rien n'est coupé), sauf les pages très hautes (.long) coupées en bas */
+  .browser img { width: 100%; height: auto; }
+  .browser img.long { aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
+  .phone {
+    position: absolute; right: 0; bottom: -28px; width: 24%;
+    padding: 7px; border-radius: 28px; background: var(--frame);
+  }
+  .phone img { width: 100%; aspect-ratio: 390 / 844; object-fit: cover; object-position: top; border-radius: 21px; }
+
+  /* ---------- Couverture ---------- */
+  .cover { grid-template-columns: 1fr 1fr; }
+  .cover .text { padding: 72px 56px; justify-content: center; }
+  .cover .logo { height: 44px; width: auto; margin-bottom: 40px; }
+  .cover h1 { font-size: 64px; line-height: 1; letter-spacing: -.025em; font-weight: 600; margin: 14px 0 20px; }
+  .cover .lead { font-size: 18px; line-height: 1.5; margin: 0 0 10px; max-width: 460px; }
+  .cover .where { color: var(--muted); margin: 0; }
+  .index { background: #f6f3fd; padding: 72px 56px; display: flex; flex-direction: column; justify-content: center; }
+  .index ol { list-style: none; margin: 18px 0 0; padding: 0; }
+  .index li { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: baseline; padding: 9px 0; border-bottom: 1px solid #e6e0f5; }
+  .index li:last-child { border-bottom: 0; }
+  .index .n { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+  .index .name { font-size: 18px; font-weight: 600; }
+  .index .what { font-size: 12.5px; color: var(--muted); text-align: right; }
+
+  /* ---------- Profil ---------- */
+  .profile { grid-template-columns: 1fr 1fr; }
+  .profile .text { padding-right: 48px; }
+  .profile .text h2 { font-size: 40px; }
+  .profile .intro { font-size: 16px; line-height: 1.55; margin: 0 0 24px; }
+  .profile .done li { font-size: 13.5px; }
+  .side { background: #f6f3fd; padding: 56px 56px 72px 48px; }
+  .skills { margin: 12px 0 28px; display: grid; gap: 12px; }
+  .skills div { display: grid; grid-template-columns: 136px 1fr; align-items: start; gap: 12px; font-size: 13px; line-height: 1.45; }
+  .skills dt { line-height: 24px; white-space: nowrap; }
+  .skills dd { margin: 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tags span { display: inline-flex; align-items: center; height: 24px; line-height: 1; background: #fff; border: 1px solid #e6e0f5; border-radius: 999px; padding: 0 10px; font-size: 12px; }
+  .path { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
+  .path li { display: grid; grid-template-columns: 136px 1fr; gap: 12px; font-size: 13px; line-height: 1.4; }
+  .path .when { font-family: var(--mono); font-size: 11.5px; color: var(--accent); padding-top: 1px; }
+  .path .muted { color: var(--muted); }
+
+  /* ---------- Dernière page : contact ---------- */
+  .end { grid-template-columns: 1fr; padding: 56px 56px 72px; align-content: start; }
+  .end h2 { font-size: 34px; font-weight: 600; letter-spacing: -.01em; margin: 10px 0 28px; }
+  .contact { margin-top: 40px; padding: 28px 32px; border-radius: 14px; background: #f6f3fd; display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center; }
+  .contact h3 { font-size: 22px; font-weight: 600; margin: 0; }
+  .contact ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 32px; font-size: 14px; }
+  .contact ul span { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+  @media print {
+    html { background: none; }
+    .slide { margin: 0; box-shadow: none; break-after: page; }
+    * { box-shadow: none !important; }
+    .slide:last-child { break-after: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Couverture ===== -->
+<section class="slide cover">
+  <div class="text">
+    <img class="logo" src="../logo-jt.svg" alt="">
+    <span class="label">Portfolio</span>
+    <h1>Jessica Thielemans</h1>
+    <p class="lead">Développeuse front-end avec plus de cinq ans d'expérience en développement web.</p>
+    <p class="where">Développeuse front-end à Séoul, chez Infinique.</p>
+  </div>
+  <div class="index">
+    <span class="label">Projets</span>
+    <ol>
+      <li><span class="n">01</span><span class="name">Clor AI</span><span class="what">Édition d'images par IA</span></li>
+      <li><span class="n">02</span><span class="name">Pando2</span><span class="what">Gestion de bâtiments</span></li>
+      <li><span class="n">03</span><span class="name">Ouipharma</span><span class="what">Marketplace pharmacie</span></li>
+      <li><span class="n">04</span><span class="name">Nomiks</span><span class="what">Web3 et cryptomonnaies</span></li>
+      <li><span class="n">05</span><span class="name">Dotworld</span><span class="what">Services web et sites vitrines</span></li>
+      <li><span class="n">06</span><span class="name">Otoctone</span><span class="what">Tourisme de luxe</span></li>
+      <li><span class="n">07</span><span class="name">Le Plein</span><span class="what">Recharge électrique</span></li>
+      <li><span class="n">08</span><span class="name">Skade</span><span class="what">Finance et communauté</span></li>
+    </ol>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/">jessica-thielemans.com</a> · <a href="mailto:jt.jessicathi@gmail.com">jt.jessicathi@gmail.com</a></div>
+</section>
+
+<!-- ===== Profil ===== -->
+<section class="slide profile">
+  <div class="text">
+    <span class="label">Profil</span>
+    <h2>Développeuse front-end</h2>
+    <p class="intro">Développeuse front-end avec plus de cinq ans d'expérience en développement web. Depuis 2026, je suis développeuse front-end chez Infinique, à Séoul. De 2021 à 2025, en freelance, j'ai réalisé les interfaces de plus de dix sites et applications.</p>
+    <span class="label">Ce que j'apporte</span>
+    <ul class="done" style="margin-top:12px">
+      <li>De l'analyse des besoins à l'intégration de l'interface et à la maintenance.</li>
+      <li>Des interfaces en React, TypeScript et Vue.js, et l'intégration front-end sur des CMS.</li>
+      <li>Une expérience dans des domaines variés : gestion de bâtiments, marketplace, édition d'images par IA.</li>
+      <li>Le travail à partir des maquettes d'un designer, seule sur le code ou au sein d'une équipe.</li>
+    </ul>
+  </div>
+  <div class="side">
+    <span class="label">Compétences</span>
+    <dl class="skills">
+      <div><dt class="label">Front-end</dt><dd class="tags"><span>JavaScript</span><span>TypeScript</span><span>HTML</span><span>CSS</span><span>React</span><span>Next.js</span><span>Vue.js</span><span>Nuxt.js</span><span>Stimulus.js</span><span>jQuery</span></dd></div>
+      <div><dt class="label">Style et design</dt><dd class="tags"><span>Tailwind.css</span><span>Sass</span><span>Figma</span></dd></div>
+      <div><dt class="label">CMS</dt><dd class="tags"><span>WordPress</span><span>Drupal</span><span>PrestaShop</span></dd></div>
+      <div><dt class="label">Projets</dt><dd>Intégration d'interfaces sur des projets Ruby on Rails et Laravel</dd></div>
+      <div><dt class="label">Outils IA</dt><dd>Développement assisté par IA avec Claude Code</dd></div>
+    </dl>
+    <span class="label">Parcours</span>
+    <ul class="path">
+      <li><span class="when">2026 – auj.</span><span><strong>Infinique</strong>, Séoul<br><span class="muted">Développeuse front-end</span></span></li>
+      <li><span class="when">2021 – 2025</span><span><strong>Freelance</strong><br><span class="muted">Développeuse front-end</span></span></li>
+      <li><span class="when">2018 – 2019</span><span><strong>New Generation Agency</strong><br><span class="muted">Développeuse web en alternance</span></span></li>
+      <li><span class="when">2016 – 2019</span><span><strong>HETIC</strong><br><span class="muted">Bachelor développement web et design</span></span></li>
+    </ul>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 01 Clor AI ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">01 · Infinique · Édition d'images par IA</span>
+    <h2>Clor AI</h2>
+    <p class="summary">Un éditeur photo avec des outils d'IA (retouche de portrait, pose, couleurs), sur le web, sur ordinateur et sur mobile.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">Rôle</dt><dd>Développeuse front-end, dans l'équipe développement</dd></div>
+      <div><dt class="label">Période</dt><dd>Depuis 2026</dd></div>
+      <div><dt class="label">Stack</dt><dd>React, TypeScript, Tailwind.css</dd></div>
+      <div class="wide"><dt class="label">Plateformes</dt><dd>Web, Windows (Electron), Android (Capacitor)</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>Bases de l'interface</strong> : couleurs et polices dans Tailwind.css, icônes, composants communs, pages de connexion et d'inscription.</li>
+      <li><strong>Outils de l'éditeur</strong> : barres d'outils, panneaux pinceau, texte et formes, sélecteur de couleur, panneaux déplaçables.</li>
+      <li><strong>Application mobile</strong> : accueil, bibliothèque, projets, abonnement, et la page d'édition avec les outils de retouche.</li>
+      <li><strong>Développement assisté par IA</strong> avec Claude Code : je relis chaque changement et je le teste moi-même dans l'application avant de l'envoyer.</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #1c1a24; --frame: #0e0d12;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/clor-ai/editeur-pinceau.webp" alt="Clor AI : l'éditeur sur ordinateur"></div>
+      <div class="phone"><img src="../projets/clor-ai/mobile-accueil.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/clor-ai">jessica-thielemans.com</a> · <a href="https://clor.kr">clor.kr</a></div>
+</section>
+
+<!-- ===== 02 Pando2 ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">02 · Freelance · Gestion de bâtiments</span>
+    <h2>Pando2</h2>
+    <p class="summary">Interfaces d'un logiciel (SaaS) de gestion de bâtiments, qui suit la qualité de l'air (notamment le taux de CO2) et la consommation d'énergie.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">Rôle</dt><dd>Développeuse front-end freelance, au sein de l'équipe, à partir des maquettes d'un designer</dd></div>
+      <div><dt class="label">Période</dt><dd>2023 – 2024</dd></div>
+      <div><dt class="label">Stack</dt><dd>Slim, Sass, Stimulus.js</dd></div>
+      <div class="wide"><dt class="label">Environnement</dt><dd>Ruby on Rails</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>Base de l'application</strong> : menu latéral, en-tête, onglets, tableaux, formulaires, fenêtres et panneaux latéraux, sur ordinateur et mobile.</li>
+      <li><strong>Tableaux de bord</strong> : graphiques, carte des établissements, météo et données publiques, comparaison des mesures.</li>
+      <li><strong>Borne d'affichage</strong> : écran qui affiche la qualité de l'air d'une pièce, avec un fond animé en SVG.</li>
+      <li><strong>Formulaires d'évaluation</strong> : parcours en plusieurs étapes, fenêtres de découverte et récapitulatifs.</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #e7eef8; --frame: #1d2433;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/pando2/tableau-de-bord.webp" alt="Pando2 : le tableau de bord"></div>
+      <div class="phone"><img src="../projets/pando2/mobile-borne.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/pando2">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 03 Ouipharma ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">03 · Freelance · Marketplace pharmacie</span>
+    <h2>Ouipharma</h2>
+    <p class="summary">Refonte progressive du front-end d'une marketplace de pharmacies : annonces de vente, offres d'emploi et contenus pour les pharmaciens.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">Rôle</dt><dd>Développeuse front-end freelance, avec un autre développeur, puis seule sur le front-end</dd></div>
+      <div><dt class="label">Période</dt><dd>2021 – 2023</dd></div>
+      <div><dt class="label">Environnement</dt><dd>Ruby on Rails</dd></div>
+      <div class="wide"><dt class="label">Stack</dt><dd>Tailwind.css, Stimulus.js, Sass, HTML</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>Listes d'annonces</strong> : refonte des pages par région, département et ville.</li>
+      <li><strong>Page d'une annonce</strong> : nouvelles versions et adaptation au mobile en 2021, puis refonte de la mise en page en 2023.</li>
+      <li><strong>Messagerie</strong> : proposition de design et intégration de la nouvelle page, sur ordinateur et mobile.</li>
+      <li><strong>Nettoyage du CSS</strong> : retrait de Semantic UI, puis de Bootstrap avec l'équipe, au profit de Tailwind.css.</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #e8f0fb; --frame: #1d2433;">
+    <div class="scene">
+      <div class="browser"><img class="long" src="../projets/ouipharma/accueil-apres-desktop.webp" alt="Ouipharma : la page d'accueil"></div>
+      <div class="phone"><img src="../projets/ouipharma/annonce-apres-mobile.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/ouipharma">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 04 Nomiks ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">04 · Freelance · Web3 et cryptomonnaies</span>
+    <h2>Nomiks</h2>
+    <p class="summary">Site vitrine de Nomiks, une société de conseil et d'investissement autour de la blockchain : un accueil et deux pages pour ses offres, en anglais et en français.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">Rôle</dt><dd>Développeuse front-end freelance, seule sur le code, à partir des maquettes d'un designer</dd></div>
+      <div><dt class="label">Période</dt><dd>2022</dd></div>
+      <div><dt class="label">Stack</dt><dd>Next.js, React, TypeScript, Tailwind.css</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>Accueil</strong> : découpage en composants React, version mobile, menu burger, parallaxe avec Rellax (désactivée sur mobile).</li>
+      <li><strong>Pages Analytic et Capital</strong> : versions ordinateur et mobile, accordéons animés, liste déroulante avec Headless UI.</li>
+      <li><strong>Finitions</strong> : mentions légales, favicon, titres et descriptions pour le référencement et le partage (Open Graph).</li>
+      <li><strong>Traduction</strong> : tout le site en anglais et en français avec next-i18next, et un sélecteur de langue.</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #3b4d6e; --frame: #0b0d14;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/nomiks/analytic-ouverture.webp" alt="Nomiks : la page Analytic"></div>
+      <div class="phone"><img src="../projets/nomiks/mobile-home.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/nomiks">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 05 Dotworld ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">05 · Freelance · Services web et sites vitrines</span>
+    <h2>Dotworld</h2>
+    <p class="summary">Trois produits pour un même client : un site pour créer son CV, une appli pour payer l'addition au restaurant, et un service pour résilier ses abonnements.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">Rôle</dt><dd>Développeuse front-end freelance, dans une petite équipe</dd></div>
+      <div><dt class="label">Période</dt><dd>2021 – 2022</dd></div>
+      <div><dt class="label">Stack</dt><dd>Vue.js, Nuxt.js, Tailwind.css</dd></div>
+      <div class="wide"><dt class="label">Environnement</dt><dd>Laravel</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>CV Ninja</strong> : cinq modèles de CV intégrés à partir des maquettes, variantes de couleurs, finitions.</li>
+      <li><strong>Twenty Pay, l'appli</strong> : les écrans du parcours, du menu au paiement, avec le partage de l'addition.</li>
+      <li><strong>Twenty Pay, le site vitrine</strong> : sections démo avec vidéo, avantages, avis, FAQ et contact, adaptation au mobile.</li>
+      <li><strong>Rezilli</strong> : intégration du design, formulaires, filtre par catégorie et par service, FAQ.</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #f1ece4; --frame: #1d2433;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/dotworld/twenty-site-ouverture.webp" alt="Twenty Pay : le site vitrine"></div>
+      <div class="phone"><img src="../projets/dotworld/twenty-app-index.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/dotworld">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 06 Otoctone ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">06 · Freelance · Tourisme de luxe</span>
+    <h2>Otoctone</h2>
+    <p class="summary">Nouveau style pour le site d'Otoctone, une collection de lieux de séjour d'exception (villa au bord du lac Léman, chalet au Mont-Blanc, maison au Costa Rica…).</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">Rôle</dt><dd>Développeuse front-end freelance, en mission pour une agence</dd></div>
+      <div><dt class="label">Période</dt><dd>2025</dd></div>
+      <div><dt class="label">Environnement</dt><dd>Ruby on Rails</dd></div>
+      <div class="wide"><dt class="label">Stack</dt><dd>Tailwind.css, Sass, Slim, Stimulus.js</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>Navigation</strong> : menu, sous-menu, sélecteur de langue, en-tête mobile et pied de page.</li>
+      <li><strong>Blocs de contenu</strong> : titres et liens, multimédia, partenaires, chiffres clés, avis, listes.</li>
+      <li><strong>Pages destination</strong> : en-tête en parallaxe et panneau « En savoir plus » (HTML, CSS et un contrôleur Stimulus.js).</li>
+      <li><strong>Accueil</strong> : vidéo en plein écran, bouton « En savoir plus » qui suit le défilement.</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #efe7dc; --frame: #2f2a24;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/otoctone/home-hero.webp" alt="Otoctone : la page d'accueil"></div>
+      <div class="phone"><img src="../projets/otoctone/mobile-villa-hero.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/otoctone">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 07 Le Plein ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">07 · Freelance · Recharge électrique</span>
+    <h2>Le Plein</h2>
+    <p class="summary">Site de Le Plein, un réseau de bornes de recharge pour voitures électriques installées sur les parkings d'enseignes partenaires, avec un programme de fidélité.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">Rôle</dt><dd>Développeuse front-end freelance, seule sur le code</dd></div>
+      <div><dt class="label">Période</dt><dd>2023</dd></div>
+      <div><dt class="label">Stack</dt><dd>Astro, Tailwind.css</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>Accueil</strong> : sections en diagonale, version mobile, puis une deuxième version après les retours du client.</li>
+      <li><strong>Fidélité</strong> : ajout d'une carte de fidélité partenaire et historique des points.</li>
+      <li><strong>Écrans mobiles</strong> : écran d'ouverture et choix du mode de paiement (avec ou sans Le Plein, carte ou application).</li>
+      <li><strong>Pages légales</strong> : mentions légales et politique de confidentialité.</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #e7dbc3; --frame: #042827;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/leplein/accueil.webp" alt="Le Plein : la page d'accueil"></div>
+      <div class="phone"><img src="../projets/leplein/mobile-router-2.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/leplein">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== 08 Skade ===== -->
+<section class="slide">
+  <div class="text">
+    <span class="label">08 · Freelance · Finance et communauté</span>
+    <h2>Skade</h2>
+    <p class="summary">Application pour apprendre à investir sans risque : portefeuilles virtuels, communauté d'investisseurs et actualités des entreprises.</p>
+    <dl class="meta">
+      <div class="wide"><dt class="label">Rôle</dt><dd>Développeuse front-end freelance, au sein de l'équipe</dd></div>
+      <div><dt class="label">Période</dt><dd>2022 – 2023</dd></div>
+      <div><dt class="label">Application</dt><dd>Nuxt.js, Tailwind.css</dd></div>
+      <div class="wide"><dt class="label">Landing page</dt><dd>Astro, Tailwind.css</dd></div>
+    </dl>
+    <ul class="done">
+      <li><strong>Publications</strong> : intégration des nouvelles maquettes : création d'une publication, réponses, page d'une publication, navigation mobile.</li>
+      <li><strong>Cartes des entreprises</strong> : intégration du nouveau style, avec graphique, et fenêtre d'ajout d'une opération au portefeuille.</li>
+      <li><strong>Composants</strong> : boutons unifiés avec transitions, avatars générés à partir des initiales.</li>
+      <li><strong>Landing page</strong> : en Astro, en anglais et en français, et pages légales de l'application.</li>
+    </ul>
+  </div>
+  <div class="visual" style="--band: #dfe6ff; --frame: #1d2433;">
+    <div class="scene">
+      <div class="browser"><img src="../projets/skade/app-fil.webp" alt="Skade : le fil de l'application"></div>
+      <div class="phone"><img src="../projets/skade/mobile-accueil.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><a href="https://jessica-thielemans.com/projets/skade">jessica-thielemans.com</a></div>
+</section>
+
+<!-- ===== Contact ===== -->
+<section class="slide end">
+  <img src="../logo-jt.svg" alt="" style="height:44px;width:auto;margin:120px 0 32px">
+  <span class="label">Contact</span>
+  <h2 style="font-size:52px;margin:12px 0 8px">Merci !</h2>
+  <p style="font-size:18px;margin:0;color:var(--muted)">Toutes les pages projets en détail, en français, en anglais et en coréen, sur jessica-thielemans.com.</p>
+  <div class="contact">
+    <h3>Jessica Thielemans</h3>
+    <ul>
+      <li><span>Site</span><a href="https://jessica-thielemans.com/">jessica-thielemans.com</a></li>
+      <li><span>E-mail</span><a href="mailto:jt.jessicathi@gmail.com">jt.jessicathi@gmail.com</a></li>
+      <li><span>GitHub</span><a href="https://github.com/JessicaThi">github.com/JessicaThi</a></li>
+      <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/jessica-thielemans">linkedin.com/in/jessica-thielemans</a></li>
+    </ul>
+  </div>
+</section>
+
+</body>
+</html>

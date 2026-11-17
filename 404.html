@@ -4,10 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vol introuvable — Jessica Thielemans</title>
-<link rel="icon" type="image/svg+xml" href="logo-jt.svg">
-<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="fonts/fonts.css">
+<meta name="robots" content="noindex">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="/logo-jt.svg">
+<link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
 <style>
   :root { --bg: #f4f1fb; --text: #1d1a2b; --muted: #6f6a86; --line: #ece8f4; --accent: #8b5cf6; --pink: #f08cb8; --card: #ffffff; }
   :root[data-theme="dark"] { --bg: #0f1126; --text: #ecebf7; --muted: #9a98b8; --line: #2a2d50; --accent: #a78bfa; --card: #1c1f40; }
@@ -32,13 +34,13 @@
 </head>
 <body>
 <main>
-  <div class="mj"><img src="memoji/ordinateur.webp" alt=""></div>
+  <div class="mj"><img src="/memoji/ordinateur.webp" alt=""></div>
   <div class="shadow" aria-hidden="true"></div>
   <span class="k" data-t="code">Erreur 404</span>
   <h1 data-t="title">Ce vol n'existe pas…</h1>
   <p data-t="text">Je l'ai cherché partout sur mon écran : cette page a dû changer de porte, ou elle n'a jamais décollé.</p>
   <div class="board" aria-hidden="true"><span>JT 404</span><span data-t="dest">PAGE INTROUVABLE</span><span class="st" data-t="status">ANNULÉ</span></div>
-  <a class="btn" href="index.html" data-t="back">Retour à la porte d'embarquement</a>
+  <a class="btn" href="/" data-t="back">Retour à la porte d'embarquement</a>
 </main>
 <script>
   const T = {
@@ -47,7 +49,7 @@
     ko: { code: "오류 404", title: "존재하지 않는 항공편이에요…", text: "화면 구석구석 찾아봤지만, 이 페이지는 게이트가 바뀌었거나 이륙하지 않았나 봐요.", dest: "페이지 없음", status: "결항", back: "탑승구로 돌아가기" }
   };
   try {
-    const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t;
+    const t = localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : ""); if (t) document.documentElement.dataset.theme = t;
     // langue vue sur l'accueil, sinon celle du navigateur (coréen, français), sinon l'anglais
     const nav = (navigator.languages || [navigator.language || ""]).map(l => l.slice(0, 2).toLowerCase()).find(l => T[l]);
     const lang = [localStorage.getItem("lang"), nav, "en"].find(l => l && T[l]);

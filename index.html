@@ -6,7 +6,15 @@
 <title>Jessica Thielemans — Frontend Developer</title>
 <meta name="description" content="Frontend developer with more than five years of experience in web development.">
 <!-- aperçu quand le lien est partagé (LinkedIn, KakaoTalk, iMessage…) : adresses complètes, valables une fois le site en ligne -->
+<link rel="canonical" href="https://jessica-thielemans.com/">
+<!-- couleur de la barre du navigateur sur mobile, mise à jour par le bouton clair / sombre -->
+<meta name="theme-color" content="#f4f1fb">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Jessica Thielemans">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="ko_KR">
 <meta property="og:url" content="https://jessica-thielemans.com/">
 <meta property="og:title" content="Jessica Thielemans — Frontend Developer">
 <meta property="og:description" content="Frontend developer with more than five years of experience in web development.">
@@ -15,6 +23,22 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Jessica Thielemans, 제시카 틸레만스, frontend developer in Seoul">
 <meta name="twitter:card" content="summary_large_image">
+<!-- pour Google : qui est la personne derrière le site -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Jessica Thielemans",
+  "alternateName": "제시카 틸레만스",
+  "jobTitle": "Frontend Developer",
+  "url": "https://jessica-thielemans.com/",
+  "image": "https://jessica-thielemans.com/apercu.jpg",
+  "worksFor": { "@type": "Organization", "name": "Infinique", "url": "https://infinique.kr/en/" },
+  "address": { "@type": "PostalAddress", "addressLocality": "Seoul", "addressCountry": "KR" },
+  "knowsLanguage": ["fr", "en", "ko"],
+  "sameAs": ["https://www.linkedin.com/in/jessica-thielemans", "https://github.com/JessicaThi"]
+}
+</script>
 <link rel="icon" type="image/svg+xml" href="logo-jt.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +47,9 @@
 <link rel="stylesheet" href="fonts/fonts.css">
 <script src="chargement.js"></script>
 <!-- polices coréennes : restent chez Google Fonts (découpées en petits morceaux, chargés seulement pour le coréen affiché) -->
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<!-- chargée sans bloquer l'affichage : la page s'affiche tout de suite, la police coréenne arrive juste après -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=Nanum+Gothic+Coding&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=Nanum+Gothic+Coding&display=swap"></noscript>
 <style>
   /* ---------- Couleurs (inspirées d'emotion-agency) ---------- */
   :root {
@@ -127,8 +153,18 @@
     padding: 6px 12px; cursor: pointer;
   }
   .controls button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  /* Bouton clair / sombre : lune en mode clair, soleil en mode sombre (le mode vers lequel on passe), trait de la couleur du texte */
+  .controls #theme { display: inline-flex; align-items: center; justify-content: center; padding: 0 10px; }
+  #theme svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; transition: transform .5s cubic-bezier(.4, 1.4, .5, 1), opacity .3s; }
+  #theme .i-sun { display: none; }
+  :root[data-theme="dark"] #theme .i-sun { display: block; }
+  :root[data-theme="dark"] #theme .i-moon { display: none; }
+  #theme.turn svg { transform: rotate(-90deg) scale(.6); opacity: 0; transition: none; }   /* au clic, la nouvelle icône arrive en tournant */
+  #theme:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { #theme svg { transition: none; } }
 
   /* ---------- Accueil : fond de nuages ---------- */
+  .hero { -webkit-user-select: none; user-select: none; }   /* on clique pour faire des gouttes : pas de texte surligné */
   .hero {
     position: relative; overflow: hidden;
     min-height: 100vh;
@@ -168,10 +204,10 @@
       rgb(4 4 18 / 0.3) 0%, rgb(0 0 10 / 0.65) 45%, rgb(0 0 10 / 0.75) 60%,
       rgb(0 0 10 / 0.55) 75%, rgb(0 0 10 / 0.27) 86%, rgb(0 0 10 / 0.09) 94%, rgb(0 0 10 / 0) 100%);
   }
-  /* Curseur cierge magique : la boule remplace la flèche (sauf sur les liens et boutons) */
+  /* Curseur : en mode sombre, cierge magique (la boule remplace la flèche partout, aussi sur les liens et boutons) ;
+     en mode clair, flèche normale avec des pétales qui tombent derrière elle */
   #sparkle { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; }
-  .sparkler, .sparkler body { cursor: none; }
-  .sparkler a, .sparkler button { cursor: pointer; }
+  :root[data-theme="dark"].sparkler, :root[data-theme="dark"].sparkler body, :root[data-theme="dark"].sparkler a, :root[data-theme="dark"].sparkler button { cursor: none; }
 
   /* ---------- Texte d'accueil (inspiré de daoho.dev) ---------- */
   .intro {
@@ -377,11 +413,8 @@
   .meta strong { font-weight: 500; }
 
   /* ---------- Contact ---------- */
-  /* Fin de page : billet de jour (A) en mode clair, billet sur ciel de nuit (C) en mode sombre */
+  /* Fin de page : le même billet en mode clair et en mode sombre (ciel de nuit en sombre) */
   .contact { padding: 0 16px; }
-  .end-night { display: none; }
-  :root[data-theme="dark"] .end-day { display: none; }
-  :root[data-theme="dark"] .end-night { display: grid; }
   .end-k { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
   .end-btn {
     justify-self: start; display: inline-block; white-space: nowrap; padding: 13px 22px; border-radius: 999px; text-decoration: none; font-weight: 600; color: #fff;
@@ -406,14 +439,12 @@
   picture.mj-pose { display: block; }
   picture.mj-pose img { width: 100%; height: 100%; display: block; }
   .mj-shadow { position: absolute; left: 50%; bottom: -8px; width: 86px; height: 10px; transform: translateX(-50%); border-radius: 50%; background: rgba(60, 30, 120, .25); filter: blur(4px); animation: mj-shadow 4s ease-in-out infinite; }
-  .end-head .mj-shadow { background: rgba(0, 0, 0, .45); }
   .end-bubble { opacity: 0; transform: scale(.8) translateX(-8px); transform-origin: left center; transition: opacity .3s, transform .4s cubic-bezier(.3, 1.6, .5, 1); }
   /* arrivée : elle surgit du bas, salue en se balançant, puis la bulle s'écrit au clavier */
   .mj { opacity: 0; transform: translateY(36px); transition: opacity .4s, transform .8s cubic-bezier(.3, 1.45, .5, 1); }
   .end-hello.up .mj { opacity: 1; transform: none; }
   .end-bubble { font-family: var(--mono); font-size: 13px; min-height: 1.6em; }
-  .end-bubble .cur { display: inline-block; width: 7px; height: 14px; margin-left: 2px; vertical-align: -2px; background: var(--accent); animation: mj-blink 1s steps(1) infinite; }
-  .end-head .end-bubble .cur { background: #f08cb8; }
+  .end-bubble .cur { display: inline-block; width: 2px; height: 15px; border-radius: 1px; margin-left: 2px; vertical-align: -2px; background: var(--accent); animation: mj-blink 1s steps(1) infinite; }
   @keyframes mj-blink { 50% { opacity: 0; } }
   .end-hello.awake .end-bubble { opacity: 1; transform: none; }
   /* passage de l'ordi au sourire : pop d'étincelles */
@@ -422,19 +453,17 @@
   .mj.pop .mj-pose.on { transition: opacity .2s .2s, transform .45s cubic-bezier(.3, 1.6, .5, 1) .2s; }
   .mj-spark { position: absolute; left: 50%; top: 50%; z-index: 2; width: 10px; height: 10px; margin: -5px; border-radius: 50%; background: #f08cb8; opacity: 0; pointer-events: none; animation: mj-spark .6s ease-out .12s forwards; }
   .mj-spark:nth-child(odd) { background: #7c5cf0; width: 7px; height: 7px; margin: -3.5px; }
-  .end-head .mj-spark:nth-child(odd) { background: #b9a6ff; }
   @keyframes mj-spark { 0% { opacity: 1; transform: rotate(var(--a)) translateX(10px) scale(1); } 100% { opacity: 0; transform: rotate(var(--a)) translateX(80px) scale(.3); } }
   /* la bulle garde dès le début la largeur du texte complet : le memoji ne bouge pas pendant que ça s'écrit */
   .end-bubble { display: grid; text-align: left; }
   .end-bubble > .bub-ghost, .end-bubble > .bub-line { grid-area: 1 / 1; }
   .bub-ghost { visibility: hidden; }
-  .bub-line .cur { position: absolute; }   /* le curseur ne prend pas de place, il déborde dans la marge de la bulle */
+  .bub-line { position: relative; }
+  .bub-line .cur { position: absolute; bottom: .34em; margin-left: 3px; }   /* le curseur ne prend pas de place : il déborde dans la marge de la bulle, un peu après le texte et posé sur la ligne */
   @keyframes mj-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
   @keyframes mj-shadow { 0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; } 50% { transform: translateX(-50%) scale(.82); opacity: .6; } }
   @media (prefers-reduced-motion: reduce) { .mj-float, .mj-shadow, .end-bubble .cur { animation: none; } .mj-pose, .end-bubble, .mj { transition: none; } .mj { opacity: 1; transform: none; } }
   .end-bubble { background: #fff; color: #1d1a2b; border-radius: 18px 18px 18px 4px; padding: 10px 14px; font-size: 14px; box-shadow: 0 6px 18px rgba(80, 40, 160, .12); }
-  .end-head .end-hello { justify-content: center; }
-  .end-head .end-bubble { background: rgba(255, 255, 255, .12); color: #ecebf7; border: 1px solid rgba(255, 255, 255, .2); }
   /* A */
   .end-day {
     max-width: 1100px; margin: 0 auto; border-radius: 28px; padding: 64px 40px; display: grid; grid-template-columns: 1fr auto; gap: 56px; align-items: center;
@@ -463,36 +492,27 @@
   /* Billet scanné (clic sur « Retour à la porte d'embarquement ») : le laser passe sur le code-barres, puis le billet s'en va */
   .vp-bar { position: relative; }
   .vp-bar::after { content: ""; position: absolute; left: -8px; right: -8px; top: 0; height: 2px; border-radius: 2px; background: #ff3b6b; box-shadow: 0 0 10px 2px rgba(255, 59, 107, .7); opacity: 0; }
-  .vpass.scanned .vp-bar::after { animation: vp-laser .45s ease-in-out 2 alternate; }
-  .vpass.scanned, .glass.scanned { animation: vp-gone .6s cubic-bezier(.5, 0, .75, 0) .95s forwards; }
-  /* en mode sombre : le laser balaie toute la carte en verre */
-  .glass::after { content: ""; position: absolute; left: -8px; right: -8px; top: 0; height: 2px; border-radius: 2px; background: #f08cb8; box-shadow: 0 0 14px 3px rgba(240, 140, 184, .8); opacity: 0; pointer-events: none; }
-  .glass.scanned::after { animation: vp-laser .45s ease-in-out 2 alternate; }
+  .vpass.scanned .vp-bar::after, .vpass.scanning .vp-bar::after { animation: vp-laser .45s ease-in-out 2 alternate; }
+  .vpass.scanned { animation: vp-gone .6s cubic-bezier(.5, 0, .75, 0) .95s forwards; }
   @keyframes vp-laser { from { top: 0; opacity: 1; } to { top: calc(100% - 2px); opacity: 1; } }
   @keyframes vp-gone { 0% { transform: rotate(0) translateY(0); opacity: 1; } 100% { transform: rotate(-2deg) translateY(-60px) scale(.92); opacity: 0; visibility: hidden; } }
-  /* C */
-  .end-night {
-    position: relative; overflow: hidden; isolation: isolate; max-width: 1100px; margin: 0 auto; border-radius: 28px; padding: 72px 24px;
-    place-items: center; color: #ecebf7;
-    background: radial-gradient(80% 60% at 50% 110%, #3a2f7a 0%, transparent 70%), linear-gradient(180deg, #070a1f 0%, #0f1438 55%, #1c1f52 100%);
-  }
-  .end-head { position: relative; z-index: 2; text-align: center; margin-bottom: 26px; }
-  .end-head img { filter: drop-shadow(0 0 16px rgba(240, 140, 184, .6)); }
-  .end-head h2 { margin: 12px 0 0; font-size: clamp(30px, 4.4vw, 42px); font-weight: 500; letter-spacing: -.02em; }
-  .glass { position: relative; z-index: 2; width: min(680px, 100%); display: grid; grid-template-columns: 1fr 210px; border-radius: 18px; background: rgba(255, 255, 255, .08); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, .16); }
-  .g-main { padding: 26px 28px; display: grid; gap: 6px; }
-  .g-k { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #b9b6d8; }
-  .g-route { display: flex; align-items: center; gap: 14px; margin: 8px 0 14px; }
-  .g-route b { font-size: 42px; letter-spacing: -.03em; }
-  .g-route span { flex: 1; border-top: 2px dashed rgba(240, 140, 184, .6); position: relative; }
-  .g-route span::after { content: "✈"; position: absolute; left: 50%; top: -14px; transform: translateX(-50%); color: #f08cb8; }
-  .g-mail { color: #fff; font-size: 17px; text-underline-offset: 4px; }
-  .g-links { display: flex; gap: 18px; margin: 10px 0 0; font-family: var(--mono); font-size: 13px; }
-  .g-links a { color: #b9b6d8; } .g-links a:hover { color: #fff; }
-  .g-stub { padding: 26px 24px; border-left: 2px dashed rgba(255, 255, 255, .2); display: grid; align-content: space-between; gap: 16px; }
-  .g-stub h3 { margin: 0 0 6px; font-size: 21px; font-weight: 600; } .g-stub p { margin: 0; color: #b9b6d8; font-size: 14px; }
+  /* mode sombre : même billet (reste blanc), sur ciel de nuit, avec étoiles et étoile filante */
+  .end-day { position: relative; overflow: hidden; isolation: isolate; }
+  .end-txt, .vpass { position: relative; z-index: 2; }
+  .night-stars, .night-shoot { display: none; }
+  :root[data-theme="dark"] .night-stars, :root[data-theme="dark"] .night-shoot { display: block; }
+  :root[data-theme="dark"] .end-day { background: radial-gradient(80% 60% at 50% 110%, #3a2f7a 0%, transparent 70%), linear-gradient(180deg, #070a1f 0%, #0f1438 55%, #1c1f52 100%); }
+  :root[data-theme="dark"] .end-txt h2 { color: #ecebf7; }
+  :root[data-theme="dark"] .end-txt p { color: #b9b6d8; }
+  :root[data-theme="dark"] .end-k { color: #f08cb8; }
+  :root[data-theme="dark"] .end-links a { color: #d6d2f2; }
+  :root[data-theme="dark"] .end-bubble { background: #252a5c; color: #ecebf7; border: 1px solid rgba(255, 255, 255, .2); box-shadow: none; }   /* fond plein : l'étoile filante passe derrière la bulle */
+  :root[data-theme="dark"] .end-bubble .cur { background: #f08cb8; }
+  :root[data-theme="dark"] .end-day .mj-shadow { background: rgba(0, 0, 0, .45); }
+  :root[data-theme="dark"] .end-day .mj-spark:nth-child(odd) { background: #b9a6ff; }
+  :root[data-theme="dark"] .vp-cut::before, :root[data-theme="dark"] .vp-cut::after { background: #0f1438; }
   .night-stars, .night-stars::after {
-    position: absolute; inset: 0; z-index: 0;
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
     background-image:
       radial-gradient(1px 1px at 8% 14%, #fff, transparent), radial-gradient(1px 1px at 19% 32%, #fff, transparent), radial-gradient(1.5px 1.5px at 27% 9%, #fff, transparent),
       radial-gradient(1px 1px at 36% 24%, #fff, transparent), radial-gradient(1px 1px at 47% 6%, #fff, transparent), radial-gradient(1.5px 1.5px at 58% 18%, #fff, transparent),
@@ -501,17 +521,17 @@
   }
   .night-stars::after { content: ""; transform: translate(3%, 4%) scale(1.1); animation: twinkle 4s ease-in-out infinite; }
   @keyframes twinkle { 0%, 100% { opacity: .2; } 50% { opacity: .8; } }
-  .night-shoot { position: absolute; z-index: 1; top: 16%; left: 70%; width: 140px; height: 2px; border-radius: 2px; opacity: 0; background: linear-gradient(90deg, rgba(255,255,255,0), #fff); animation: shoot 9s ease-in 3s infinite; }
+  /* la tête brillante est devant (à gauche), la traînée derrière */
+  .night-shoot { position: absolute; z-index: 1; top: 12%; left: 55%; width: 140px; height: 2px; border-radius: 2px; opacity: 0; pointer-events: none; background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0)); animation: shoot 9s ease-in 3s infinite; }
   @keyframes shoot { 0% { opacity: 0; transform: rotate(-18deg) translateX(0); } 3% { opacity: 1; } 10% { opacity: 0; transform: rotate(-18deg) translateX(-260px); } 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .night-stars::after, .night-shoot { animation: none; } }
   @media (max-width: 760px) {
     .end-day { grid-template-columns: 1fr; padding: 40px 22px; gap: 36px; }
     .end-txt { justify-self: start; }
     .end-links a:first-child { flex-basis: 100%; }   /* l'e-mail sur sa ligne, LinkedIn et GitHub en dessous */
     .vpass { justify-self: center; }
-    .glass { grid-template-columns: 1fr; }
-    .g-stub { border-left: 0; border-top: 2px dashed rgba(255, 255, 255, .2); }
   }
-  @media (prefers-reduced-motion: reduce) { .night-stars::after, .night-shoot { animation: none; } .vpass { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .vpass { transition: none; } }
   footer { text-align: center; padding: 40px 16px 56px; }
 
   /* tablette (iPad) : texte d'accueil aligné sur le logo, sans grande marge */
@@ -543,7 +563,7 @@
     <button data-lang="fr">FR</button>
     <button data-lang="en">EN</button>
     <button data-lang="ko">한</button>
-    <button id="theme" aria-label="Mode clair ou sombre" data-ta="ariaTheme">☾</button>
+    <button id="theme" aria-label="Mode clair ou sombre" data-ta="ariaTheme"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg></button>
   </div>
 </header>
 
@@ -629,49 +649,49 @@
       <div class="grid">
         <article class="card"><a href="projets/clor-ai.html">
           <div class="thumb vg wall" style="--base: #241645; --glow: #f08cb8;">
-            <div class="vg-bento"><div class="vg-b d"><img src="projets/clor-ai/editeur-pinceau.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-accueil.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/couleurs-roues.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-maquillage.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/maquillage.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/pose.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-pose.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/ciel.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-ciel.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/paysage-saison.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-couleurs.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/bibliotheque.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-teint.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/camera.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-peau.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/selecteur-couleur.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="projets/clor-ai/mobile-outils.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="projets/clor-ai/couleurs-teintes.webp" alt="" loading="lazy" style="object-position: top;"></div></div><div class="vg-shade"></div><div class="vg-t"><span class="vg-n">Clor AI</span><span class="vg-g" data-t="vClor"></span></div>
+            <div class="vg-bento"><div class="vg-b d"><img src="miniatures/clor-ai-editeur-pinceau.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="miniatures/clor-ai-mobile-accueil.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="miniatures/clor-ai-couleurs-roues.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="miniatures/clor-ai-mobile-maquillage.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="miniatures/clor-ai-maquillage.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="miniatures/clor-ai-pose.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="miniatures/clor-ai-mobile-pose.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="miniatures/clor-ai-ciel.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="miniatures/clor-ai-mobile-ciel.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="miniatures/clor-ai-paysage-saison.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="miniatures/clor-ai-mobile-couleurs.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="miniatures/clor-ai-bibliotheque.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="miniatures/clor-ai-mobile-teint.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="miniatures/clor-ai-camera.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="miniatures/clor-ai-mobile-peau.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="miniatures/clor-ai-selecteur-couleur.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b p"><img src="miniatures/clor-ai-mobile-outils.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-b d"><img src="miniatures/clor-ai-couleurs-teintes.webp" alt="" loading="lazy" style="object-position: top;"></div></div><div class="vg-shade"></div><div class="vg-t"><span class="vg-n">Clor AI</span><span class="vg-g" data-t="vClor"></span></div>
           </div>
           <div class="meta"><strong>Clor AI</strong><span class="label">React · TypeScript · 2026</span></div>
         </a></article>
         <article class="card"><a href="projets/otoctone.html">
           <div class="thumb vg tilt" style="--base: #3f3126; --glow: #e9b98f;">
-            <div class="vg-tilt"><div class="vg-win"><div class="vg-vp"><video src="projets/otoctone/interactions.mp4" poster="projets/otoctone/home-hero.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div></div></div><div class="vg-ph side"><img src="projets/otoctone/mobile-villa-hero.webp" alt="" loading="lazy"></div><div class="vg-t"><span class="vg-n">Otoctone</span><span class="vg-g" data-t="vOtoctone"></span></div>
+            <div class="vg-tilt"><div class="vg-win"><div class="vg-vp"><video src="miniatures/otoctone-interactions.mp4" poster="miniatures/otoctone-home-hero.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div></div></div><div class="vg-ph side"><img src="miniatures/otoctone-mobile-villa-hero.webp" alt="" loading="lazy"></div><div class="vg-t"><span class="vg-n">Otoctone</span><span class="vg-g" data-t="vOtoctone"></span></div>
           </div>
           <div class="meta"><strong>Otoctone</strong><span class="label" data-t="mOtoctone"></span></div>
         </a></article>
         <article class="card"><a href="projets/pando2.html">
           <div class="thumb vg cascade" style="--base: #3f4bab; --glow: #9fe3d0;">
-            <div class="vg-cw w1"><div class="vg-win"><div class="vg-vp"><img src="projets/pando2/evaluations.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-cw w2"><div class="vg-win"><div class="vg-vp"><img src="projets/pando2/polluants-consommation.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-cw w3"><div class="vg-win"><div class="vg-vp"><img src="projets/pando2/tableau-de-bord.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-t"><span class="vg-n">Pando2</span><span class="vg-g" data-t="vPando"></span></div>
+            <div class="vg-cw w1"><div class="vg-win"><div class="vg-vp"><img src="miniatures/pando2-evaluations.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-cw w2"><div class="vg-win"><div class="vg-vp"><img src="miniatures/pando2-polluants-consommation.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-cw w3"><div class="vg-win"><div class="vg-vp"><img src="miniatures/pando2-tableau-de-bord.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-t"><span class="vg-n">Pando2</span><span class="vg-g" data-t="vPando"></span></div>
           </div>
           <div class="meta"><strong>Pando2</strong><span class="label" data-t="mPando2"></span></div>
         </a></article>
         <article class="card"><a href="projets/leplein.html">
           <div class="thumb vg static giant" style="--base: #063532; --glow: #f5ff02;">
-            <div class="vg-win"><div class="vg-vp"><img src="projets/leplein/accueil.webp" alt="" loading="lazy" style="object-position: top;"></div></div><span class="vg-tag" data-t="vLeplein"></span><span class="vg-giant">Le Plein</span>
+            <div class="vg-win"><div class="vg-vp"><img src="miniatures/leplein-accueil.webp" alt="" loading="lazy" style="object-position: top;"></div></div><span class="vg-tag" data-t="vLeplein"></span><span class="vg-giant">Le Plein</span>
           </div>
           <div class="meta"><strong>Le Plein</strong><span class="label">Astro · Tailwind.css · 2023</span></div>
         </a></article>
         <article class="card"><a href="projets/skade.html">
           <div class="thumb vg big" style="--base: #4f63e0; --glow: #c9d4ff;">
-            <div class="vg-big"><div class="vg-win"><div class="vg-vp"><img src="projets/skade/app-fil.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-t"><span class="vg-n">Skade</span><span class="vg-g" data-t="vSkade"></span></div>
+            <div class="vg-big"><div class="vg-win"><div class="vg-vp"><img src="miniatures/skade-app-fil.webp" alt="" loading="lazy" style="object-position: top left;"></div></div></div><div class="vg-t"><span class="vg-n">Skade</span><span class="vg-g" data-t="vSkade"></span></div>
           </div>
           <div class="meta"><strong>Skade</strong><span class="label">Nuxt.js · Astro · 2022 – 2023</span></div>
         </a></article>
         <article class="card"><a href="projets/ouipharma.html">
           <div class="thumb vg ba" style="--base: #134a85; --glow: #7fd6c2;">
-            <div class="vg-baw"><div class="vg-win"><div class="vg-vp"><div class="vg-bafr"><img class="before" src="projets/ouipharma/accueil-avant-desktop.webp" alt="" loading="lazy"><img class="after" src="projets/ouipharma/accueil-apres-desktop.webp" alt="" loading="lazy"><span class="vg-bline"></span></div></div></div></div><span class="vg-lab ya">2019</span><span class="vg-lab yb">2022</span><div class="vg-t"><span class="vg-n">Ouipharma</span><span class="vg-g" data-t="vOuipharma"></span></div>
+            <div class="vg-baw"><div class="vg-win"><div class="vg-vp"><div class="vg-bafr"><img class="before" src="miniatures/ouipharma-accueil-avant-desktop.webp" alt="" loading="lazy"><img class="after" src="miniatures/ouipharma-accueil-apres-desktop.webp" alt="" loading="lazy"><span class="vg-bline"></span></div></div></div></div><span class="vg-lab ya">2019</span><span class="vg-lab yb">2022</span><div class="vg-t"><span class="vg-n">Ouipharma</span><span class="vg-g" data-t="vOuipharma"></span></div>
           </div>
           <div class="meta"><strong>Ouipharma</strong><span class="label" data-t="mOuipharma"></span></div>
         </a></article>
         <article class="card"><a href="projets/nomiks.html">
           <div class="thumb vg tilt" style="--base: #121b3a; --glow: #2fd2ff;">
-            <div class="vg-tilt"><div class="vg-win"><div class="vg-vp"><video src="projets/nomiks/parallaxe.mp4" poster="projets/nomiks/analytic-ouverture.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div></div></div><div class="vg-ph side"><img src="projets/nomiks/mobile-home.webp" alt="" loading="lazy"></div><div class="vg-t"><span class="vg-n">Nomiks</span><span class="vg-g" data-t="vNomiks"></span></div>
+            <div class="vg-tilt"><div class="vg-win"><div class="vg-vp"><video src="miniatures/nomiks-parallaxe.mp4" poster="miniatures/nomiks-analytic-ouverture.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div></div></div><div class="vg-ph side"><img src="miniatures/nomiks-mobile-home.webp" alt="" loading="lazy"></div><div class="vg-t"><span class="vg-n">Nomiks</span><span class="vg-g" data-t="vNomiks"></span></div>
           </div>
           <div class="meta"><strong>Nomiks</strong><span class="label">Next.js · React · 2022</span></div>
         </a></article>
         <article class="card"><a href="projets/dotworld.html">
           <div class="thumb vg collage" style="--base: #0f2a8f; --glow: #6fa8ff;">
-            <div class="vg-ck rz"><img src="projets/dotworld/rezilli-landing-desktop.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck tw"><img src="projets/dotworld/twenty-site-desktop.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck cv"><img src="projets/dotworld/cvninja-lyon.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck ph"><img src="projets/dotworld/twenty-app-index.webp" alt="" loading="lazy" style="object-position: top;"></div><span class="vg-lab l1">Rezilli</span><span class="vg-lab l2">Twenty Pay</span><span class="vg-lab l3">CV Ninja</span><div class="vg-t"><span class="vg-n">Dotworld</span><span class="vg-g" data-t="vDotworld"></span></div>
+            <div class="vg-ck rz"><img src="miniatures/dotworld-rezilli-landing-desktop.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck tw"><img src="miniatures/dotworld-twenty-site-desktop.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck cv"><img src="miniatures/dotworld-cvninja-lyon.webp" alt="" loading="lazy" style="object-position: top;"></div><div class="vg-ck ph"><img src="miniatures/dotworld-twenty-app-index.webp" alt="" loading="lazy" style="object-position: top;"></div><span class="vg-lab l1">Rezilli</span><span class="vg-lab l2">Twenty Pay</span><span class="vg-lab l3">CV Ninja</span><div class="vg-t"><span class="vg-n">Dotworld</span><span class="vg-g" data-t="vDotworld"></span></div>
           </div>
           <div class="meta"><strong>Dotworld</strong><span class="label">Vue.js · Nuxt.js · 2021 – 2022</span></div>
         </a></article>
@@ -694,6 +714,8 @@
   <section id="contact" class="contact">
     <!-- en mode clair : billet vertical sur bande lavande-rose -->
     <div class="end-day">
+      <div class="night-stars" aria-hidden="true"></div>
+      <span class="night-shoot" aria-hidden="true"></span>
       <div class="end-txt">
         <div class="end-hello"><span class="mj"><span class="mj-float"><img class="mj-pose on" data-pose="ordinateur" src="memoji/ordinateur.webp" alt="" width="140" height="140"><picture class="mj-pose" data-pose="tete"><source media="(prefers-reduced-motion: reduce)" srcset="memoji/sourire.webp"><img src="memoji/sourire-anime.webp" alt="" width="140" height="140" loading="lazy"></picture></span><span class="mj-shadow" aria-hidden="true"></span></span><span class="end-bubble" data-t="endHello"></span></div>
         <span class="end-k" data-t="contactLabel"></span>
@@ -708,25 +730,6 @@
         <div class="vp-f"><div><span data-t="passName"></span><b>Jessica T.</b></div><div><span data-t="passFlight"></span><b>JT 2026</b></div><div><span data-t="passSeat"></span><b>Front-end</b></div><div><span data-t="passGate"></span><b data-t="contactLabel"></b></div></div>
         <div class="vp-cut"></div>
         <div class="vp-bar"></div>
-      </div>
-    </div>
-    <!-- en mode sombre : billet en verre sur ciel de nuit -->
-    <div class="end-night">
-      <div class="night-stars" aria-hidden="true"></div>
-      <span class="night-shoot" aria-hidden="true"></span>
-      <div class="end-head"><div class="end-hello"><span class="mj"><span class="mj-float"><img class="mj-pose on" data-pose="ordinateur" src="memoji/ordinateur.webp" alt="" width="140" height="140"><picture class="mj-pose" data-pose="tete"><source media="(prefers-reduced-motion: reduce)" srcset="memoji/sourire.webp"><img src="memoji/sourire-anime.webp" alt="" width="140" height="140" loading="lazy"></picture></span><span class="mj-shadow" aria-hidden="true"></span></span><span class="end-bubble" data-t="endHello"></span></div><h2 data-t="nightTitle"></h2></div>
-      <div class="glass">
-        <div class="g-main">
-          <span class="g-k"><span data-t="passKind"></span> · JT 2026</span>
-          <div class="g-route"><b>BRU</b><span aria-hidden="true"></span><b>ICN</b></div>
-          <span class="g-k">E-mail</span>
-          <a class="g-mail" href="mailto:jt.jessicathi@gmail.com">jt.jessicathi@gmail.com</a>
-          <p class="g-links"><a href="https://www.linkedin.com/in/jessica-thielemans">LinkedIn</a><a href="https://github.com/JessicaThi">GitHub</a></p>
-        </div>
-        <div class="g-stub">
-          <div><h3 data-t="passNext"></h3><p data-t="passYours"></p></div>
-          <a class="end-btn" href="mailto:jt.jessicathi@gmail.com" data-t="endCta"></a>
-        </div>
       </div>
     </div>
   </section>
@@ -747,7 +750,7 @@
       now: "Développeuse front-end à Séoul, chez Infinique.",
       before: "Avant ça, freelance et agence web en France.",
       flightLabel: "Plan de vol",
-      flightTitle: 'De Bruxelles à Séoul, <span>en passant par la France.</span>',
+      flightTitle: 'De Bruxelles à Séoul, <span>en passant par la France</span>',
       s1role: "Bachelor développement web et design",
       s1text: "Front-end, UX/UI, gestion de projet.",
       s2role: "Stage · intégration front-end",
@@ -761,7 +764,7 @@
       s5role: "Développeuse front-end",
       s5text: "Front-end de Clor AI, plateforme d'édition d'images par IA. React, TypeScript, Tailwind.css.",
       workLabel: "Projets",
-      workTitle: 'Quelques projets <span>sur lesquels j\'ai travaillé.</span>',
+      workTitle: 'Quelques projets <span>sur lesquels j\'ai travaillé</span>',
       noImage: "visuel à venir",
       vClor: "Éditeur photo par IA",
       vOtoctone: "Séjours d'exception",
@@ -811,7 +814,7 @@
       now: "Frontend developer in Seoul, at Infinique.",
       before: "Before that, freelance and web agency work in France.",
       flightLabel: "Flight plan",
-      flightTitle: 'From Brussels to Seoul, <span>by way of France.</span>',
+      flightTitle: 'From Brussels to Seoul, <span>by way of France</span>',
       s1role: "Bachelor's in web development and design",
       s1text: "Frontend, UX/UI, project management.",
       s2role: "Internship · frontend integration",
@@ -825,7 +828,7 @@
       s5role: "Frontend developer",
       s5text: "Frontend of Clor AI, an AI-powered image editing platform. React, TypeScript, Tailwind.css.",
       workLabel: "Work",
-      workTitle: 'A few projects <span>I worked on.</span>',
+      workTitle: 'A few projects <span>I worked on</span>',
       noImage: "visual coming soon",
       vClor: "AI photo editor",
       vOtoctone: "Exceptional getaways",
@@ -875,7 +878,7 @@
       now: "서울 인피니크에서 일하는 프론트엔드 개발자입니다.",
       before: "이전에는 프랑스에서 프리랜서와 웹 에이전시에서 일했습니다.",
       flightLabel: "비행 계획",
-      flightTitle: '브뤼셀에서 서울까지, <span>프랑스를 거쳐.</span>',
+      flightTitle: '브뤼셀에서 서울까지, <span>프랑스를 거쳐</span>',
       s1role: "웹 개발 및 디자인 학사",
       s1text: "프론트엔드, UX/UI, 프로젝트 관리.",
       s2role: "인턴 · 프론트엔드 퍼블리싱",
@@ -889,7 +892,7 @@
       s5role: "프론트엔드 개발자",
       s5text: "AI 이미지 편집 플랫폼 Clor AI 프론트엔드 개발. React, TypeScript, Tailwind.css.",
       workLabel: "프로젝트",
-      workTitle: '참여한 <span>프로젝트들.</span>',
+      workTitle: '참여한 <span>프로젝트들</span>',
       noImage: "이미지 준비 중",
       vClor: "AI 사진 편집기",
       vOtoctone: "특별한 여행지",
@@ -994,11 +997,10 @@
 
   /* ---------- « Retour à la porte d'embarquement » : on scanne le billet avant de remonter ---------- */
   (() => {
-    const link = document.querySelector('footer [data-t="back"]'), passes = [...document.querySelectorAll(".vpass, .glass")];
+    const link = document.querySelector('footer [data-t="back"]'), passes = [...document.querySelectorAll(".vpass")];
     if (!link || !passes.length) return;
     let busy = false;
     link.addEventListener("click", e => {
-      // le billet affiché : blanc en mode clair, en verre en mode sombre
       const pass = passes.find(p => { const r = p.getBoundingClientRect(); return r.height && r.bottom > 0 && r.top < innerHeight; });
       if (busy || !pass || matchMedia("(prefers-reduced-motion: reduce)").matches) return; // billet hors écran : on remonte direct
       e.preventDefault();
@@ -1011,6 +1013,12 @@
       if (!en.isIntersecting && en.target.classList.contains("scanned")) { en.target.classList.remove("scanned"); busy = false; }
     }));
     passes.forEach(p => io.observe(p));
+    // clic sur le billet : seulement le passage du laser sur le code-barres, le billet reste en place
+    passes.forEach(p => p.addEventListener("click", () => {
+      if (busy || p.classList.contains("scanning")) return;
+      p.classList.add("scanning");
+      setTimeout(() => p.classList.remove("scanning"), 900);
+    }));
   })();
 
   /* ---------- Memoji : poses, bulle selon l'heure, merci au clic, codage de nuit ---------- */
@@ -1022,7 +1030,7 @@
       if (dark && (h >= 21 || h < 5)) return "endLate";
       return (h >= 18 || h < 5) ? "endEvening" : "endHello";
     };
-    const zones = [...document.querySelectorAll(".end-day, .end-night")].map(zone => {
+    const zones = [...document.querySelectorAll(".end-day")].map(zone => {
       const hello = zone.querySelector(".end-hello"), bubble = hello.querySelector(".end-bubble");
       const poses = [...hello.querySelectorAll(".mj-pose")];
       const show = name => poses.forEach(p => p.classList.toggle("on", p.dataset.pose === name));
@@ -1140,13 +1148,17 @@
   const themeBtn = document.getElementById("theme");
   function setTheme(t) {
     document.documentElement.dataset.theme = t;
-    themeBtn.textContent = t === "dark" ? "☀" : "☾";
-    store.set("theme", t);
+    document.querySelector('meta[name="theme-color"]').content = t === "dark" ? "#0f1126" : "#f4f1fb";
   }
   themeBtn.addEventListener("click", () => {
-    setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+    const t = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    setTheme(t); store.set("theme", t);   // retenu seulement quand la personne choisit elle-même
+    themeBtn.classList.add("turn"); void themeBtn.offsetWidth; themeBtn.classList.remove("turn");   // relance la rotation
   });
-  setTheme(store.get("theme") || "light");
+  // sinon : le mode de l'ordinateur (clair ou sombre), et on suit s'il change
+  const systemDark = matchMedia("(prefers-color-scheme: dark)");
+  setTheme(store.get("theme") || (systemDark.matches ? "dark" : "light"));
+  systemDark.addEventListener("change", e => { if (!store.get("theme")) setTheme(e.matches ? "dark" : "light"); });
 
   /* ---------- Koïs qui nagent dans le fond ---------- */
   const pond = document.getElementById("pond");
@@ -1396,13 +1408,37 @@
   /* ---------- Gouttes d'eau au clic ---------- */
   const ripples = [];
   const RIPPLE_LIFE = 3.2; // secondes
+  // Bouton de la souris maintenu : après un court instant, une petite pluie de gouttes plus douces,
+  // à un rythme un peu irrégulier, légèrement dispersées autour de la souris ; en bougeant, elles suivent la souris.
+  let holdTimer = null, holdX = 0, holdY = 0, lastX = 0, lastY = 0;
+  const drop = (x, y, s) => {
+    const r = pond.getBoundingClientRect();
+    ripples.push({ x: x - r.left, y: y - r.top, t0: performance.now(), s });
+    if (ripples.length > 16) ripples.shift();
+  };
+  const rain = () => {
+    const j = 10;   // dispersion autour de la souris (px)
+    drop(holdX + (Math.random() - .5) * j, holdY + (Math.random() - .5) * j, .35 + Math.random() * .15);
+    holdTimer = setTimeout(rain, 380 + Math.random() * 200);
+  };
+  const stopHold = () => { clearTimeout(holdTimer); holdTimer = null; };
   document.addEventListener("pointerdown", e => {
     if (reduceMotion || e.target.closest("a, button")) return;
     if (!e.target.closest(".hero")) return;
-    const r = pond.getBoundingClientRect();
-    const x = e.clientX - r.left, y = e.clientY - r.top;
-    ripples.push({ x, y, t0: performance.now() });
+    holdX = lastX = e.clientX; holdY = lastY = e.clientY;
+    drop(holdX, holdY, 1);                       // le clic : une goutte franche
+    stopHold(); holdTimer = setTimeout(rain, 380); // si on garde appuyé : la pluie commence
   });
+  document.addEventListener("pointermove", e => {
+    if (!holdTimer) return;
+    if (!e.target.closest(".hero")) return stopHold();   // on sort de l'accueil : la pluie s'arrête
+    holdX = e.clientX; holdY = e.clientY;
+    // traînée : une goutte tous les ~80 px parcourus
+    if (Math.hypot(holdX - lastX, holdY - lastY) > 80) { drop(holdX, holdY, .4); lastX = holdX; lastY = holdY; }
+  });
+  ["pointerup", "pointercancel", "blur"].forEach(ev => addEventListener(ev, stopHold));
+  // plusieurs clics rapides (double, triple clic) ne surlignent plus le texte ; on peut toujours sélectionner en glissant hors de l'accueil
+  document.addEventListener("mousedown", e => { if (e.detail > 1 && !e.target.closest("input, textarea")) e.preventDefault(); });
 
   // Une goutte = un petit creux d'impact, puis des ondes en relief qui s'élargissent.
   // Chaque onde est un bourrelet doux éclairé par la gauche :
@@ -1422,7 +1458,7 @@
     const shadowRGB = night ? "40,24,86" : "150,120,210";  // ombre mauve
     const lightRGB = night ? "200,180,255" : "240,232,255"; // reflet lavande
     for (let i = ripples.length - 1; i >= 0; i--) {
-      const rp = ripples[i];
+      const rp = ripples[i], st = rp.s || 1;   // st : force de la goutte (1 au clic, plus douce quand on garde appuyé)
       const a = (t - rp.t0) / 1000;
       if (a >= RIPPLE_LIFE) { ripples.splice(i, 1); continue; }
       if (a <= 0) continue;
@@ -1431,19 +1467,19 @@
       if (a < 0.45) {
         const k = 1 - a / 0.45, r = 6 + a * 18;
         const g = pctx.createRadialGradient(rp.x + 1, rp.y + 1.5, 0, rp.x, rp.y, r);
-        g.addColorStop(0, `rgba(${shadowRGB},${0.08 * k})`);
+        g.addColorStop(0, `rgba(${shadowRGB},${0.08 * k * st})`);
         g.addColorStop(1, `rgba(${shadowRGB},0)`);
         pctx.fillStyle = g;
         pctx.fillRect(rp.x - r, rp.y - r, r * 2, r * 2);
       }
 
       // ondes : la première est la plus marquée, les suivantes plus douces
-      const R = 6 + a * speed;
+      const R = 6 + a * speed * (.75 + .25 * st);   // les petites gouttes s'étalent un peu moins loin
       const fade = Math.pow(1 - a / RIPPLE_LIFE, 1.8) / (1 + R / 180); // se fond vite dans le fond
       for (let k = 0; k < waves; k++) {
         const r = R - k * lambda;
         if (r < 8) continue;
-        const amp = fade * (1 - k / waves) * Math.min(1, (r - 8) / 10);
+        const amp = st * fade * (1 - k / waves) * Math.min(1, (r - 8) / 10);
         const w = lambda * (night ? 0.42 : 0.3);
         const d = 0.8 + amp * 1.5; // hauteur du bourrelet : décalage de l'ombre et du reflet
         ring(rp.x + d, rp.y + d * 1.2, r, w, `rgba(${shadowRGB},${amp * (night ? 0.2 : 0.11)})`);
@@ -1500,6 +1536,9 @@
     const sparks = [];
     const COLORS_DAY = ["#f2b33d", "#ffcf6b", "#ff7fb6", "#a88be8"];
     const COLORS_NIGHT = ["#ffe6a3", "#fff4d6", "#ffb3d9", "#cdb8ff"];
+    const PETALS = ["#ffc2d6", "#ffb0cb", "#fbd3e0", "#f7a1c4"];
+    const bits = [];                      // pétales (mode clair)
+    let bitX = -100, bitY = -100;          // dernière position où on en a semé
     function resizeSparkle() {
       const dpr = window.devicePixelRatio || 1;
       SW = innerWidth; SH = innerHeight;
@@ -1508,8 +1547,12 @@
     }
     resizeSparkle();
     window.addEventListener("resize", resizeSparkle);
-    document.addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY; onPage = true; });
+    // l'animation s'arrête quand il n'y a plus rien à dessiner (économise la batterie) et repart au moindre mouvement
+    let looping = false;
+    const wake = () => { if (!looping) { looping = true; prevS = performance.now(); requestAnimationFrame(sparkleLoop); } };
+    document.addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY; onPage = true; wake(); });
     document.documentElement.addEventListener("pointerleave", () => { onPage = false; });
+    document.getElementById("theme").addEventListener("click", wake);
 
     function spawn(x, y, gen, colors) {
       const ang = Math.random() * Math.PI * 2;
@@ -1519,12 +1562,21 @@
                     split: false, color: colors[Math.floor(Math.random() * colors.length)] });
     }
 
-    (function sparkleLoop(t) {
+    function sparkleLoop(t) {
       const dt = Math.min((t - prevS) / 1000, 0.05);
       prevS = t;
       const night = document.documentElement.dataset.theme === "dark";
       const colors = night ? COLORS_NIGHT : COLORS_DAY;
       sctx.clearRect(0, 0, SW, SH);
+
+      if (!night) {
+        drawDay(dt);
+        // en clair : plus de pétales et souris immobile → on s'arrête
+        if (!bits.length && mx === lastX && my === lastY) { looping = false; return; }
+        lastX = mx; lastY = my;
+        requestAnimationFrame(sparkleLoop); return;
+      }
+      bits.length = 0;
 
       if (onPage) {
         // plus la souris bouge vite, plus ça crépite
@@ -1573,8 +1625,41 @@
         sctx.fill();
       }
       sctx.globalCompositeOperation = "source-over";
+      // en sombre : la boule scintille tant que la souris est sur la page ; sinon on s'arrête quand les étincelles sont éteintes
+      if (!onPage && !sparks.length) { looping = false; return; }
       requestAnimationFrame(sparkleLoop);
-    })(0);
+    }
+    wake();
+
+    // Mode clair : la flèche reste, et quand la souris bouge, des pétales tombent derrière elle
+    function drawDay(dt) {
+      sparks.length = 0;
+      if (onPage && Math.hypot(mx - bitX, my - bitY) > 22) {
+        bitX = mx; bitY = my;
+        if (bits.length < 40) bits.push({ x: mx + 6, y: my + 10, vx: (Math.random() - .5) * 20, vy: 18 + Math.random() * 22, rot: Math.random() * 6.28, spin: (Math.random() - .5) * 4,
+                                        size: 4 + Math.random() * 3, sway: Math.random() * 6.28, age: 0, life: 1.8 + Math.random() * .8, color: PETALS[Math.floor(Math.random() * PETALS.length)] });
+      }
+      for (let i = bits.length - 1; i >= 0; i--) {
+        const b = bits[i];
+        b.age += dt;
+        if (b.age >= b.life) { bits.splice(i, 1); continue; }
+        const k = b.age / b.life;
+        b.sway += dt * 2.2;
+        // le pétale descend doucement en se balançant et en tournant
+        b.x += (b.vx + Math.sin(b.sway) * 22) * dt; b.y += b.vy * dt; b.rot += b.spin * dt;
+        sctx.save();
+        sctx.globalAlpha = k < .7 ? .9 : .9 * (1 - k) / .3;
+        sctx.translate(b.x, b.y); sctx.rotate(b.rot);
+        sctx.fillStyle = b.color;
+        sctx.beginPath();
+        sctx.moveTo(0, -b.size);                                       // forme de pétale, avec une petite encoche
+        sctx.quadraticCurveTo(b.size * .9, -b.size * .2, 0, b.size);
+        sctx.quadraticCurveTo(-b.size * .9, -b.size * .2, 0, -b.size);
+        sctx.fill();
+        sctx.restore();
+      }
+      sctx.globalAlpha = 1;
+    }
   }
 
   /* ---------- La ligne qui se remplit au scroll ---------- */

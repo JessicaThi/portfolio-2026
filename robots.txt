@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /outils/
+Disallow: /pdf/
+Disallow: /portfolio-2020/
+
+Sitemap: https://jessica-thielemans.com/sitemap.xml

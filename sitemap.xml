@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- liste des pages du site, pour Google (déclarée dans robots.txt) -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://jessica-thielemans.com/</loc></url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/clor-ai</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/clor-ai"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/clor-ai.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/clor-ai.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/clor-ai"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/clor-ai.en</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/clor-ai"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/clor-ai.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/clor-ai.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/clor-ai"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/clor-ai.ko</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/clor-ai"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/clor-ai.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/clor-ai.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/clor-ai"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/otoctone</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/otoctone"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/otoctone.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/otoctone.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/otoctone"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/otoctone.en</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/otoctone"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/otoctone.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/otoctone.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/otoctone"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/otoctone.ko</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/otoctone"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/otoctone.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/otoctone.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/otoctone"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/pando2</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/pando2"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/pando2.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/pando2.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/pando2"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/pando2.en</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/pando2"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/pando2.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/pando2.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/pando2"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/pando2.ko</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/pando2"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/pando2.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/pando2.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/pando2"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/leplein</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/leplein"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/leplein.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/leplein.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/leplein"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/leplein.en</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/leplein"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/leplein.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/leplein.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/leplein"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/leplein.ko</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/leplein"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/leplein.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/leplein.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/leplein"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/skade</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/skade"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/skade.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/skade.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/skade"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/skade.en</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/skade"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/skade.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/skade.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/skade"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/skade.ko</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/skade"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/skade.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/skade.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/skade"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/ouipharma</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/ouipharma"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/ouipharma.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/ouipharma.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/ouipharma"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/ouipharma.en</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/ouipharma"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/ouipharma.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/ouipharma.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/ouipharma"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/ouipharma.ko</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/ouipharma"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/ouipharma.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/ouipharma.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/ouipharma"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/nomiks</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/nomiks"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/nomiks.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/nomiks.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/nomiks"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/nomiks.en</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/nomiks"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/nomiks.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/nomiks.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/nomiks"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/nomiks.ko</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/nomiks"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/nomiks.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/nomiks.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/nomiks"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/dotworld</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/dotworld"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/dotworld.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/dotworld.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/dotworld"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/dotworld.en</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/dotworld"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/dotworld.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/dotworld.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/dotworld"/>
+  </url>
+  <url>
+    <loc>https://jessica-thielemans.com/projets/dotworld.ko</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jessica-thielemans.com/projets/dotworld"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jessica-thielemans.com/projets/dotworld.en"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jessica-thielemans.com/projets/dotworld.ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jessica-thielemans.com/projets/dotworld"/>
+  </url>
+</urlset>

@@ -1,0 +1,25 @@
+# Cloudflare Pages : durée pendant laquelle le navigateur garde les fichiers sans les redemander
+# Polices : elles ne changent jamais → un an
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images et vidéos : une semaine (si une image est remplacée sous le même nom, la nouvelle arrive au plus tard une semaine après)
+/miniatures/*
+  Cache-Control: public, max-age=604800
+/memoji/*
+  Cache-Control: public, max-age=604800
+/projets/:projet/*
+  Cache-Control: public, max-age=604800
+/logo-jt-anim.webp
+  Cache-Control: public, max-age=604800
+/logo-jt.svg
+  Cache-Control: public, max-age=604800
+
+# Sécurité de base, pour toutes les pages :
+# - le navigateur ne devine pas le type d'un fichier (nosniff)
+# - les autres sites ne peuvent pas afficher le portfolio dans un cadre (protection contre le « clickjacking »)
+# - en cliquant vers un autre site, seul le nom de domaine est transmis, pas l'adresse complète
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
