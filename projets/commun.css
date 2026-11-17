@@ -258,3 +258,7 @@ body > header .back { color: var(--text); }
    Contour visible sur les liens et boutons atteints avec Tab (pas au clic de la souris).
    Les boutons d'agrandissement et de fermeture gardent leur propre contour, défini dans chaque page. */
 a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Image agrandie ouverte : la page derrière ne défile plus */
+html:has(#zoom[open]) { overflow: hidden; }
+#zoom .box { overscroll-behavior: contain; }   /* le défilement dans l'image ne passe pas à la page */
