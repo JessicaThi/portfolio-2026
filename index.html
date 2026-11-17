@@ -484,6 +484,7 @@
   .end-txt p { margin: 0; color: #6f6a86; }
   .end-links { display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: var(--mono); font-size: 13px; margin-top: 6px !important; }
   .end-links a { color: #4b3f8a; text-underline-offset: 4px; }
+  .end-links a:first-child { flex-basis: 100%; }   /* l'e-mail sur sa ligne, LinkedIn, GitHub et le PDF en dessous */
   .vpass { width: 290px; border-radius: 24px; background: #fff; color: #1d1a2b; box-shadow: 0 30px 60px rgba(80, 40, 160, .22); transform: rotate(4deg); overflow: hidden; transition: transform .5s; }
   .end-day:hover .vpass { transform: rotate(0) translateY(-6px); }
   .vp-top { padding: 20px 22px; background: linear-gradient(135deg, #7c5cf0, #f08cb8); color: #fff; display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
@@ -538,7 +539,6 @@
   @media (max-width: 760px) {
     .end-day { grid-template-columns: 1fr; padding: 40px 22px; gap: 36px; }
     .end-txt { justify-self: start; }
-    .end-links a:first-child { flex-basis: 100%; }   /* l'e-mail sur sa ligne, LinkedIn et GitHub en dessous */
     .vpass { justify-self: center; }
   }
   @media (prefers-reduced-motion: reduce) { .vpass { transition: none; } }
@@ -732,7 +732,7 @@
         <h2 data-t="passTitle"></h2>
         <p data-t="nightText"></p>
         <a class="end-btn" href="mailto:jt.jessicathi@gmail.com" data-t="endCta"></a>
-        <p class="end-links"><a href="mailto:jt.jessicathi@gmail.com">jt.jessicathi@gmail.com</a><a href="https://www.linkedin.com/in/jessica-thielemans">LinkedIn</a><a href="https://github.com/JessicaThi">GitHub</a></p>
+        <p class="end-links"><a href="mailto:jt.jessicathi@gmail.com">jt.jessicathi@gmail.com</a><a href="https://www.linkedin.com/in/jessica-thielemans">LinkedIn</a><a href="https://github.com/JessicaThi">GitHub</a><a href="pdf/jessica-thielemans-portfolio-fr.pdf" data-pdf target="_blank" rel="noopener" data-t="pdfLink"></a></p>
       </div>
       <div class="vpass" aria-hidden="true">
         <div class="vp-top"><img src="logo-jt.svg" alt="" width="34" height="24"><span data-t="passKind"></span></div>
@@ -798,6 +798,7 @@
       oLink: "Média sur l'emploi en finance : gabarits d'articles et de rubriques.",
       oEdilians: "Fabricant de tuiles et matériaux de toiture : pages Carrières et RSE.",
       endCta: "Écrire un e-mail",
+      pdfLink: "Portfolio (PDF)",
       endHello: "Bonjour ! 안녕하세요 !",
       endEvening: "Bonsoir ! 안녕하세요 !",
       endLate: "Vous travaillez tard aussi ? 🌙",
@@ -862,6 +863,7 @@
       oLink: "Finance careers media: article and section templates.",
       oEdilians: "Roof tile and roofing materials manufacturer: Careers and CSR pages.",
       endCta: "Send an email",
+      pdfLink: "Portfolio (PDF)",
       endHello: "Hello! 안녕하세요!",
       endEvening: "Good evening! 안녕하세요!",
       endLate: "Working late too? 🌙",
@@ -926,6 +928,7 @@
       oLink: "금융 채용 미디어: 기사 및 카테고리 템플릿.",
       oEdilians: "기와 및 지붕재 제조사: 채용 및 ESG 페이지.",
       endCta: "이메일 보내기",
+      pdfLink: "포트폴리오 (PDF)",
       endHello: "안녕하세요! Bonjour!",
       endEvening: "좋은 저녁이에요! Bonsoir!",
       endLate: "늦게까지 일하시나요? 🌙",
@@ -984,6 +987,8 @@
       const base = a.dataset.base || (a.dataset.base = a.getAttribute("href"));
       a.setAttribute("href", lang === "fr" ? base : base.replace(/\.html$/, `.${lang}.html`));
     });
+    // portfolio PDF dans la langue choisie
+    document.querySelectorAll("[data-pdf]").forEach(a => { a.href = `pdf/jessica-thielemans-portfolio-${lang}.pdf`; });
     // liens vers un site qui a sa version coréenne (Infinique)
     document.querySelectorAll("[data-href-ko]").forEach(a => { a.href = lang === "ko" ? a.dataset.hrefKo : a.dataset.href; });
     // dates : 07.2025 en français et en anglais, 2025.07 en coréen

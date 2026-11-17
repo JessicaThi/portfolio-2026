@@ -253,3 +253,8 @@ body > header .back { color: var(--text); }
     font-family: var(--mono); font-size: 11px; color: var(--muted);
   }
 }
+
+/* ---------- Navigation au clavier ----------
+   Contour visible sur les liens et boutons atteints avec Tab (pas au clic de la souris).
+   Les boutons d'agrandissement et de fermeture gardent leur propre contour, défini dans chaque page. */
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
