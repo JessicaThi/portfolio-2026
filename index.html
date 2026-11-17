@@ -1185,7 +1185,9 @@
     window.addEventListener("load", fit); window.addEventListener("resize", fit);
     document.querySelectorAll(".vg.tilt").forEach(v => {
       const vid = v.querySelector("video"); const a = v.closest("a");
-      if (!vid || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      // seulement avec une vraie souris : sur téléphone, le toucher compte comme un survol et l'iPhone affiche un cadre blanc
+      // le temps de charger la vidéo ; la carte garde alors son image fixe
+      if (!vid || matchMedia("(prefers-reduced-motion: reduce)").matches || !matchMedia("(hover: hover) and (pointer: fine)").matches) return;
       a.addEventListener("mouseenter", () => { vid.preload = "auto"; vid.play().catch(() => {}); });
       /* load() remet la vidéo à zéro et réaffiche l'image poster (la 1re image de la vidéo est noire) */
       a.addEventListener("mouseleave", () => { vid.pause(); vid.preload = "none"; vid.load(); });
