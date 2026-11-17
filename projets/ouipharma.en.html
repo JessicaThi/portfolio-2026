@@ -96,8 +96,12 @@
     margin-top: 24px; padding: 40px 24px; border-radius: 20px; background: #e8f0fb;
     grid-template-columns: minmax(0, 240px) auto minmax(0, 240px); justify-content: center; column-gap: 40px;
   }
-  .pair.phones .side .tag { background: #fff; }
-  .pair.phones .zoom { aspect-ratio: 390 / 844; border: 9px solid #1d2433; border-radius: 34px; box-shadow: 0 24px 50px rgba(15, 20, 40, .22); }
+  /* la bande reste claire en mode sombre : couleurs fixes, sinon le texte clair du mode sombre disparaît sur le fond blanc */
+  .pair.phones .side .tag { background: #fff; color: #3b4a6b; border-color: #d6deec; }
+  .pair.phones .side.after .tag { color: #1d1a2b; border-color: #8b5cf6; }
+  /* même contour que les autres téléphones du site (commun.css) : proportionnel à la largeur du téléphone */
+  .pair.phones .side { container-type: inline-size; }
+  .pair.phones .zoom { aspect-ratio: 390 / 844; border: 4.2cqi solid #1d2433; border-radius: 15.5cqi; box-shadow: 0 24px 50px rgba(15, 20, 40, .22); }
   .arrow { color: var(--accent); font-size: 20px; }
   .side { margin: 0; }
   .side .tag {
